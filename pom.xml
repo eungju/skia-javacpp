@@ -1,0 +1,226 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>skia</groupId>
+	<artifactId>skia-javacpp</artifactId>
+	<packaging>jar</packaging>
+	<version>0.1-SNAPSHOT</version>
+
+	<name>Skia Java Binding</name>
+
+    <scm>
+        <connection>scm:git:git://github.com/eungju/skia-javacpp.git</connection>
+        <developerConnection>scm:git:git@github.com:eungju/skia-javacpp.git</developerConnection>
+        <url>https://eungju@github.com/eungju/skia-javacpp.git</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>eungju</id>
+            <name>Eungju PARK</name>
+        </developer>
+    </developers>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.googlecode</groupId>
+			<artifactId>javacpp</artifactId>
+			<version>20120303.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>11.0.2</version>
+			<scope>test</scope>
+		</dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit-dep</artifactId>
+            <version>4.10</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jmock</groupId>
+            <artifactId>jmock</artifactId>
+            <version>${jmock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jmock</groupId>
+            <artifactId>jmock-legacy</artifactId>
+            <version>${jmock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jmock</groupId>
+            <artifactId>jmock-junit4</artifactId>
+            <version>${jmock.version}</version>
+            <scope>test</scope>
+        </dependency>		
+	</dependencies>
+
+	<build>
+		<plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <debug>true</debug>
+                    <optimize>true</optimize>
+                    <showDeprecation>true</showDeprecation>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                    <encoding>${maven.compiler.encoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadoc</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>properties</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <executions>
+                    <execution>
+                        <id>build-jnilib</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>java</executable>
+                            <arguments>
+                                <argument>-jar</argument> <argument>${com.googlecode:javacpp:jar}</argument>
+                                <argument>-classpath</argument> <argument>${project.build.outputDirectory}</argument>
+                                <argument>-d</argument> <argument>${project.build.outputDirectory}/skia/javacpp/macosx-x86_64</argument>
+                                <argument>-o</argument> <argument>jniSkia</argument>
+                                <argument>skia/javacpp/*</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+		</plugins>
+	</build>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>undercover</groupId>
+                <artifactId>undercover-maven-plugin</artifactId>
+                <configuration>
+                    <formats>
+                        <format>html</format>
+                        <format>coberturaxml</format>
+                        <format>emmaxml</format>
+                    </formats>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <charset>${maven.compiler.encoding}</charset>
+                    <docencoding>${maven.compiler.encoding}</docencoding>
+                    <encoding>${maven.compiler.encoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jdepend-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <configuration>
+                    <sourceEncoding>${maven.compiler.encoding}</sourceEncoding>
+                    <minimumTokens>50</minimumTokens>
+                    <includeTests>true</includeTests>
+                    <targetJdk>${maven.compiler.target}</targetJdk>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </reporting>
+
+	<repositories>
+		<repository>
+			<id>ejwa-public</id>
+			<url>http://maven.ejwa.se</url>
+			<name>Public Ejwa Software Maven Repository</name>
+		</repository>
+        <repository>
+            <id>zact</id>
+            <url>http://zact.googlecode.com/svn/maven/repository</url>
+        </repository>
+	</repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>zact-snaphost</id>
+            <url>http://zact.googlecode.com/svn/maven/snapshot-repository</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <distributionManagement>
+        <repository>
+            <id>zact</id>
+            <url>dav:https://zact.googlecode.com/svn/maven/repository</url>
+        </repository>
+        <snapshotRepository>
+            <id>zact-snapshot</id>
+            <url>dav:https://zact.googlecode.com/svn/maven/snapshot-repository</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <properties>
+        <maven.compiler.encoding>utf-8</maven.compiler.encoding>
+        <maven.compiler.target>1.5</maven.compiler.target>
+        <maven.compiler.source>1.5</maven.compiler.source>
+        <jmock.version>2.6.0-RC2</jmock.version>
+    </properties>
+		
+</project>
