@@ -29,6 +29,8 @@ public class Main {
                 StrokeRectGM.class,
                 ShadowsGM.class,
                 NoColorBleedGM.class,
+                TilingGM.class,
+                TinyBitmapGM.class,
                 VertTextGM.class,
                 VertText2GM.class,
                 XfermodesGM.class);

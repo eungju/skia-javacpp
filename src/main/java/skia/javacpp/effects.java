@@ -81,7 +81,9 @@ public class effects {
 	    		kHighQuality_BlurFlag = 0x04,
 	    		kAll_BlurFlag = 0x07;
 
-		public SkBlurDrawLooper(Pointer pointer) { super(pointer); }
+        public SkBlurDrawLooper(float radius, float dx, float dy, int color) { allocate(radius, dx, dy, color); }
+        @NoDeallocator
+        public native void allocate(@Cast("SkScalar") float radius, @Cast("SkScalar") float dx, @Cast("SkScalar") float dy, @Cast("SkColor") int color);
 		public SkBlurDrawLooper(float radius, float dx, float dy, int color, int flags) { allocate(radius, dx, dy, color, flags); }
 		@NoDeallocator
 		public native void allocate(@Cast("SkScalar") float radius, @Cast("SkScalar") float dx, @Cast("SkScalar") float dy, @Cast("SkColor") int color, @Cast("uint32_t") int flags/* = kNone_BlurFlag*/);

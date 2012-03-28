@@ -19,7 +19,7 @@ import com.googlecode.javacpp.annotation.Properties;
 import java.nio.charset.Charset;
 
 @Properties({
-	@Platform(include={"SkBitmap.h", "SkCanvas.h", "SkColor.h", "SkColorFilter.h", "SkColorShader.h",
+	@Platform(include={"SkBitmap.h", "SkCanvas.h", "SkColor.h", "SkColorFilter.h", "SkColorPriv.h", "SkColorShader.h",
             "SkData.h", "SkDevice.h", "SkDrawFilter.h", "SkDrawLooper.h",
 			"SkPaint.h", "SkPath.h", "SkPathEffect.h", "SkRandom.h", "SkRegion.h",
 			"SkShader.h", "SkSize.h", "SkStream.h", "SkString.h", "SkTypeface.h",
@@ -44,14 +44,6 @@ public class core {
      * SkBitmap.h
      */
     
-	public static class SkColorTable extends Pointer {
-		static { Loader.load(Skia.class); }
-		
-		public SkColorTable(Pointer pointer) { super(pointer); }
-		public SkColorTable(int count) { allocate(count); }
-		private native void allocate(int count);
-	}
-	
 	public static class SkBitmap extends Pointer {
 		static { Loader.load(Skia.class); }
 		
@@ -133,9 +125,30 @@ public class core {
         };
 	}
 
-	/*
-	 * SkCanvas.h
-	 */
+    public static class SkColorTable extends SkRefCnt {
+        static { Loader.load(Skia.class); }
+
+        public SkColorTable(SkColorTable src) { allocate(src); }
+        @NoDeallocator
+        private native void allocate(@Const @ByRef SkColorTable src);
+        public SkColorTable(int count) { allocate(count); }
+        @NoDeallocator
+        private native void allocate(int count);
+        public SkColorTable(SkFlattenableReadBuffer buffer) { allocate(buffer); }
+        @NoDeallocator
+        private native void allocate(@ByRef SkFlattenableReadBuffer buffer);
+        public SkColorTable(int[] colors) { allocate(colors, colors.length); }
+        @NoDeallocator
+        private native void allocate(@Cast("const SkPMColor*") int[] colors, int count);
+
+        public native @Cast("SkPMColor*") IntPointer lockColors();
+        public native void unlockColors(boolean changed);
+    }
+
+
+    /*
+      * SkCanvas.h
+      */
 	
 	public static class SkCanvas extends SkRefCnt {
 		static { Loader.load(Skia.class); }
@@ -350,6 +363,8 @@ public class core {
 			SK_R32_MASK = ((1 << SK_R32_BITS) - 1),
 			SK_G32_MASK = ((1 << SK_G32_BITS) - 1),
 			SK_B32_MASK = ((1 << SK_B32_BITS) - 1);
+
+    public static native @Cast("SkPMColor") int SkPackARGB32(@Cast("U8CPU") int a, @Cast("U8CPU") int r, @Cast("U8CPU") int g, @Cast("U8CPU") int b);
 
 	/*
 	 * SkColorShader.h
@@ -1014,6 +1029,15 @@ public class core {
 	    public static native @ByVal SkRect MakeLTRB(@Cast("SkScalar") float l, @Cast("SkScalar") float t, @Cast("SkScalar") float r, @Cast("SkScalar") float b);
 	    public static native @ByVal SkRect MakeXYWH(@Cast("SkScalar") float x, @Cast("SkScalar") float y, @Cast("SkScalar") float w, @Cast("SkScalar") float h);
 
+        public native @Cast("SkScalar") float left();
+        public native @Cast("SkScalar") float top();
+        public native @Cast("SkScalar") float right();
+        public native @Cast("SkScalar") float bottom();
+        public native @Cast("SkScalar") float width();
+        public native @Cast("SkScalar") float height();
+        public native @Cast("SkScalar") float centerX();
+        public native @Cast("SkScalar") float centerY();
+
         public native void set(@Cast("SkScalar") float left, @Cast("SkScalar") float top, @Cast("SkScalar") float right, @Cast("SkScalar") float bottom);
         public native void setXYWH(@Cast("SkScalar") float x, @Cast("SkScalar") float y, @Cast("SkScalar") float width, @Cast("SkScalar") float height);
 
@@ -1047,9 +1071,9 @@ public class core {
 
         public native @Cast("uint32_t") int nextRangeU(@Cast("uint32_t") int min, @Cast("uint32_t") int max);
 
-//TODO:        SkFixed nextUFixed1() { return this->nextU() >> 16; }
+        public native @Cast("SkFixed") int nextUFixed1();
 
-//TODO:        SkFixed nextSFixed1() { return this->nextS() >> 15; }
+        public native @Cast("SkFixed") int nextSFixed1();
 
         public native @Cast("SkScalar") float nextUScalar1();
 
