@@ -102,9 +102,10 @@ public class core {
 	    public static native @Cast("size_t") int ComputeSize(@Cast("SkBitmap::Config") int c, int width, int height);
 		public void setConfig(int config, int width, int height) { setConfig(config, width, height, 0); }
 		public native void setConfig(@Cast("SkBitmap::Config")int config, int width, int height, int rowBytes/* = 0*/);
+        public native void setPixels(Pointer p);
 	    public native void setPixels(Pointer p, SkColorTable ctable/* = NULL*/);
 	    public native boolean copyPixelsTo(Pointer dst, @Cast("size_t") int dstSize, int dstRowBytes/* = -1*/, boolean preserveDstPad/* = false*/);
-	    public boolean allocPixels() { return allocPixels(null); }
+        public native boolean allocPixels();
 	    public native boolean allocPixels(SkColorTable ctable/* = NULL*/);
 	    
 	    public native void lockPixels();
@@ -155,6 +156,9 @@ public class core {
         public native @ByVal SkISize getDeviceSize();
         public native SkDevice getDevice();
         public native SkDevice setDevice(SkDevice device);
+        public native SkDevice getTopDevice();
+        public native SkDevice getTopDevice(boolean updateMatrixClip/* = false*/);
+        public native SkDevice setBitmapDevice(@Const @ByRef SkBitmap bitmap);
 
 	    //enum Config8888
 	    public static final int kNative_Premul_Config8888 = 0,
@@ -356,9 +360,9 @@ public class core {
 		
 		public SkColorShader(Pointer pointer) { super(pointer); }
 		public SkColorShader() { allocate(); }
+        @NoDeallocator
+        private native void allocate();
 		public SkColorShader(int c) { allocate(c); }
-		@NoDeallocator
-		private native void allocate();
 		@NoDeallocator
 		private native void allocate(@Cast("SkColor") int c);
 	}
@@ -782,12 +786,20 @@ public class core {
 	    public native void glyphsToUnichars(@Cast("const uint16_t*") short[] glyphs, int count, @Cast("SkUnichar*") int[] text);
 	    public native int countText(@Const Pointer text, @Cast("size_t") int byteLength);
 	    public native @Cast("SkScalar") float measureText(@Const Pointer text, @Cast("size_t") int length, SkRect bounds, @Cast("SkScalar") float scale/* = 0*/);
+        public float measureText(String text) {
+            Pointer ptr = encodeText(text, getTextEncoding());
+            return measureText(ptr, ptr.capacity());
+        }
 	    public native @Cast("SkScalar") float measureText(@Const Pointer text, @Cast("size_t") int length);
 	    
 	    //enum TextBufferDirection
 	    public static final int kForward_TextBufferDirection = 0,
 	        kBackward_TextBufferDirection = 1;
 	    public native @Cast("size_t") int breakText(@Const Pointer text, @Cast("size_t") int length, @Cast("SkScalar") float maxWidth, @Cast("SkScalar*") float[] measuredWidth/* = NULL*/, @Cast("SkPaint::TextBufferDirection") int tbd/* = kForward_TextBufferDirection*/);
+        public int getTextWidths(String text, float[] widths, SkRect bounds/* = NULL*/) {
+            Pointer ptr = encodeText(text, getTextEncoding());
+            return getTextWidths(ptr, ptr.capacity(), widths, bounds);
+        }
 	    public native int getTextWidths(@Const Pointer text, @Cast("size_t") int byteLength, @Cast("SkScalar*") float[] widths, SkRect bounds/* = NULL*/);
 	    public native void getTextPath(@Const Pointer text, @Cast("size_t") int length, @Cast("SkScalar") float x, @Cast("SkScalar") float y, SkPath path);
 	    
@@ -987,6 +999,15 @@ public class core {
 		public SkRect() { allocate(); }
 		private native void allocate();
 
+        @MemberGetter
+        public native @Cast("SkScalar") float fLeft();
+        @MemberGetter
+        public native @Cast("SkScalar") float fTop();
+        @MemberGetter
+        public native @Cast("SkScalar") float fRight();
+        @MemberGetter
+        public native @Cast("SkScalar") float fBottom();
+
 	    public static native @ByVal SkRect MakeEmpty();
 	    public static native @ByVal SkRect MakeWH(@Cast("SkScalar") float w, @Cast("SkScalar") float h);
 	    public static native @ByVal SkRect MakeSize(@Const @ByRef SkSize size);
@@ -997,6 +1018,8 @@ public class core {
         public native void setXYWH(@Cast("SkScalar") float x, @Cast("SkScalar") float y, @Cast("SkScalar") float width, @Cast("SkScalar") float height);
 
         public native void offset(@Cast("SkScalar") float dx, @Cast("SkScalar") float dy);
+        public native void inset(@Cast("SkScalar") float dx, @Cast("SkScalar") float dy);
+
 
 	}
 
@@ -1101,7 +1124,11 @@ public class core {
 		
 		public SkShader(Pointer pointer) { super(pointer); }
 		public SkShader() { }
-		
+
+        public native boolean getLocalMatrix(SkMatrix localM);
+        public native void setLocalMatrix(@Const @ByRef SkMatrix localM);
+        public native void resetLocalMatrix();
+
 	    //enum TileMode
 	    public static final int kClamp_TileMode = 0,
 	        kRepeat_TileMode = 1,
@@ -1301,7 +1328,7 @@ public class core {
 	
 	public static class SkXfermode extends SkFlattenable {
 		static { Loader.load(Skia.class); }
-		
+
 	    //enum Mode
 		public static final int kClear_Mode = 0,
 	        kSrc_Mode = 1,
@@ -1315,18 +1342,20 @@ public class core {
 	        kSrcATop_Mode = 9,
 	        kDstATop_Mode = 10,
 	        kXor_Mode = 11;
-		public static final int kPlus_Mode = 11,
-	        kMultiply_Mode = 12;
-		public static final int kCoeffModesCnt = 13;
+		public static final int kPlus_Mode = 12,
+	        kMultiply_Mode = 13;
+		public static final int kCoeffModesCnt = 14;
 		public static final int kScreen_Mode = kCoeffModesCnt,
-	        kOverlay_Mode = 14,
-	        kDarken_Mode = 15,
-	        kLighten_Mode= 16,
-	        kColorDodge_Mode = 17,
-	        kColorBurn_Mode = 18,
-	        kHardLight_Mode = 19,
-	        kSoftLight_Mode = 20,
-	        kDifference_Mode = 21,
-	        kExclusion_Mode = 22;
+	        kOverlay_Mode = 15,
+	        kDarken_Mode = 16,
+	        kLighten_Mode= 17,
+	        kColorDodge_Mode = 18,
+	        kColorBurn_Mode = 19,
+	        kHardLight_Mode = 20,
+	        kSoftLight_Mode = 21,
+	        kDifference_Mode = 22,
+	        kExclusion_Mode = 23;
+
+        public native static SkXfermode Create(@Cast("SkXfermode::Mode") int mode);
 	}
 }
