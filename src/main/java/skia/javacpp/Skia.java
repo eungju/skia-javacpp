@@ -16,14 +16,14 @@ import static skia.javacpp.Skia.*;
         @Platform(value="macosx", includepath=macosxIncludepath, linkpath=macosxLinkpath, link=macosxLink, framework="Foundation:ApplicationServices")
 })
 public class Skia {
-	public static final String windowsIncludepath = "../skia/include/core;../skia/include/config;../skia/include/effects;../skia/include/images"; 
+	public static final String windowsIncludepath = "../skia/include/core;../skia/include/config;../skia/include/effects;../skia/include/images;../skia/include/utils";
 	public static final String windowsLinkpath = "../skia/out/gyp/Release/lib;C:/Program Files/Microsoft SDKs/Windows/v7.0A/Lib";
 	public static final String windowsLink = "core;ports;utils;opts;opts_ssse3;effects;images;gdi32;Usp10;User32;ole32;oleaut32";
-	public static final String linuxIncludepath = "../skia/include/core:../skia/include/config:../skia/include/effects:../skia/include/images"; 
+	public static final String linuxIncludepath = "../skia/include/core:../skia/include/config:../skia/include/effects:../skia/include/images:../skia/include/utils";
 	public static final String linuxLinkpath = "../skia/out/Release/obj.target/gyp";
 	public static final String linuxLink = "core:ports:utils:opts:opts_ssse3:effects:images:zlib:freetype:png";
-	public static final String macosxIncludepath = "../skia/include/core:../skia/include/config:../skia/include/effects:../skia/include/images"; 
-	public static final String macosxLinkpath = "../skia/xcodebuild/Release:/usr/local/lib:/usr/lib";
+	public static final String macosxIncludepath = "../skia/include/core:../skia/include/config:../skia/include/effects:../skia/include/images:../skia/include/utils";
+	public static final String macosxLinkpath = "../skia/out/Release";
 	public static final String macosxLink = "core:ports:utils:opts:opts_ssse3:effects:images:zlib";
 
     public static final Charset UTF_8 = Charset.forName("UTF-8");

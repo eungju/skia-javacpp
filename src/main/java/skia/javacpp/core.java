@@ -19,9 +19,10 @@ import com.googlecode.javacpp.annotation.Properties;
 import java.nio.charset.Charset;
 
 @Properties({
-	@Platform(include={"SkBitmap.h", "SkCanvas.h", "SkColor.h", "SkColorFilter.h", "SkColorShader.h", "SkDevice.h",
-			"SkPaint.h", "SkPath.h", "SkPathEffect.h",		
-			"SkShader.h", "SkString.h", "SkTypeface.h",
+	@Platform(include={"SkBitmap.h", "SkCanvas.h", "SkColor.h", "SkColorFilter.h", "SkColorShader.h",
+            "SkData.h", "SkDevice.h", "SkDrawFilter.h", "SkDrawLooper.h",
+			"SkPaint.h", "SkPath.h", "SkPathEffect.h", "SkRandom.h",
+			"SkShader.h", "SkSize.h", "SkStream.h", "SkString.h", "SkTypeface.h",
 			"SkUnPreMultiply.h"})
 })
 public class core {
@@ -58,7 +59,7 @@ public class core {
         public static final int kNo_Config = 0,
         		kA1_Config = 1,
         		kA8_Config = 2,
-        		kIndex8_Config =3,
+        		kIndex8_Config = 3,
         		kRGB_565_Config = 4,
         		kARGB_4444_Config = 5,
         		kARGB_8888_Config = 6,
@@ -120,6 +121,15 @@ public class core {
 	    public native @Cast("uint16_t*") ShortPointer getAddr16(int x, int y);
 	    public native @Cast("uint8_t*") BytePointer getAddr8(int x, int y);
 	    public native @Cast("uint8_t*") BytePointer getAddr1(int x, int y);
+
+        public boolean copyTo(SkBitmap dst, int c) { return copyTo(dst, c, null); }
+        public native boolean copyTo(SkBitmap dst, @Cast("SkBitmap::Config") int c, Allocator allocator/* = NULL*/);
+
+        public static class Allocator extends SkRefCnt {
+            static { Loader.load(Skia.class); }
+
+            public native boolean allocPixelRef(SkBitmap bitmap, SkColorTable table);
+        };
 	}
 
 	/*
@@ -131,12 +141,20 @@ public class core {
 		
 		public SkCanvas(Pointer pointer) { super(pointer); }
 		public SkCanvas() { allocate(); }
+        @NoDeallocator
+        private native void allocate();
 		public SkCanvas(SkDevice device) { allocate(device); }
 		@NoDeallocator
-		private native void allocate();
-		@NoDeallocator
 		private native void allocate(SkDevice device);
+        public SkCanvas(SkBitmap bitmap) { allocate(bitmap); }
+        @NoDeallocator
+        private native void allocate(@Const @ByRef SkBitmap bitmap);
+
 	    public native void flush();
+
+        public native @ByVal SkISize getDeviceSize();
+        public native SkDevice getDevice();
+        public native SkDevice setDevice(SkDevice device);
 
 	    //enum Config8888
 	    public static final int kNative_Premul_Config8888 = 0,
@@ -214,6 +232,10 @@ public class core {
 	    public native void drawPosTextH(@Const Pointer text, @Cast("size_t") int byteLength, @Cast("const SkScalar*") float[] xpos, @Cast("SkScalar") float constY, @Const @ByRef SkPaint paint);
 	    public native void drawTextOnPathHV(@Const Pointer text, @Cast("size_t") int byteLength, @Const @ByRef SkPath path, @Cast("SkScalar") float hOffset, @Cast("SkScalar") float vOffset, @Const @ByRef SkPaint paint);
 	    public native void drawTextOnPath(@Const Pointer text, @Cast("size_t") int byteLength, @Const @ByRef SkPath path, @Const SkMatrix matrix, @Const @ByRef SkPaint paint);
+
+        public native SkDrawFilter getDrawFilter();
+        public native SkDrawFilter setDrawFilter(SkDrawFilter filter);
+
 	    public native @Const @ByRef SkMatrix getTotalMatrix();
 	}
 
@@ -322,6 +344,14 @@ public class core {
 		@NoDeallocator
 		private native void allocate(@Cast("SkColor") int c);
 	}
+    
+    /*
+     * SkData.h
+     */
+    
+    public static class SkData extends SkRefCnt {
+        static { Loader.load(Skia.class); }
+    }
 	
 	/*
 	 * SkDevice.h
@@ -338,7 +368,29 @@ public class core {
 		@NoDeallocator
 		private native void allocate(@Cast("SkBitmap::Config") int config, int width, int height, boolean isOpaque);
 	}
-	
+
+    /*
+     * SkDrawFilter.h
+     */
+
+    public static class SkDrawFilter extends SkRefCnt {
+        static { Loader.load(Skia.class); }
+
+        public SkDrawFilter(Pointer pointer) { super(pointer); }
+        protected SkDrawFilter() {}
+
+        //enum Type
+        public static final int kPaint_Type = 0,
+            kPoint_Type = 1,
+            kLine_Type = 2,
+            kBitmap_Type = 3,
+            kRect_Type = 4,
+            kPath_Type = 5,
+            kText_Type = 6;
+
+        public native void filter(SkPaint paint, @Cast("SkDrawFilter::Type") int type);
+    }
+
 	/*
 	 * SkDrawLooper.h
 	 */
@@ -516,6 +568,12 @@ public class core {
 	    }
 	    private native boolean setPolyToPoly(@Const SkPoint src, @Const SkPoint dst, int count);
 	    public native boolean invert(SkMatrix inverse);
+
+        public static native @Const @ByRef SkMatrix I();
+
+        public static native @Const @ByRef SkMatrix InvalidMatrix();
+
+        public native void dirtyMatrixTypeCache();
 	}
 
 	/*
@@ -913,7 +971,44 @@ public class core {
 	    public static native @ByVal SkRect MakeLTRB(@Cast("SkScalar") float l, @Cast("SkScalar") float t, @Cast("SkScalar") float r, @Cast("SkScalar") float b);
 	    public static native @ByVal SkRect MakeXYWH(@Cast("SkScalar") float x, @Cast("SkScalar") float y, @Cast("SkScalar") float w, @Cast("SkScalar") float h);
 	}
-	
+
+    /*
+     * SkRandom.h
+     */
+
+    public static class SkRandom extends Pointer {
+        static { Loader.load(Skia.class); }
+
+        public SkRandom() { allocate(); }
+        private native void allocate();
+        public SkRandom(int seed) { allocate(seed); }
+        private native void allocate(@Cast("uint32_t") int seed);
+
+        public native @Cast("uint32_t") int nextU();
+
+        public native @Cast("int32_t") int nextS();
+
+        public native @Cast("U16CPU") short nextU16();
+
+        public native @Cast("S16CPU") short nextS16();
+
+        public native @Cast("uint32_t") int nextBits(@Cast("unsigned") int bitCount);
+
+        public native @Cast("uint32_t") int nextRangeU(@Cast("uint32_t") int min, @Cast("uint32_t") int max);
+
+//TODO:        SkFixed nextUFixed1() { return this->nextU() >> 16; }
+
+//TODO:        SkFixed nextSFixed1() { return this->nextS() >> 15; }
+
+        public native @Cast("SkScalar") float nextUScalar1();
+
+        public native @Cast("SkScalar") float nextSScalar1();
+
+        public native void next64(Sk64 a);
+
+        public native void setSeed(@Cast("uint32_t") int seed);
+    }
+
 	/*
 	 * SkRefCnt.h
 	 */
@@ -928,6 +1023,26 @@ public class core {
 	    public native void unref();
 	    public native void validate();
 	}
+
+    /*
+     * SkScalar.h
+     */
+
+    public static final float SK_Scalar1 = 1.0f;
+
+    public static final float SK_ScalarHalf = 0.5f;
+
+    public static final float SK_ScalarInfinity = Float.POSITIVE_INFINITY;
+
+    public static final float SK_ScalarMax = Float.MAX_VALUE;
+
+    public static final float SK_ScalarMin = Float.MIN_VALUE;
+
+    public static final float SK_ScalarNaN = Float.NaN;
+
+    public static float SkIntToScalar(int n) {
+        return (float) n;
+    }
 
 	/*
 	 * SkShader.h
@@ -955,13 +1070,13 @@ public class core {
 	public static class SkISize extends Pointer {
 		static { Loader.load(Skia.class); }
 		
-		public SkISize(Pointer pointer) { super(pointer); }
 		public SkISize() { allocate(); }
 		private native void allocate();
 		public static native @ByVal SkISize Make(int w, int h);
 		public native void set(int w, int h);
 		public native boolean isZero();
 		public native boolean isEmpty();
+        public native void setEmpty();
 		public native int width();
 		public native int height();
 		public native void clampNegToZero();
@@ -970,7 +1085,9 @@ public class core {
 	
 	public static class SkSize extends Pointer {
 		static { Loader.load(Skia.class); }
-		
+
+        public SkSize() { allocate(); }
+        private native void allocate();
 		public static native @ByVal SkSize Make(@Cast("SkScalar") float w, @Cast("SkScalar") float h);
 		@Name("operator=")
 		public native @ByRef SkSize copy(@Const @ByRef SkSize src);
@@ -978,7 +1095,81 @@ public class core {
 		public native @ByVal SkISize toCeil();
 		public native @ByVal SkISize toFloor();
 	}
-	
+
+    /*
+     * SkStream.h
+     */
+
+    public static class SkStream extends SkRefCnt {
+        static { Loader.load(Skia.class); }
+
+        public native boolean rewind();
+        public native String getFileName();
+        public native @Cast("size_t") int read(Pointer buffer, @Cast("size_t") int size);
+        public native @Cast("size_t") int getLength();
+        public native @Cast("size_t") int skip(@Cast("size_t") int bytes);
+        public native @Const Pointer getMemoryBase();
+        public native @Cast("int8_t") byte readS8();
+        public native @Cast("int16_t") short readS16();
+        public native @Cast("int32_t") int readS32();
+
+        public native @Cast("uint8_t") byte  readU8();
+        public native @Cast("uint16_t") short readU16();
+        public native @Cast("uint32_t") int readU32();
+
+        public native boolean readBool();
+        public native @Cast("SkScalar") float readScalar();
+        public native @Cast("size_t") int readPackedUInt();
+    };
+
+    public static class SkWStream extends SkNoncopyable {
+        static { Loader.load(Skia.class); }
+
+        public native boolean write(@Const Pointer buffer, @Cast("size_t") int size);
+        public native void newline();
+        public native void flush();
+
+        // helpers
+
+        public native boolean    write8(@Cast("U8CPU") byte b);
+        public native boolean    write16(@Cast("U16CPU") short s);
+        public native boolean    write32(@Cast("uint32_t") int i);
+
+        public native boolean    writeText(String text);
+        public native boolean    writeDecAsText(@Cast("int32_t") int dec);
+        public native boolean    writeBigDecAsText(@Cast("int64_t") long bigDec, int minDigits/* = 0*/);
+        public native boolean    writeHexAsText(@Cast("uint32_t") int hex, int minDigits/* = 0*/);
+        public native boolean    writeScalarAsText(@Cast("SkScalar") float s);
+
+        public native boolean    writeBool(boolean v);
+        public native boolean    writeScalar(@Cast("SkScalar") float s);
+        public native boolean    writePackedUInt(@Cast("size_t") int s);
+
+        public native boolean writeStream(SkStream input, @Cast("size_t") int length);
+
+        public native boolean writeData(@Const SkData data);
+    };
+
+    public static class SkDynamicMemoryWStream extends SkWStream {
+        static { Loader.load(Skia.class); }
+
+        public SkDynamicMemoryWStream() { allocate(); }
+        private native void allocate();
+
+        public native boolean write(@Const Pointer buffer, @Cast("size_t") int size);
+        public native boolean write(@Const Pointer buffer, @Cast("size_t") int offset, @Cast("size_t") int size);
+        public native boolean read(Pointer buffer, @Cast("size_t") int offset, @Cast("size_t") int size);
+        public native @Cast("size_t") int getOffset();
+        public native @Cast("size_t") int bytesWritten();
+
+        public native void copyTo(Pointer dst);
+
+        public native SkData copyToData();
+
+        public native void reset();
+        public native void padToAlign4();
+    };
+
 	/*
 	 * SkString.h 
 	 */
@@ -1016,7 +1207,23 @@ public class core {
 	    public static native SkTypeface CreateFromTypeface(@Const SkTypeface family, @Cast("SkTypeface::Style") int style);
 	    public static native SkTypeface CreateFromFile(String path);
 	}
-	
+
+    /*
+     * SkTypes.h
+     */
+
+    public native static @Cast("int32_t") int SkMax32(@Cast("int32_t") int a, @Cast("int32_t") int b);
+
+    public native static @Cast("int32_t") int SkMin32(@Cast("int32_t") int a, @Cast("int32_t") int b);
+    
+    public static void SkDebugf(String format, Object... args) {
+        System.out.println(String.format(format, args));
+    }
+
+    public static class SkNoncopyable {
+        static { Loader.load(Skia.class); }
+    };
+
 	/*
 	 * SkUnitMapper.h
 	 */

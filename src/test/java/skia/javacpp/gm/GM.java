@@ -1,8 +1,17 @@
 package skia.javacpp.gm;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static skia.javacpp.core.*;
 
 public abstract class GM {
+    public static SkISize make_isize(int w, int h) {
+        SkISize sz = new SkISize();
+        sz.set(w, h);
+        return sz;
+    }
+
 	public GM() {
 		fBGColor = SK_ColorWHITE;
 	}
@@ -38,7 +47,11 @@ public abstract class GM {
     public int getFlags() {
             return onGetFlags();
     }
-        
+
+    public SkMatrix getInitialTransform() {
+        return onGetInitialTransform();
+    }
+
     public int getBGColor() {
     	return fBGColor;
     }
@@ -55,6 +68,12 @@ public abstract class GM {
     	canvas.drawRect(r, paint);
     }
 
+    public static void SetResourcePath(String resourcePath) {
+        gResourcePath = resourcePath;
+    }
+    
+    protected static String gResourcePath;
+
 	protected abstract void onDraw(SkCanvas canvas);
 	
 	protected void onDrawBackground(SkCanvas canvas) {
@@ -64,7 +83,8 @@ public abstract class GM {
 	protected abstract SkISize onISize();
 	protected abstract String onShortName();
 	protected int onGetFlags() { return 0; }
-        
+    protected SkMatrix onGetInitialTransform() { return SkMatrix.I(); }
+
     private String fShortName;
    	private int fBGColor;
 }
