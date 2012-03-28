@@ -737,6 +737,7 @@ public class core {
 	    	@MemberGetter public native @Cast("SkScalar") float fXHeight();
 	    };
 
+        public float getFontMetrics(FontMetrics metrics) { return getFontMetrics(metrics, 0); };
 	    public native @Cast("SkScalar") float getFontMetrics(FontMetrics metrics, @Cast("SkScalar") float scale/* = 0*/);
 	    public native @Cast("SkScalar") float getFontSpacing();
 	    static Charset toCharset(int encoding) {
@@ -1024,6 +1025,10 @@ public class core {
 	    public native void validate();
 	}
 
+    public native static void SkSafeRef(SkRefCnt obj);
+
+    public native static void SkSafeUnref(SkRefCnt obj);
+
     /*
      * SkScalar.h
      */
@@ -1219,6 +1224,8 @@ public class core {
     public static void SkDebugf(String format, Object... args) {
         System.out.println(String.format(format, args));
     }
+
+    public static void SkASSERT(boolean cond) {}
 
     public static class SkNoncopyable {
         static { Loader.load(Skia.class); }

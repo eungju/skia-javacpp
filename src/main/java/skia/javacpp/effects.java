@@ -145,8 +145,11 @@ public class effects {
 	
 	public static class SkGradientShader extends Pointer {
 		static { Loader.load(Skia.class); }
-		
-		public static SkShader CreateLinear(SkPoint[] pts, int[] colors, float[] pos, int mode, SkUnitMapper mapper/* = NULL*/) {
+
+        public static SkShader CreateLinear(SkPoint[] pts, int[] colors, float[] pos, int mode) {
+            return CreateLinear(pts, colors, pos, mode, null);
+        }
+		public static SkShader CreateLinear(SkPoint[] pts, int[] colors, float[] pos, int mode, SkUnitMapper mapper) {
 			SkPoint ptsPtr = new SkPoint(pts.length);
 			for (int i = 0; i < pts.length; i++) {
 				ptsPtr.position(i).copy(pts[i]);
