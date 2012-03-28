@@ -21,7 +21,7 @@ import java.nio.charset.Charset;
 @Properties({
 	@Platform(include={"SkBitmap.h", "SkCanvas.h", "SkColor.h", "SkColorFilter.h", "SkColorShader.h",
             "SkData.h", "SkDevice.h", "SkDrawFilter.h", "SkDrawLooper.h",
-			"SkPaint.h", "SkPath.h", "SkPathEffect.h", "SkRandom.h",
+			"SkPaint.h", "SkPath.h", "SkPathEffect.h", "SkRandom.h", "SkRegion.h",
 			"SkShader.h", "SkSize.h", "SkStream.h", "SkString.h", "SkTypeface.h",
 			"SkUnPreMultiply.h"})
 })
@@ -194,8 +194,15 @@ public class core {
 	    public native boolean concat(@Const @ByRef SkMatrix matrix);
 	    public native void setMatrix(@Const @ByRef SkMatrix matrix);
 	    public native void resetMatrix();
+        public native boolean clipRect(@Const @ByRef SkRect rect);
+        public native boolean clipRect(@Const @ByRef SkRect rect,
+                              @Cast("SkRegion::Op") int op/* = SkRegion::kIntersect_Op*/,
+                              boolean doAntiAlias/* = false*/);
+        public native boolean clipPath(@Const @ByRef SkPath path,
+                              @Cast("SkRegion::Op") int op/* = SkRegion::kIntersect_Op*/,
+                              boolean doAntiAlias/* = false*/);
 
-	    public void drawColor(int color) { drawColor(color, SkXfermode.kSrcOver_Mode); }
+        public native void drawColor(@Cast("SkColor") int color);
 	    public native void drawColor(@Cast("SkColor") int color, @Cast("SkXfermode::Mode") int mode/* = SkXfermode::kSrcOver_Mode*/);
 		public native void clear(@Cast("SkColor") int color);
 	    public native void drawPaint(@Const @ByRef SkPaint paint);
@@ -223,6 +230,17 @@ public class core {
 	    public native void drawRoundRect(@Const @ByRef SkRect rect, @Cast("SkScalar") float rx, @Cast("SkScalar") float ry, @Const @ByRef SkPaint paint);
 	    public native void drawPath(@Const @ByRef SkPath path, @Const @ByRef SkPaint paint);
 	    public native void drawBitmap(@Const @ByRef SkBitmap bitmap, @Cast("SkScalar") float left, @Cast("SkScalar") float top, @Const SkPaint paint/* = NULL*/);
+        public native void drawBitmapRect(@Const @ByRef SkBitmap bitmap, @Const SkIRect src,
+                                          @Const @ByRef SkRect dst);
+        public native void drawBitmapRect(@Const @ByRef SkBitmap bitmap, @Const SkIRect src,
+                                    @Const @ByRef SkRect dst, @Const SkPaint paint/* = NULL*/);
+        public native void drawBitmapMatrix(@Const @ByRef SkBitmap bitmap, @Const @ByRef SkMatrix m,
+                                      @Const SkPaint paint/* = NULL*/);
+        public native void drawBitmapNine(@Const @ByRef SkBitmap bitmap, @Const @ByRef SkIRect center,
+                                    @Const @ByRef SkRect dst, @Const SkPaint paint/* = NULL*/);
+        public native void drawSprite(@Const @ByRef SkBitmap bitmap, int left, int top,
+                                @Const SkPaint paint/* = NULL*/);
+
 	    public void drawText(String text, float x,  float y, SkPaint paint) {
     		Pointer ptr = SkPaint.encodeText(text, paint.getTextEncoding());
 	    	drawText(ptr, ptr.capacity(), x, y, paint);
@@ -855,6 +873,7 @@ public class core {
 	    public native void addRect(@Const @ByRef SkRect rect, @Cast("SkPath::Direction") int dir/* = kCW_Direction*/);
 	    public native void addRect(@Cast("SkScalar") float left, @Cast("SkScalar") float top, @Cast("SkScalar") float right, @Cast("SkScalar") float bottom, @Cast("SkPath::Direction") int dir/* = kCW_Direction*/);
 	    public native void addOval(@Const @ByRef SkRect oval, @Cast("SkPath::Direction") int dir/* = kCW_Direction*/);
+        public void addCircle(float x, float y, float radius) { addCircle(x, y, radius, kCW_Direction); }
 	    public native void addCircle(@Cast("SkScalar") float x, @Cast("SkScalar") float y, @Cast("SkScalar") float radius, @Cast("SkPath::Direction") int dir/* = kCW_Direction*/);
 	    public native void addArc(@Const @ByRef SkRect oval, @Cast("SkScalar") float startAngle, @Cast("SkScalar") float sweepAngle);
 	    public native void addRoundRect(@Const @ByRef SkRect rect, @Cast("SkScalar") float rx, @Cast("SkScalar") float ry, @Cast("SkPath::Direction") int dir/* = kCW_Direction*/);
@@ -957,6 +976,8 @@ public class core {
 	    public static native @ByVal SkIRect MakeSize(@Const @ByRef SkISize size);
 	    public static native @ByVal SkIRect MakeLTRB(@Cast("int32_t") int l, @Cast("int32_t") int t, @Cast("int32_t") int r, @Cast("int32_t") int b);
 	    public static native @ByVal SkIRect MakeXYWH(@Cast("int32_t") int x, @Cast("int32_t") int y, @Cast("int32_t") int w, @Cast("int32_t") int h);
+
+        public native void setXYWH(@Cast("int32_t") int x, @Cast("int32_t") int y, @Cast("int32_t") int width, @Cast("int32_t") int height);
 	}
 	
 	public static class SkRect extends Pointer {
@@ -971,6 +992,12 @@ public class core {
 	    public static native @ByVal SkRect MakeSize(@Const @ByRef SkSize size);
 	    public static native @ByVal SkRect MakeLTRB(@Cast("SkScalar") float l, @Cast("SkScalar") float t, @Cast("SkScalar") float r, @Cast("SkScalar") float b);
 	    public static native @ByVal SkRect MakeXYWH(@Cast("SkScalar") float x, @Cast("SkScalar") float y, @Cast("SkScalar") float w, @Cast("SkScalar") float h);
+
+        public native void set(@Cast("SkScalar") float left, @Cast("SkScalar") float top, @Cast("SkScalar") float right, @Cast("SkScalar") float bottom);
+        public native void setXYWH(@Cast("SkScalar") float x, @Cast("SkScalar") float y, @Cast("SkScalar") float width, @Cast("SkScalar") float height);
+
+        public native void offset(@Cast("SkScalar") float dx, @Cast("SkScalar") float dy);
+
 	}
 
     /*
@@ -1028,6 +1055,22 @@ public class core {
     public native static void SkSafeRef(SkRefCnt obj);
 
     public native static void SkSafeUnref(SkRefCnt obj);
+
+    /*
+     * SkRegion.h
+     */
+
+    public static class SkRegion extends Pointer {
+        static { Loader.load(Skia.class); }
+
+        //enum Op
+        public static final int kDifference_Op = 0,
+            kIntersect_Op = 1,
+            kUnion_Op = 2,
+            kXOR_Op = 3,
+            kReverseDifference_Op = 4,
+            kReplace_Op = 5;
+    }
 
     /*
      * SkScalar.h
@@ -1222,7 +1265,7 @@ public class core {
     public native static @Cast("int32_t") int SkMin32(@Cast("int32_t") int a, @Cast("int32_t") int b);
     
     public static void SkDebugf(String format, Object... args) {
-        System.out.println(String.format(format, args));
+        System.out.print(String.format(format, args));
     }
 
     public static void SkASSERT(boolean cond) {}

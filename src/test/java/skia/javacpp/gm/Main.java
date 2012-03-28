@@ -21,7 +21,7 @@ public class Main {
     static final int ERROR_WRITING_REFERENCE_IMAGE = 0x10;
 
     static class Iter {
-        public static final List<Class> gms = Arrays.<Class>asList(PointsGM.class, StrokeFillGM.class, Poly2PolyGM.class, GradTextGM.class);
+        public static final List<Class> gms = Arrays.<Class>asList(PointsGM.class, StrokeFillGM.class, Poly2PolyGM.class, GradTextGM.class, StrokeRectGM.class, ShadowsGM.class, NoColorBleedGM.class);
 
         private Iterator<Class> i;
         
