@@ -25,9 +25,10 @@ public class Main {
                 PointsGM.class,
                 Poly2PolyGM.class,
                 GradTextGM.class,
-                ShadowsGM.class,
                 NoColorBleedGM.class,
 
+                ShadowsGM.class,
+                ShapesGM.class,
                 StrokeFillGM.class,
                 StrokeRectGM.class,
                 StrokesGM.class,
@@ -148,9 +149,9 @@ public class Main {
             } else {
                 canvas = new SkCanvas(bitmap);
             }
+            new SkAutoUnref(canvas);
             invokeGM(gm, canvas);
             canvas.flush();
-            canvas.unref();
         } else {  // GPU
 //            if (NULL == context) {
 //                return ERROR_NO_GPU_CONTEXT;

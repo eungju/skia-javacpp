@@ -5,6 +5,7 @@ import com.googlecode.javacpp.Pointer;
 import com.googlecode.javacpp.annotation.ByRef;
 import com.googlecode.javacpp.annotation.Cast;
 import com.googlecode.javacpp.annotation.Const;
+import com.googlecode.javacpp.annotation.Name;
 import com.googlecode.javacpp.annotation.NoDeallocator;
 import com.googlecode.javacpp.annotation.Platform;
 import com.googlecode.javacpp.annotation.Properties;
@@ -14,7 +15,7 @@ import static skia.javacpp.core.*;
 @Properties({
 	@Platform(include={"Sk1DPathEffect.h", "Sk2DPathEffect.h", "SkBlurDrawLooper.h", "SkBlurImageFilter.h",
             "SkCornerPathEffect.h", "SkDashPathEffect.h", "SkDiscretePathEffect.h", "SkGradientShader.h",
-            "SkTableColorFilter.h", "SkTestImageFilters.h", "SkUnitMapper.h"})
+            "SkGroupShape.h", "SkRectShape.h", "SkTableColorFilter.h", "SkTestImageFilters.h", "SkUnitMapper.h"})
 })
 public class effects {
 	static { Loader.load(Skia.class); }
@@ -182,7 +183,100 @@ public class effects {
 		}
         public static native SkShader CreateSweep(@Cast("SkScalar") float cx, @Cast("SkScalar") float cy, @Cast("const SkColor *") int[] colors, @Cast("const SkScalar *") float[] pos, int count, SkUnitMapper mapper/* = NULL*/);
 	}
-    
+
+    /*
+     * SkGroupShape.h
+     */
+
+    public static class SkMatrixRef extends SkMatrix {
+        static { Loader.load(Skia.class); }
+
+        public SkMatrixRef() { allocate(); }
+        @NoDeallocator
+        private native void allocate();
+        
+        public SkMatrixRef(SkMatrix matrix) { allocate(matrix); }
+        @NoDeallocator
+        private native void allocate(@Const @ByRef SkMatrix matrix);
+
+        @Name("operator=")
+        public native @ByRef SkMatrix copy(@Const @ByRef SkMatrix matrix);
+
+        public native @Cast("int32_t") int getRefCnt();
+        public native void ref();
+        public native void unref();
+        protected static class UnrefDeallocator extends SkMatrixRef implements Deallocator {
+            UnrefDeallocator(SkMatrixRef p) { super(p); }
+            @Override public void deallocate() { unref(); }
+        }
+        public void autoUnref() {
+            deallocator(new UnrefDeallocator(this));
+        }
+    };
+
+    public static void SkSafeUnrefAuto(SkMatrixRef obj) {
+        if (obj != null) {
+            obj.autoUnref();
+        }
+    }
+
+    public native static void SkSafeRef(SkMatrixRef obj);
+
+    public native static void SkSafeUnref(SkMatrixRef obj);
+
+    public static class SkGroupShape extends SkShape {
+        static { Loader.load(Skia.class); }
+
+        public SkGroupShape() { allocate(); }
+        @NoDeallocator
+        private native void allocate();
+
+        public native int countShapes();
+
+        public native SkShape getShape(int index);
+        public native SkShape getShape(int index, @Cast("SkMatrixRef**") Pointer matrixRef/* = NULL*/);
+
+        public native SkMatrixRef getShapeMatrixRef(int index);
+
+        public native void addShape(int index, SkShape shape);
+        public native void addShape(int index, SkShape shape, SkMatrixRef matrixRef/* = NULL*/);
+
+        public native void addShape(int index, SkShape shape, @Const @ByRef SkMatrix matrix);
+
+        public native SkShape appendShape(SkShape shape);
+        public native SkShape appendShape(SkShape shape, SkMatrixRef mr/* = NULL*/);
+
+        public native SkShape appendShape(SkShape shape, @Const @ByRef SkMatrix matrix);
+
+        public native void removeShape(int index);
+
+        public native void removeAllShapes();
+    }
+
+    /*
+     * SkRectShape.h
+     */
+
+    public static class SkPaintShape extends SkShape {
+        static { Loader.load(Skia.class); }
+
+        public native @ByRef SkPaint paint();
+        //public native @Const @ByRef SkPaint paint();
+    };
+
+    public static class SkRectShape extends SkPaintShape {
+        static { Loader.load(Skia.class); }
+
+        public SkRectShape() { allocate(); }
+        @NoDeallocator
+        private native void allocate();
+
+        public native void setRect(@Const @ByRef SkRect rect);
+        public native void setOval(@Const @ByRef SkRect rect);
+        public native void setCircle(@Cast("SkScalar") float x, @Cast("SkScalar") float y, @Cast("SkScalar") float radius);
+        public native void setRRect(@Const @ByRef SkRect rect, @Cast("SkScalar") float rx, @Cast("SkScalar") float ry);
+    }
+
     /*
      * SkTableColorFilter.h
      */

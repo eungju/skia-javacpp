@@ -11,11 +11,8 @@ public class TestImageFiltersGM extends GM {
     static SkImageFilter make1() { return new SkOffsetImageFilter(SkIntToScalar(16), SkIntToScalar(16)); }
     static SkImageFilter make2() {
         SkColorFilter cf = SkColorFilter.CreateModeFilter(SK_ColorBLUE, SkXfermode.kSrcIn_Mode);
-        try {
-            return new SkColorFilterImageFilter(cf);
-        } finally {
-            SkSafeUnref(cf);
-        }
+        new SkAutoUnref(cf);
+        return new SkColorFilterImageFilter(cf);
     }
     static SkImageFilter make3() {
         return new SkBlurImageFilter(8, 0);
@@ -24,58 +21,50 @@ public class TestImageFiltersGM extends GM {
     static SkImageFilter make4() {
         SkImageFilter outer = new SkOffsetImageFilter(SkIntToScalar(16), SkIntToScalar(16));
         SkImageFilter inner = new SkDownSampleImageFilter(SK_Scalar1 / 5);
-        try {
-            return new SkComposeImageFilter(outer, inner);
-        } finally {
-            SkSafeUnref(outer);
-            SkSafeUnref(inner);
-        }
+        new SkAutoUnref(outer);
+        new SkAutoUnref(inner);
+        return new SkComposeImageFilter(outer, inner);
     }
     static SkImageFilter make5() {
         SkImageFilter first = new SkOffsetImageFilter(SkIntToScalar(16), SkIntToScalar(16));
         SkImageFilter second = new SkDownSampleImageFilter(SK_Scalar1 / 5);
-        try {
-            return new SkMergeImageFilter(first, second);
-        } finally {
-            SkSafeUnref(first);
-            SkSafeUnref(second);
-        }
+        new SkAutoUnref(first);
+        new SkAutoUnref(second);
+        return new SkMergeImageFilter(first, second);
     }
 
     static SkImageFilter make6() {
         SkImageFilter outer = new SkOffsetImageFilter(SkIntToScalar(16), SkIntToScalar(16));
         SkImageFilter inner = new SkDownSampleImageFilter(SK_Scalar1 / 5);
+        new SkAutoUnref(outer);
+        new SkAutoUnref(inner);
         SkImageFilter compose = new SkComposeImageFilter(outer, inner);
-        outer.unref();
-        inner.unref();
-
+        new SkAutoUnref(compose);
+        
         SkColorFilter cf = SkColorFilter.CreateModeFilter(0x880000FF, SkXfermode.kSrcIn_Mode);
+
+        new SkAutoUnref(cf);
         SkImageFilter blue = new SkColorFilterImageFilter(cf);
-        cf.unref();
-        try {
-            return new SkMergeImageFilter(compose, blue);
-        } finally {
-            compose.unref();
-            blue.unref();
-        }
+        new SkAutoUnref(blue);
+
+        return new SkMergeImageFilter(compose, blue);
     }
 
     static SkImageFilter make7() {
         SkImageFilter outer = new SkOffsetImageFilter(SkIntToScalar(16), SkIntToScalar(16));
         SkImageFilter inner = make3();
+        new SkAutoUnref(outer);
+        new SkAutoUnref(inner);
         SkImageFilter compose = new SkComposeImageFilter(outer, inner);
-        outer.unref();
-        inner.unref();
-
+        new SkAutoUnref(compose);
+        
         SkColorFilter cf = SkColorFilter.CreateModeFilter(0x880000FF, SkXfermode.kSrcIn_Mode);
+
+        new SkAutoUnref(cf);
         SkImageFilter blue = new SkColorFilterImageFilter(cf);
-        cf.unref();
-        try {
-            return new SkMergeImageFilter(compose, blue);
-        } finally {
-            compose.unref();
-            blue.unref();
-        }
+        new SkAutoUnref(blue);
+
+        return new SkMergeImageFilter(compose, blue);
     }
 
     static void draw0(SkCanvas canvas) {
