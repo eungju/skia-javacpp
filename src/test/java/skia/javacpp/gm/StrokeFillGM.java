@@ -1,5 +1,7 @@
 package skia.javacpp.gm;
 
+import skia.javacpp.Skia;
+
 import static skia.javacpp.core.*;
 
 public class StrokeFillGM extends GM {
@@ -36,7 +38,7 @@ public class StrokeFillGM extends GM {
 
         face = SkTypeface.CreateFromName("Hiragino Maru Gothic Pro", SkTypeface.kNormal);
         SkSafeUnref(paint.setTypeface(face));
-        String hyphen = new String(new char[] { 0xE3, 0x83, 0xBC });
+        String hyphen = new String(new byte[] { (byte) 0xE3, (byte) 0x83, (byte) 0xBC }, Skia.UTF_8);
         show_bold(canvas, hyphen, x + SkIntToScalar(300), y, paint);
 
         paint.setStyle(SkPaint.kStrokeAndFill_Style);

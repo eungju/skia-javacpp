@@ -23,12 +23,15 @@ public class Main {
     static class Iter {
         public static final List<Class> gms = Arrays.<Class>asList(
                 PointsGM.class,
-                StrokeFillGM.class,
                 Poly2PolyGM.class,
                 GradTextGM.class,
-                StrokeRectGM.class,
                 ShadowsGM.class,
                 NoColorBleedGM.class,
+
+                StrokeFillGM.class,
+                StrokeRectGM.class,
+                StrokesGM.class,
+                Strokes2GM.class,
                 TableColorFilterGM.class,
                 TestImageFiltersGM.class,
                 TilingGM.class,
