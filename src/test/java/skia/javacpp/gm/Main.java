@@ -29,6 +29,8 @@ public class Main {
                 StrokeRectGM.class,
                 ShadowsGM.class,
                 NoColorBleedGM.class,
+                TableColorFilterGM.class,
+                TestImageFiltersGM.class,
                 TilingGM.class,
                 TinyBitmapGM.class,
                 VertTextGM.class,

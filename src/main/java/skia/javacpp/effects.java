@@ -12,7 +12,9 @@ import com.googlecode.javacpp.annotation.Properties;
 import static skia.javacpp.core.*;
 
 @Properties({
-	@Platform(include={"Sk1DPathEffect.h", "Sk2DPathEffect.h", "SkBlurDrawLooper.h", "SkBlurImageFilter.h", "SkCornerPathEffect.h", "SkDashPathEffect.h", "SkDiscretePathEffect.h", "SkGradientShader.h", "SkUnitMapper.h"})
+	@Platform(include={"Sk1DPathEffect.h", "Sk2DPathEffect.h", "SkBlurDrawLooper.h", "SkBlurImageFilter.h",
+            "SkCornerPathEffect.h", "SkDashPathEffect.h", "SkDiscretePathEffect.h", "SkGradientShader.h",
+            "SkTableColorFilter.h", "SkTestImageFilters.h", "SkUnitMapper.h"})
 })
 public class effects {
 	static { Loader.load(Skia.class); }
@@ -158,19 +160,92 @@ public class effects {
 			}
 			return CreateLinear(ptsPtr, colors, pos, colors.length, mode, mapper);
 		}
-		private static native SkShader CreateLinear(@Const SkPoint pts, @Cast("const SkColor *") int[] colors, @Cast("const SkScalar *") float[] pos, int count, @Cast("SkShader::TileMode") int mode, SkUnitMapper mapper/* = NULL*/);
+		public static native SkShader CreateLinear(@Const SkPoint pts, @Cast("const SkColor*") int[] colors, @Cast("const SkScalar*") float[] pos, int count, @Cast("SkShader::TileMode") int mode, SkUnitMapper mapper/* = NULL*/);
+
+        public static SkShader CreateRadial(SkPoint center, float radius, int[] colors, float[] pos, int mode) {
+            return CreateRadial(center, radius, colors, pos, colors.length, mode);
+        }
+        public static native SkShader CreateRadial(@Const @ByRef SkPoint center, @Cast("SkScalar") float radius, @Cast("const SkColor *") int[] colors, @Cast("const SkScalar *") float[] pos, int count, @Cast("SkShader::TileMode") int mode);
+
 		public static SkShader CreateRadial(SkPoint center, float radius, int[] colors, float[] pos, int mode, SkUnitMapper mapper/* = NULL*/) {
 			return CreateRadial(center, radius, colors, pos, colors.length, mode, mapper);
 		}
-		private static native SkShader CreateRadial(@Const @ByRef SkPoint center, @Cast("SkScalar") float radius, @Cast("const SkColor *") int[] colors, @Cast("const SkScalar *") float[] pos, int count, @Cast("SkShader::TileMode") int mode, SkUnitMapper mapper/* = NULL*/);
+        public static native SkShader CreateRadial(@Const @ByRef SkPoint center, @Cast("SkScalar") float radius, @Cast("const SkColor *") int[] colors, @Cast("const SkScalar *") float[] pos, int count, @Cast("SkShader::TileMode") int mode, SkUnitMapper mapper/* = NULL*/);
+
 		public static SkShader CreateTwoPointRadial(SkPoint start, float startRadius, SkPoint end, float endRadius, int[] colors, float[] pos, int mode, SkUnitMapper mapper/* = NULL*/) {
 			return CreateTwoPointRadial(start, startRadius, end, endRadius, colors, pos, colors.length, mode, mapper);
 		}
-		private static native SkShader CreateTwoPointRadial(@Const @ByRef SkPoint start, @Cast("SkScalar") float startRadius, @Const @ByRef SkPoint end, @Cast("SkScalar") float endRadius, @Cast("const SkColor *") int[] colors, @Cast("const SkScalar *") float[] pos, int count, @Cast("SkShader::TileMode") int mode, SkUnitMapper mapper/* = NULL*/);
+        public static native SkShader CreateTwoPointRadial(@Const @ByRef SkPoint start, @Cast("SkScalar") float startRadius, @Const @ByRef SkPoint end, @Cast("SkScalar") float endRadius, @Cast("const SkColor *") int[] colors, @Cast("const SkScalar *") float[] pos, int count, @Cast("SkShader::TileMode") int mode, SkUnitMapper mapper/* = NULL*/);
 
 		public static SkShader CreateSweep(float cx, float cy, int[] colors, float[] pos, SkUnitMapper mapper/* = NULL*/) {
 			return CreateSweep(cx, cy, colors, pos, colors.length, mapper);
 		}
-		private static native SkShader CreateSweep(@Cast("SkScalar") float cx, @Cast("SkScalar") float cy, @Cast("const SkColor *") int[] colors, @Cast("const SkScalar *") float[] pos, int count, SkUnitMapper mapper/* = NULL*/);
+        public static native SkShader CreateSweep(@Cast("SkScalar") float cx, @Cast("SkScalar") float cy, @Cast("const SkColor *") int[] colors, @Cast("const SkScalar *") float[] pos, int count, SkUnitMapper mapper/* = NULL*/);
 	}
+    
+    /*
+     * SkTableColorFilter.h
+     */
+    
+    public static class SkTableColorFilter extends Pointer {
+        static { Loader.load(Skia.class); }
+
+        public native static SkColorFilter Create(@Cast("const uint8_t*") byte[] table);
+        public native static SkColorFilter CreateARGB(@Cast("const uint8_t*") byte[] tableA,
+                                                      @Cast("const uint8_t*") byte[] tableR,
+                                                      @Cast("const uint8_t*") byte[] tableG,
+                                                      @Cast("const uint8_t*") byte[] tableB);
+    }
+
+    /*
+     * SkTestImageFilters.h
+     */
+    
+    public static class SkComposeImageFilter extends SkImageFilter {
+        static { Loader.load(Skia.class); }
+
+        public SkComposeImageFilter(SkImageFilter outer, SkImageFilter inner) { allocate(outer, inner); }
+        @NoDeallocator
+        private native void allocate(SkImageFilter outer, SkImageFilter inner);
+    };
+
+    public static class SkOffsetImageFilter extends SkImageFilter {
+        static { Loader.load(Skia.class); }
+
+        public SkOffsetImageFilter(float dx, float dy) { allocate(dx, dy); }
+        @NoDeallocator
+        private native void allocate(@Cast("SkScalar") float dx, @Cast("SkScalar") float dy);
+    };
+
+    public static class SkMergeImageFilter extends SkImageFilter {
+        static { Loader.load(Skia.class); }
+
+        public SkMergeImageFilter(SkImageFilter first, SkImageFilter second) { allocate(first, second); }
+        @NoDeallocator
+        private native void allocate(SkImageFilter first, SkImageFilter second);
+
+        public SkMergeImageFilter(SkImageFilter first, SkImageFilter second, int mode) { allocate(first, second, mode); }
+        @NoDeallocator
+        private native void allocate(SkImageFilter first, SkImageFilter second, @Cast("SkXfermode::Mode") int mode/* = SkXfermode::kSrcOver_Mode*/);
+
+//        public SkMergeImageFilter(SkImageFilter[] filters, int count, int[] modes) { allocate(filters, count, modes); }
+//        @NoDeallocator
+//        private native void allocate(@Const SkImageFilter[] filters, int count, @Cast("const SkXfermode::Mode modes*") int[] modes/* = NULL*/);
+    };
+
+    public static class SkColorFilterImageFilter extends SkImageFilter {
+        static { Loader.load(Skia.class); }
+
+        public SkColorFilterImageFilter(SkColorFilter cf) { allocate(cf); }
+        @NoDeallocator
+        private native void allocate(SkColorFilter cf);
+    };
+
+    public static class SkDownSampleImageFilter extends SkImageFilter {
+        static { Loader.load(Skia.class); }
+
+        public SkDownSampleImageFilter(float scale) { allocate(scale); }
+        @NoDeallocator
+        private native void allocate(@Cast("SkScalar") float scale);
+    };
 }

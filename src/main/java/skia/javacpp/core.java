@@ -21,6 +21,7 @@ import java.nio.charset.Charset;
 @Properties({
 	@Platform(include={"SkBitmap.h", "SkCanvas.h", "SkColor.h", "SkColorFilter.h", "SkColorPriv.h", "SkColorShader.h",
             "SkData.h", "SkDevice.h", "SkDrawFilter.h", "SkDrawLooper.h",
+            "SkImageFilter.h",
 			"SkPaint.h", "SkPath.h", "SkPathEffect.h", "SkRandom.h", "SkRegion.h",
 			"SkShader.h", "SkSize.h", "SkStream.h", "SkString.h", "SkTypeface.h",
 			"SkUnPreMultiply.h"})
@@ -348,6 +349,8 @@ public class core {
 	
 	public static class SkColorFilter extends SkFlattenable {
 		static { Loader.load(Skia.class); }
+
+        public static native SkColorFilter CreateModeFilter(@Cast("SkColor") int c, @Cast("SkXfermode::Mode") int mode);
 	}
 	
 	/*
