@@ -11,6 +11,7 @@ import com.googlecode.javacpp.annotation.ByVal;
 import com.googlecode.javacpp.annotation.Cast;
 import com.googlecode.javacpp.annotation.Const;
 import com.googlecode.javacpp.annotation.MemberGetter;
+import com.googlecode.javacpp.annotation.MemberSetter;
 import com.googlecode.javacpp.annotation.Name;
 import com.googlecode.javacpp.annotation.NoDeallocator;
 import com.googlecode.javacpp.annotation.Platform;
@@ -264,9 +265,17 @@ public class core {
 	    	drawText(ptr, ptr.capacity(), x, y, paint);
 	    }
 	    public native void drawText(@Const Pointer text, @Cast("size_t") int byteLength, @Cast("SkScalar") float x, @Cast("SkScalar") float y, @Const @ByRef SkPaint paint);
+
 	    public native void drawPosText(@Const Pointer text, @Cast("size_t") int byteLength, @Const SkPoint pos, @Const @ByRef SkPaint paint);
+
 	    public native void drawPosTextH(@Const Pointer text, @Cast("size_t") int byteLength, @Cast("const SkScalar*") float[] xpos, @Cast("SkScalar") float constY, @Const @ByRef SkPaint paint);
+
 	    public native void drawTextOnPathHV(@Const Pointer text, @Cast("size_t") int byteLength, @Const @ByRef SkPath path, @Cast("SkScalar") float hOffset, @Cast("SkScalar") float vOffset, @Const @ByRef SkPaint paint);
+
+        public void drawTextOnPath(String text, SkPath path, SkMatrix matrix, SkPaint paint) {
+            Pointer ptr = SkPaint.encodeText(text, paint.getTextEncoding());
+            drawTextOnPath(ptr, ptr.capacity(), path, matrix, paint);
+        }
 	    public native void drawTextOnPath(@Const Pointer text, @Cast("size_t") int byteLength, @Const @ByRef SkPath path, @Const SkMatrix matrix, @Const @ByRef SkPaint paint);
 
         public native void drawPicture(@ByRef SkPicture picture);
@@ -1008,14 +1017,26 @@ public class core {
 		static { Loader.load(Skia.class); }
 		
 		public SkPoint(Pointer p) { super(p); }
+
 		public SkPoint() { allocate(); }
+        private native void allocate();
+
 		public SkPoint(int size) { allocateArray(size); }
+        private native void allocateArray(int size);
+
         @Override public SkPoint position(int position) {
             return (SkPoint)super.position(position);
         }
-		
-		private native void allocate();
-		private native void allocateArray(int size);
+
+        @MemberGetter
+        public native @Cast("int32_t") int fX();
+        @MemberSetter
+        public native void fX(@Cast("int32_t") int x);
+        @MemberGetter
+        public native @Cast("int32_t") int fY();
+        @MemberSetter
+        public native void fY(@Cast("int32_t") int y);
+
 		@Name("operator=")
 		public native @ByRef SkPoint copy(@Const @ByRef SkPoint src);
 	    public static native @ByVal SkPoint Make(@Cast("SkScalar") float x, @Cast("SkScalar") float y);
@@ -1207,6 +1228,13 @@ public class core {
     public static float SkIntToScalar(int n) {
         return (float) n;
     }
+
+    public native static float SkScalarToFloat(@Cast("SkScalar") float n);
+    public native static @Cast("SkScalar") float SkFloatToScalar(float n);
+
+    public native static @Cast("SkScalar") float SkScalarAve(@Cast("SkScalar") float a, @Cast("SkScalar") float b);
+
+    public native static @Cast("SkScalar") float SkScalarInterp(@Cast("SkScalar") float A, @Cast("SkScalar") float B, @Cast("SkScalar") float t);
 
 	/*
 	 * SkShader.h
