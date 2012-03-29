@@ -830,6 +830,11 @@ public class core {
             return getTextWidths(ptr, ptr.capacity(), widths, bounds);
         }
 	    public native int getTextWidths(@Const Pointer text, @Cast("size_t") int byteLength, @Cast("SkScalar*") float[] widths, SkRect bounds/* = NULL*/);
+        
+        public void getTextPath(String text, float x, float y, SkPath path) {
+            Pointer ptr = encodeText(text, getTextEncoding());
+            getTextPath(ptr, ptr.capacity(), x, y, path);
+        }
 	    public native void getTextPath(@Const Pointer text, @Cast("size_t") int length, @Cast("SkScalar") float x, @Cast("SkScalar") float y, SkPath path);
 	    
 	    public native boolean nothingToDraw();
@@ -911,14 +916,26 @@ public class core {
 	    		kCCW_Direction = 1;
 	    public native boolean cheapComputeDirection(@Cast("SkPath::Direction*") IntPointer dir);
 	    public native boolean cheapIsDirection(@Cast("SkPath::Direction") int dir);
+
+        public native void addRect(@Const @ByRef SkRect rect);
 	    public native void addRect(@Const @ByRef SkRect rect, @Cast("SkPath::Direction") int dir/* = kCW_Direction*/);
+
 	    public native void addRect(@Cast("SkScalar") float left, @Cast("SkScalar") float top, @Cast("SkScalar") float right, @Cast("SkScalar") float bottom, @Cast("SkPath::Direction") int dir/* = kCW_Direction*/);
+
+        public native void addOval(@Const @ByRef SkRect oval);
 	    public native void addOval(@Const @ByRef SkRect oval, @Cast("SkPath::Direction") int dir/* = kCW_Direction*/);
+
         public void addCircle(float x, float y, float radius) { addCircle(x, y, radius, kCW_Direction); }
 	    public native void addCircle(@Cast("SkScalar") float x, @Cast("SkScalar") float y, @Cast("SkScalar") float radius, @Cast("SkPath::Direction") int dir/* = kCW_Direction*/);
+
 	    public native void addArc(@Const @ByRef SkRect oval, @Cast("SkScalar") float startAngle, @Cast("SkScalar") float sweepAngle);
+
+        public native void addRoundRect(@Const @ByRef SkRect rect, @Cast("SkScalar") float rx, @Cast("SkScalar") float ry);
 	    public native void addRoundRect(@Const @ByRef SkRect rect, @Cast("SkScalar") float rx, @Cast("SkScalar") float ry, @Cast("SkPath::Direction") int dir/* = kCW_Direction*/);
+
+        public native void addRoundRect(@Const @ByRef SkRect rect, @Cast("const SkScalar*") float[] radii);
 	    public native void addRoundRect(@Const @ByRef SkRect rect, @Cast("const SkScalar*") float[] radii, @Cast("SkPath::Direction") int dir/* = kCW_Direction*/);
+
 	    public native void addPath(@Const @ByRef SkPath src, @Cast("SkScalar") float dx, @Cast("SkScalar") float dy);
 	    public native void addPath(@Const @ByRef SkPath src);
 	    public native void addPath(@Const @ByRef SkPath src, @Const @ByRef SkMatrix matrix);
@@ -1232,9 +1249,20 @@ public class core {
     public native static float SkScalarToFloat(@Cast("SkScalar") float n);
     public native static @Cast("SkScalar") float SkFloatToScalar(float n);
 
+    public native static @Cast("SkScalar") float SkScalarMul(@Cast("SkScalar") float a, @Cast("SkScalar") float b);
+
     public native static @Cast("SkScalar") float SkScalarAve(@Cast("SkScalar") float a, @Cast("SkScalar") float b);
 
     public native static @Cast("SkScalar") float SkScalarInterp(@Cast("SkScalar") float A, @Cast("SkScalar") float B, @Cast("SkScalar") float t);
+
+    public static final float SK_ScalarSqrt2 = 1.41421356f;
+    public static final float SK_ScalarPI = 3.14159265f;
+    public static final float SK_ScalarTanPIOver8 = 0.414213562f;
+    public static final float SK_ScalarRoot2Over2 = 0.707106781f;
+
+    public native static @Cast("SkScalar") float SkScalarSin(@Cast("SkScalar") float radians);
+    public native static @Cast("SkScalar") float SkScalarCos(@Cast("SkScalar") float radians);
+
 
 	/*
 	 * SkShader.h

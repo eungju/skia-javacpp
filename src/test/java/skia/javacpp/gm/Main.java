@@ -25,6 +25,8 @@ public class Main {
                 GradTextGM.class,
                 NoColorBleedGM.class,
 
+                PathFillGM.class,
+                PathReverseGM.class,
                 PointsGM.class,
                 Poly2PolyGM.class,
                 QuadPathGM.class,
