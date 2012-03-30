@@ -28,12 +28,12 @@ public class ImageBlurGM extends GM {
         canvas.saveLayer(null, paint);
         paint.setAntiAlias(true);
         String str = "The quick brown fox jumped over the lazy dog.";
-        SkRandom rand = new SkRandom(1234);
+        Glitch.srand(1234);
         for (int i = 0; i < 25; ++i) {
-            int x = rand.nextS() % WIDTH;
-            int y = rand.nextS() % HEIGHT;
-            paint.setColor(rand.nextS() % 0x1000000 | 0xFF000000);
-            paint.setTextSize(rand.nextS() % 300);
+            int x = Glitch.rand() % WIDTH;
+            int y = Glitch.rand() % HEIGHT;
+            paint.setColor(Glitch.rand() % 0x1000000 | 0xFF000000);
+            paint.setTextSize(Glitch.rand() % 300);
             canvas.drawText(str, x, y, paint);
         }
         canvas.restore();

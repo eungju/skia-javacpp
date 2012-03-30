@@ -141,6 +141,23 @@
                             </arguments>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>build-test-jnilib</id>
+                        <phase>process-test-classes</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>java</executable>
+                            <arguments>
+                                <argument>-jar</argument> <argument>${com.googlecode:javacpp:jar}</argument>
+                                <argument>-classpath</argument> <argument>${project.build.testOutputDirectory}</argument>
+                                <argument>-d</argument> <argument>${project.build.testOutputDirectory}/skia/javacpp/gm/macosx-x86_64</argument>
+                                <argument>-o</argument> <argument>jniGlitch</argument>
+                                <argument>skia/javacpp/gm/Glitch</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 		</plugins>
