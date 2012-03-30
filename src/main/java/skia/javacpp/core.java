@@ -248,7 +248,8 @@ public class core {
 	    public native void drawArc(@Const @ByRef SkRect oval, @Cast("SkScalar") float startAngle, @Cast("SkScalar") float sweepAngle, boolean useCenter, @Const @ByRef SkPaint paint);
 	    public native void drawRoundRect(@Const @ByRef SkRect rect, @Cast("SkScalar") float rx, @Cast("SkScalar") float ry, @Const @ByRef SkPaint paint);
 	    public native void drawPath(@Const @ByRef SkPath path, @Const @ByRef SkPaint paint);
-	    public native void drawBitmap(@Const @ByRef SkBitmap bitmap, @Cast("SkScalar") float left, @Cast("SkScalar") float top, @Const SkPaint paint/* = NULL*/);
+        public native void drawBitmap(@Const @ByRef SkBitmap bitmap, @Cast("SkScalar") float left, @Cast("SkScalar") float top);
+        public native void drawBitmap(@Const @ByRef SkBitmap bitmap, @Cast("SkScalar") float left, @Cast("SkScalar") float top, @Const SkPaint paint/* = NULL*/);
         public native void drawBitmapRect(@Const @ByRef SkBitmap bitmap, @Const SkIRect src,
                                           @Const @ByRef SkRect dst);
         public native void drawBitmapRect(@Const @ByRef SkBitmap bitmap, @Const SkIRect src,
@@ -471,7 +472,6 @@ public class core {
 		public SkFlattenable(Pointer pointer) { super(pointer); }
 		protected SkFlattenable() {}
 		public native Factory getFactory();
-		public native void flatten(@ByRef SkFlattenableWriteBuffer buffer);
 	    public static native Factory NameToFactory(String name);
 	    public static native String FactoryToName(Factory factory);
 	    public static native void Register(String name, Factory factory);

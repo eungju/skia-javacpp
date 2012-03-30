@@ -15,7 +15,7 @@ import static skia.javacpp.core.*;
 @Properties({
 	@Platform(include={"Sk1DPathEffect.h", "Sk2DPathEffect.h", "SkBlurDrawLooper.h", "SkBlurImageFilter.h",
             "SkCornerPathEffect.h", "SkDashPathEffect.h", "SkDiscretePathEffect.h", "SkGradientShader.h",
-            "SkGroupShape.h", "SkRectShape.h", "SkTableColorFilter.h", "SkTestImageFilters.h", "SkUnitMapper.h"})
+            "SkGroupShape.h", "SkMorphologyImageFilter.h", "SkRectShape.h", "SkTableColorFilter.h", "SkTestImageFilters.h", "SkUnitMapper.h"})
 })
 public class effects {
 	static { Loader.load(Skia.class); }
@@ -125,8 +125,11 @@ public class effects {
 	public static class SkDashPathEffect extends SkPathEffect {
 		static { Loader.load(Skia.class); }
 
-		public SkDashPathEffect(Pointer pointer) { super(pointer); }
-		public SkDashPathEffect(float[] intervals, float phase, boolean scaleToFit) { allocate(intervals, intervals.length, phase, scaleToFit); }
+        public SkDashPathEffect(float[] intervals, float phase) { allocate(intervals, intervals.length, phase); }
+        @NoDeallocator
+        public native void allocate(@Cast("const SkScalar*") float[] intervals, int count, @Cast("SkScalar") float phase);
+
+        public SkDashPathEffect(float[] intervals, float phase, boolean scaleToFit) { allocate(intervals, intervals.length, phase, scaleToFit); }
 		@NoDeallocator
 		public native void allocate(@Cast("const SkScalar*") float[] intervals, int count, @Cast("SkScalar") float phase, boolean scaleToFit/* = false*/);
 	}
@@ -254,8 +257,40 @@ public class effects {
     }
 
     /*
-     * SkRectShape.h
+     * SkMorphologyImageFilter.h
      */
+
+    public static class SkMorphologyImageFilter extends SkImageFilter {
+        static { Loader.load(Skia.class); }
+    }
+
+    public static class SkDilateImageFilter extends SkMorphologyImageFilter {
+        static { Loader.load(Skia.class); }
+
+        public SkDilateImageFilter(int radiusX, int radiusY) { allocate(radiusX, radiusY); };
+        @NoDeallocator
+        private native void allocate(int radiusX, int radiusY);
+
+        public native boolean asADilate(SkISize radius);
+//        public native boolean onFilterImage(Proxy proxy, @Const @ByRef SkBitmap src, @Const @ByRef SkMatrix matrix,
+//                                   SkBitmap result, SkIPoint offset);
+    }
+
+    public static class SkErodeImageFilter extends SkMorphologyImageFilter {
+        static { Loader.load(Skia.class); }
+
+        public SkErodeImageFilter(int radiusX, int radiusY) { allocate(radiusX, radiusY); };
+        @NoDeallocator
+        private native void allocate(int radiusX, int radiusY);
+
+        public native boolean asAnErode(SkISize radius);
+//        public native boolean onFilterImage(Proxy proxy, @Const @ByRef SkBitmap src, @Const @ByRef SkMatrix,
+//                SkBitmap result, SkIPoint offset);
+    }
+
+    /*
+    * SkRectShape.h
+    */
 
     public static class SkPaintShape extends SkShape {
         static { Loader.load(Skia.class); }
