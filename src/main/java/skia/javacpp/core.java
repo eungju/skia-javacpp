@@ -876,15 +876,21 @@ public class core {
 	public static class SkPath extends Pointer {
 		static { Loader.load(Skia.class); }
 		
-		public SkPath(Pointer pointer) { super(pointer); }
 		public SkPath() { allocate(); }
 		private native void allocate();
-		
-	    //enum FillType
+
+        public SkPath(SkPath src) { allocate(src); }
+        private native void allocate(@Const @ByRef SkPath src);
+
+        @Name("operator=")
+        public native @ByRef SkPath copy(@Const @ByRef SkPath src);
+
+        //enum FillType
 	    public static final int kWinding_FillType = 0,
 	        kEvenOdd_FillType = 1,
 	        kInverseWinding_FillType = 2,
 	        kInverseEvenOdd_FillType = 3;
+
 	    public native @Cast("SkPath::FillType") int getFillType();
 	    public native void setFillType(@Cast("SkPath::FillType") int ft);
 	    public native boolean isInverseFillType();
@@ -899,7 +905,11 @@ public class core {
 	    public native void setConvexity(@Cast("SkPath::Convexity") int convexity);
 	    public static native @Cast("SkPath::Convexity") int ComputeConvexity(@Const @ByRef SkPath path);
 
-	    public native void reset();
+        public native boolean isConvex();
+
+        public native void setIsConvex(boolean isConvex);
+
+        public native void reset();
 	    public native void rewind();
 	    public native boolean isEmpty();
 	    
@@ -964,10 +974,15 @@ public class core {
 	    public native void setLastPt(@Cast("SkScalar") float x, @Cast("SkScalar") float y);
 	    public native void setLastPt(@Const @ByRef SkPoint p);
 	}
-	
-	/*
-	 * SkPathEffect.h
-	 */
+
+    @Name("operator==")
+    public native static boolean equal(@Const @ByRef SkPath a, @Const @ByRef SkPath b);
+    @Name("operator!=")
+    public native static boolean notEqual(@Const @ByRef SkPath a, @Const @ByRef SkPath b);
+
+    /*
+      * SkPathEffect.h
+      */
 	
 	public static class SkPathEffect extends SkFlattenable {
 		static { Loader.load(Skia.class); }

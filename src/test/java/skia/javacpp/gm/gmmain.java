@@ -9,7 +9,7 @@ import static skia.javacpp.core.*;
 import static skia.javacpp.images.*;
 import static skia.javacpp.utils.*;
 
-public class Main {
+public class gmmain {
     static final boolean CAN_IMAGE_PDF = false;
 
     //typedef int ErrorBitfield;
@@ -22,6 +22,9 @@ public class Main {
 
     static class Iter {
         public static final List<Class> gms = Arrays.<Class>asList(
+                ConvexPathsGM.class,
+                CubicPathGM.class,
+                CubicClosePathGM.class,
                 DegenerateSegmentsGM.class,
                 DrawBitmapRectGM.class,
                 EmptyPathGM.class,
