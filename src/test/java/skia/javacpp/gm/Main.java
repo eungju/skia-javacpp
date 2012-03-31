@@ -22,8 +22,13 @@ public class Main {
 
     static class Iter {
         public static final List<Class> gms = Arrays.<Class>asList(
+                EmptyPathGM.class,
+                FillTypeGM.class,
+                FillTypePerspGM.class,
+                FontScalerGM.class,
+                GradientsGM.class,
                 GradTextGM.class,
-
+                HairModesGM.class,
                 ImageBlurGM.class,
                 LcdTextGM.class,
                 LinePathGM.class,

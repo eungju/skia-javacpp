@@ -412,14 +412,16 @@ public class core {
 	public static class SkDevice extends SkRefCnt {
 		static { Loader.load(Skia.class); }
 		
-		public SkDevice(Pointer pointer) { super(pointer); }
 		public SkDevice(SkBitmap bitmap) { allocate(bitmap); }
-		public SkDevice(int config, int width, int height, boolean isOpaque) { allocate(config, width, height, isOpaque); }
-		@NoDeallocator
-		private native void allocate(@Const @ByRef SkBitmap bitmap);
+        @NoDeallocator
+        private native void allocate(@Const @ByRef SkBitmap bitmap);
+
+        public SkDevice(int config, int width, int height, boolean isOpaque) { allocate(config, width, height, isOpaque); }
 		@NoDeallocator
 		private native void allocate(@Cast("SkBitmap::Config") int config, int width, int height, boolean isOpaque);
-	}
+
+        public native @Const @ByRef SkBitmap accessBitmap(boolean changePixels);
+    }
 
     /*
      * SkDrawFilter.h
@@ -507,8 +509,12 @@ public class core {
 	/*
 	 * SkMatrix.h
 	 */
-	
-	public static class SkMatrix extends Pointer {
+
+    //typedef SkScalar SkPersp;
+    public static float SkScalarToPersp(float x) { return x; }
+    public static float SkPerspToScalar(float x) { return x; }
+
+    public static class SkMatrix extends Pointer {
 		static { Loader.load(Skia.class); }
 		
 		public SkMatrix(Pointer pointer) { super(pointer); }
