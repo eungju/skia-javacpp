@@ -213,10 +213,15 @@ public class core {
 	    public native boolean concat(@Const @ByRef SkMatrix matrix);
 	    public native void setMatrix(@Const @ByRef SkMatrix matrix);
 	    public native void resetMatrix();
+
         public native boolean clipRect(@Const @ByRef SkRect rect);
+        public native boolean clipRect(@Const @ByRef SkRect rect, @Cast("SkRegion::Op") int op);
         public native boolean clipRect(@Const @ByRef SkRect rect,
                               @Cast("SkRegion::Op") int op/* = SkRegion::kIntersect_Op*/,
                               boolean doAntiAlias/* = false*/);
+
+        public native boolean clipPath(@Const @ByRef SkPath path);
+        public native boolean clipPath(@Const @ByRef SkPath path, @Cast("SkRegion::Op") int op);
         public native boolean clipPath(@Const @ByRef SkPath path,
                               @Cast("SkRegion::Op") int op/* = SkRegion::kIntersect_Op*/,
                               boolean doAntiAlias/* = false*/);
@@ -1469,6 +1474,13 @@ public class core {
 
     public native static float SkScalarToFloat(@Cast("SkScalar") float n);
     public native static @Cast("SkScalar") float SkFloatToScalar(float n);
+
+    @Name("sk_float_floor2int")
+    public native static int SkScalarFloorToInt(float x);
+    @Name("sk_float_ceil2int")
+    public native static int SkScalarCeilToInt(float x);
+    @Name("sk_float_round2int")
+    public native static int SkScalarRoundToInt(float x);
 
     public native static @Cast("SkScalar") float SkScalarMul(@Cast("SkScalar") float a, @Cast("SkScalar") float b);
 

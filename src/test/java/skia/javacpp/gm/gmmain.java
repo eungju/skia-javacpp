@@ -22,6 +22,7 @@ public class gmmain {
 
     static class Iter {
         public static final List<Class> gms = Arrays.<Class>asList(
+                ComplexClip2GM.class,
                 ConvexPathsGM.class,
                 CubicPathGM.class,
                 CubicClosePathGM.class,
