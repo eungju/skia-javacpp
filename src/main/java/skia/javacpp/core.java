@@ -133,12 +133,15 @@ public class core {
         public SkColorTable(SkColorTable src) { allocate(src); }
         @NoDeallocator
         private native void allocate(@Const @ByRef SkColorTable src);
+
         public SkColorTable(int count) { allocate(count); }
         @NoDeallocator
         private native void allocate(int count);
+
         public SkColorTable(SkFlattenableReadBuffer buffer) { allocate(buffer); }
         @NoDeallocator
         private native void allocate(@ByRef SkFlattenableReadBuffer buffer);
+
         public SkColorTable(int[] colors) { allocate(colors, colors.length); }
         @NoDeallocator
         private native void allocate(@Cast("const SkPMColor*") int[] colors, int count);
@@ -155,13 +158,14 @@ public class core {
 	public static class SkCanvas extends SkRefCnt {
 		static { Loader.load(Skia.class); }
 		
-		public SkCanvas(Pointer pointer) { super(pointer); }
 		public SkCanvas() { allocate(); }
         @NoDeallocator
         private native void allocate();
+
 		public SkCanvas(SkDevice device) { allocate(device); }
 		@NoDeallocator
 		private native void allocate(SkDevice device);
+
         public SkCanvas(SkBitmap bitmap) { allocate(bitmap); }
         @NoDeallocator
         private native void allocate(@Const @ByRef SkBitmap bitmap);
@@ -393,10 +397,10 @@ public class core {
 	public static class SkColorShader extends SkShader {
 		static { Loader.load(Skia.class); }
 		
-		public SkColorShader(Pointer pointer) { super(pointer); }
 		public SkColorShader() { allocate(); }
         @NoDeallocator
         private native void allocate();
+
 		public SkColorShader(int c) { allocate(c); }
 		@NoDeallocator
 		private native void allocate(@Cast("SkColor") int c);
@@ -864,13 +868,15 @@ public class core {
 	public static class SkStrokePathEffect extends SkPathEffect {
 		static { Loader.load(Skia.class); }
 
-		public SkStrokePathEffect(Pointer pointer) { super(pointer); }
 		public SkStrokePathEffect(SkPaint paint) { allocate(paint); }
-		public SkStrokePathEffect(float width, int style, int join, int cap) { this(width, style, join, cap, -1); }
-		public SkStrokePathEffect(float width, int style, int join, int cap, float miterLimit) { allocate(width, style, join, cap, miterLimit); }
 		@NoDeallocator
 	    private native void allocate(@Const @ByRef SkPaint paint);
-		@NoDeallocator
+
+        public SkStrokePathEffect(float width, int style, int join, int cap) { allocate(width, style, join, cap); }
+        @NoDeallocator
+        private native void allocate(@Cast("SkScalar") float width, @Cast("SkPaint::Style") int style, @Cast("SkPaint::Join") int join, @Cast("SkPaint::Cap") int cap);
+        public SkStrokePathEffect(float width, int style, int join, int cap, float miterLimit) { allocate(width, style, join, cap, miterLimit); }
+        @NoDeallocator
 		private native void allocate(@Cast("SkScalar") float width, @Cast("SkPaint::Style") int style, @Cast("SkPaint::Join") int join, @Cast("SkPaint::Cap") int cap, @Cast("SkScalar") float miterLimit/* = -1*/);
 	}
 	
@@ -1006,7 +1012,6 @@ public class core {
 	public static class SkComposePathEffect extends SkPairPathEffect {
 		static { Loader.load(Skia.class); }
 		
-		public SkComposePathEffect(Pointer pointer) { super(pointer); }
 		public SkComposePathEffect(SkPathEffect outer, SkPathEffect inner) { allocate(outer, inner); }
 		@NoDeallocator
 		private native void allocate(SkPathEffect outer, SkPathEffect inner);
@@ -1015,7 +1020,6 @@ public class core {
 	public static class SkSumPathEffect extends SkPairPathEffect {
 		static { Loader.load(Skia.class); }
 		
-		public SkSumPathEffect(Pointer pointer) { super(pointer); }
 		public SkSumPathEffect(SkPathEffect first, SkPathEffect second) { allocate(first, second); }
 		@NoDeallocator
 		private native void allocate(SkPathEffect first, SkPathEffect second);
@@ -1511,7 +1515,7 @@ public class core {
 		static { Loader.load(Skia.class); }
 		
 		public SkShader(Pointer pointer) { super(pointer); }
-		public SkShader() { }
+		protected SkShader() { }
 
         public native boolean getLocalMatrix(SkMatrix localM);
         public native void setLocalMatrix(@Const @ByRef SkMatrix localM);
@@ -1666,8 +1670,6 @@ public class core {
 	public static class SkTypeface extends SkRefCnt {
 		static { Loader.load(Skia.class); }
 		
-		public SkTypeface(Pointer pointer) { super(pointer); }
-		
 	    //enum Style
 		public static final int kNormal = 0,
 				kBold = 0x01,
@@ -1697,7 +1699,9 @@ public class core {
         System.out.print(String.format(format, args));
     }
 
-    public static void SkASSERT(boolean cond) {}
+    public static void SkASSERT(boolean cond) { assert cond; }
+
+    public static boolean SkToBool(int cond) {  return (cond) != 0; }
 
     public static class SkNoncopyable extends Pointer {
         static { Loader.load(Skia.class); }

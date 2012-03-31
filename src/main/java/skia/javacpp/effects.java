@@ -39,7 +39,6 @@ public class effects {
 	        kRotate_Style = 1,
 	        kMorph_Style = 2;
 
-		public SkPath1DPathEffect(Pointer pointer) { super(pointer); }
 		public SkPath1DPathEffect(SkPath path, float advance, float phase, int style) { allocate(path, advance, phase, style); }
 		@NoDeallocator
 		public native void allocate(@Const @ByRef SkPath path, @Cast("SkScalar") float advance, @Cast("SkScalar") float phase, @Cast("SkPath1DPathEffect::Style") int style);
@@ -64,7 +63,6 @@ public class effects {
 	        kRotate_Style = 1,
 	        kMorph_Style = 2;
 
-		public SkPath2DPathEffect(Pointer pointer) { super(pointer); }
 		public SkPath2DPathEffect(SkMatrix matrix, SkPath path) { allocate(matrix, path); }
 		@NoDeallocator
 		public native void allocate(@Const @ByRef SkMatrix matrix, @Const @ByRef SkPath path);
@@ -99,7 +97,6 @@ public class effects {
 	public static class SkBlurImageFilter extends SkImageFilter {
 		static { Loader.load(Skia.class); }
 
-		public SkBlurImageFilter(Pointer pointer) { super(pointer); }
 		public SkBlurImageFilter(float sigmaX, float sigmaY) { allocate(sigmaX, sigmaY); }
 		@NoDeallocator
 		public native void allocate(@Cast("SkScalar") float sigmaX, @Cast("SkScalar") float sigmaY);
@@ -112,7 +109,6 @@ public class effects {
 	public static class SkCornerPathEffect extends SkPathEffect {
 		static { Loader.load(Skia.class); }
 
-		public SkCornerPathEffect(Pointer pointer) { super(pointer); }
 		public SkCornerPathEffect(float radius) { allocate(radius); }
 		@NoDeallocator
 		public native void allocate(@Cast("SkScalar") float radius);
@@ -128,7 +124,6 @@ public class effects {
         public SkDashPathEffect(float[] intervals, float phase) { allocate(intervals, intervals.length, phase); }
         @NoDeallocator
         public native void allocate(@Cast("const SkScalar*") float[] intervals, int count, @Cast("SkScalar") float phase);
-
         public SkDashPathEffect(float[] intervals, float phase, boolean scaleToFit) { allocate(intervals, intervals.length, phase, scaleToFit); }
 		@NoDeallocator
 		public native void allocate(@Cast("const SkScalar*") float[] intervals, int count, @Cast("SkScalar") float phase, boolean scaleToFit/* = false*/);
@@ -141,7 +136,6 @@ public class effects {
 	public static class SkDiscretePathEffect extends SkPathEffect {
 		static { Loader.load(Skia.class); }
 
-		public SkDiscretePathEffect(Pointer pointer) { super(pointer); }
 		public SkDiscretePathEffect(@Cast("SkScalar") float segLength, @Cast("SkScalar") float deviation) { allocate(segLength, deviation); }
 		@NoDeallocator
 		public native void allocate(@Cast("SkScalar") float segLength, @Cast("SkScalar") float deviation);
@@ -352,7 +346,6 @@ public class effects {
         public SkMergeImageFilter(SkImageFilter first, SkImageFilter second) { allocate(first, second); }
         @NoDeallocator
         private native void allocate(SkImageFilter first, SkImageFilter second);
-
         public SkMergeImageFilter(SkImageFilter first, SkImageFilter second, int mode) { allocate(first, second, mode); }
         @NoDeallocator
         private native void allocate(SkImageFilter first, SkImageFilter second, @Cast("SkXfermode::Mode") int mode/* = SkXfermode::kSrcOver_Mode*/);

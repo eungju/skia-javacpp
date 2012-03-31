@@ -10,7 +10,7 @@ public class SkPaintTest {
 	@Test public void getFontMetrics() {
 		SkPaint dut = new SkPaint();
 		dut.setTextSize(12);
-		dut.setTypeface(SkTypeface.CreateFromName("Arial", SkTypeface.kNormal));
+		dut.setTypeface(SkTypeface.CreateFromName("Arial", SkTypeface.kNormal)).unref();
 		SkPaint.FontMetrics metrics = new SkPaint.FontMetrics();
 		assertEquals(dut.getFontSpacing(), dut.getFontMetrics(metrics, 1), 0);
 	}
@@ -18,7 +18,7 @@ public class SkPaintTest {
 	@Test public void textToGlyphs() {
 		SkPaint dut = new SkPaint();
 		dut.setTextEncoding(SkPaint.kUTF8_TextEncoding);
-		dut.setTypeface(SkTypeface.CreateFromName("Arial", SkTypeface.kNormal));
+		dut.setTypeface(SkTypeface.CreateFromName("Arial", SkTypeface.kNormal)).unref();
 		short[] glyphs = new short[4];
 		dut.textToGlyphs("ABCD", glyphs);
 		assertArrayEquals(new short[] {36, 37, 38, 39}, glyphs);
@@ -26,7 +26,7 @@ public class SkPaintTest {
 
 	@Test public void getTextWidths() {
 		SkPaint dut = new SkPaint();
-		dut.setTypeface(SkTypeface.CreateFromName("Arial", SkTypeface.kNormal));
+		dut.setTypeface(SkTypeface.CreateFromName("Arial", SkTypeface.kNormal)).unref();
 		dut.setTextSize(12);
 		dut.setTextEncoding(SkPaint.kUTF8_TextEncoding);
 		Pointer text = SkPaint.encodeText("ABCD", dut.getTextEncoding());

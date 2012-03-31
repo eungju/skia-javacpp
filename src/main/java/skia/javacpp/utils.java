@@ -28,9 +28,11 @@ public class utils {
         public SkDeferredCanvas() { allocate(); }
         @NoDeallocator
         private native void allocate();
+
         public SkDeferredCanvas(SkDevice device) { allocate(device); };
         @NoDeallocator
         private native void allocate(SkDevice device);
+
         //TODO: public SkDeferredCanvas(SkDevice device, DeviceContext deviceContext) { allocate(device, deviceContext); };
     }
 
