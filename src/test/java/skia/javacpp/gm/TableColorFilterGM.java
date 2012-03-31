@@ -50,8 +50,8 @@ public class TableColorFilterGM extends GM {
 
     static void make_table0(byte[] table) {
         for (int i = 0; i < 256; ++i) {
-            int n = i >> 5;
-            table[i] = (byte)((n << 5) | (n << 2) | (n >> 1));
+            int n = i >>> 5;
+            table[i] = (byte)((n << 5) | (n << 2) | (n >>> 1));
         }
     }
     static void make_table1(byte[] table) {

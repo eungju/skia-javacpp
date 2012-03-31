@@ -22,6 +22,8 @@ public class Main {
 
     static class Iter {
         public static final List<Class> gms = Arrays.<Class>asList(
+                DegenerateSegmentsGM.class,
+                DrawBitmapRectGM.class,
                 EmptyPathGM.class,
                 FillTypeGM.class,
                 FillTypePerspGM.class,

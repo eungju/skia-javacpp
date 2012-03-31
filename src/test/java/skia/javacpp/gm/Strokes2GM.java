@@ -10,8 +10,8 @@ public class Strokes2GM extends GM {
         SkRandom rand = new SkRandom();
         fPath.moveTo(0, 0);
         for (int i = 0; i < 13; i++) {
-            float x = rand.nextUScalar1() * (W >> 1);
-            float y = rand.nextUScalar1() * (H >> 1);
+            float x = rand.nextUScalar1() * (W >>> 1);
+            float y = rand.nextUScalar1() * (H >>> 1);
             fPath.lineTo(x, y);
         }
     }

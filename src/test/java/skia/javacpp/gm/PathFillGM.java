@@ -84,7 +84,7 @@ public class PathFillGM extends GM {
         final float r = SkIntToScalar(20);
 
         float rad = -SK_ScalarPI / 2;
-        final float drad = (n >> 1) * SK_ScalarPI * 2 / n;
+        final float drad = (n >>> 1) * SK_ScalarPI * 2 / n;
 
         path.moveTo(c, c - r);
         for (int i = 1; i < n; i++) {

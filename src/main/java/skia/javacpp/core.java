@@ -22,7 +22,7 @@ import java.nio.charset.Charset;
 @Properties({
 	@Platform(include={"SkBitmap.h", "SkCanvas.h", "SkColor.h", "SkColorFilter.h", "SkColorPriv.h", "SkColorShader.h",
             "SkData.h", "SkDevice.h", "SkDrawFilter.h", "SkDrawLooper.h",
-            "SkImageFilter.h",
+            "SkImageFilter.h", "SkMath.h", "SkMatrix.h",
 			"SkPaint.h", "SkPath.h", "SkPathEffect.h", "SkPicture.h", "SkPoint.h", "SkRandom.h", "SkRegion.h",
 			"SkShader.h", "SkShape.h", "SkSize.h", "SkStream.h", "SkString.h", "SkTypeface.h",
 			"SkUnPreMultiply.h"})
@@ -300,19 +300,19 @@ public class core {
 	}
 	
 	public static int SkColorGetA(int color) {
-		return (color >> 24) & 0xFF;
+		return (color >>> 24) & 0xFF;
 	}
 
 	public static int SkColorGetR(int color) {
-		return (color >> 16) & 0xFF;
+		return (color >>> 16) & 0xFF;
 	}
 	
 	public static int SkColorGetG(int color) {
-		return (color >> 8) & 0xFF;
+		return (color >>> 8) & 0xFF;
 	}
 	
 	public static int SkColorGetB(int color) {
-		return (color >> 0) & 0xFF;
+		return (color >>> 0) & 0xFF;
 	}
 	
 	public static int SkColorSetA(int c, int a) {
@@ -505,10 +505,20 @@ public class core {
 		public SkImageFilter(Pointer pointer) { super(pointer); }
 		protected SkImageFilter() {}
 	}
-	
-	/*
-	 * SkMatrix.h
-	 */
+
+    /*
+     * SkMath.h
+     */
+
+    public native static int SkNextPow2(int value);
+
+    public native static int SkNextLog2(@Cast("uint32_t") int value);
+
+    public native static boolean SkIsPow2(int value);
+
+    /*
+      * SkMatrix.h
+      */
 
     //typedef SkScalar SkPersp;
     public static float SkScalarToPersp(float x) { return x; }
@@ -1035,12 +1045,74 @@ public class core {
 	/*
 	 * SkPoint.h
 	 */
-	
-	public static class SkPoint extends Pointer {
+
+    public static class SkIPoint extends Pointer {
+        static { Loader.load(Skia.class); }
+
+        @MemberGetter
+        public native @Cast("int32_t") int fX();
+        @MemberSetter
+        public native void fX(@Cast("int32_t") int x);
+        @MemberGetter
+        public native @Cast("int32_t") int fY();
+        @MemberSetter
+        public native void fY(@Cast("int32_t") int y);
+
+        public native static @ByVal SkIPoint Make(@Cast("int32_t") int x, @Cast("int32_t") int y);
+
+        public native @Cast("int32_t") int x();
+        public native @Cast("int32_t") int y();
+        public native void setX(@Cast("int32_t") int x);
+        public native void setY(@Cast("int32_t") int y);
+
+        public native boolean isZero();
+
+        public native void setZero();
+
+        public native void set(@Cast("int32_t") int x, @Cast("int32_t") int y);
+
+        public native void rotateCW(SkIPoint dst);
+
+        public native void rotateCW();
+
+        public native void rotateCCW(SkIPoint dst);
+
+        public native void rotateCCW();
+
+        public native void negate();
+
+        @Name("operator-")
+        public native @ByVal SkIPoint minus();
+
+        @Name("operator+=")
+        public native void plusAssign(@Const @ByRef SkIPoint v);
+
+        @Name("operator-=")
+        public native void minusAssign(@Const @ByRef SkIPoint v);
+
+        public native boolean equals(@Cast("int32_t") int x, @Cast("int32_t") int y);
+
+        public native static @Cast("int32_t") int DotProduct(@Const @ByRef SkIPoint a, @Const @ByRef SkIPoint b);
+
+        public native static @Cast("int32_t") int CrossProduct(@Const @ByRef SkIPoint a, @Const @ByRef SkIPoint b);
+    };
+
+    @Name("operator==")
+    public native static boolean equal(@Const @ByRef SkIPoint a, @Const @ByRef SkIPoint b);
+
+    @Name("operator!=")
+    public native static boolean notEqual(@Const @ByRef SkIPoint a, @Const @ByRef SkIPoint b);
+
+    @Name("operator-")
+    public native static @ByVal SkIPoint minus(@Const @ByRef SkIPoint a, @Const @ByRef SkIPoint b);
+
+    @Name("operator+")
+    public native static @ByVal SkIPoint plus(@Const @ByRef SkIPoint a, @Const @ByRef SkIPoint b);
+
+
+    public static class SkPoint extends Pointer {
 		static { Loader.load(Skia.class); }
 		
-		public SkPoint(Pointer p) { super(p); }
-
 		public SkPoint() { allocate(); }
         private native void allocate();
 
@@ -1062,15 +1134,143 @@ public class core {
 
 		@Name("operator=")
 		public native @ByRef SkPoint copy(@Const @ByRef SkPoint src);
+
 	    public static native @ByVal SkPoint Make(@Cast("SkScalar") float x, @Cast("SkScalar") float y);
+
 	    public native @Cast("SkScalar") float x();
 	    public native @Cast("SkScalar") float y();
-	    public native void set(@Cast("SkScalar") float x, @Cast("SkScalar") float y);
-	}
 
-	/*
-	 * SkPostConfig.h
-	 */
+        public native void set(@Cast("SkScalar") float x, @Cast("SkScalar") float y);
+
+        public native void iset(@Cast("int32_t") int x, @Cast("int32_t") int y);
+
+        public native void iset(@Const @ByRef SkIPoint p);
+
+        public native void setAbs(@Const @ByRef SkPoint pt);
+
+        public native void setIRectFan(int l, int t, int r, int b);
+        public native void setIRectFan(int l, int t, int r, int b, @Cast("size_t") int stride);
+
+        public native void setRectFan(@Cast("SkScalar") float l, @Cast("SkScalar") float t, @Cast("SkScalar") float r, @Cast("SkScalar") float b);
+        public native void setRectFan(@Cast("SkScalar") float l, @Cast("SkScalar") float t, @Cast("SkScalar") float r, @Cast("SkScalar") float b, @Cast("size_t") int stride);
+
+        public static void Offset(SkPoint[] points, SkPoint offset) {
+            SkPoint ptr = new SkPoint(points.length);
+            for (int i = 0; i < points.length; i++) {
+                ptr.position(i).copy(points[i]);
+            }
+            Offset(ptr, points.length, offset);
+        }
+        public native static void Offset(SkPoint points, int count, @Const @ByRef SkPoint offset);
+
+        public static void Offset(SkPoint[] points, @Cast("SkScalar") float dx, @Cast("SkScalar") float dy) {
+            SkPoint ptr = new SkPoint(points.length);
+            for (int i = 0; i < points.length; i++) {
+                ptr.position(i).copy(points[i]);
+            }
+            Offset(ptr, points.length, dx, dy);
+        }
+        public native static void Offset(SkPoint points, int count, @Cast("SkScalar") float dx, @Cast("SkScalar") float dy);
+
+        public native void offset(@Cast("SkScalar") float dx, @Cast("SkScalar") float dy);
+
+        public native @Cast("SkScalar") float length();
+        public native @Cast("SkScalar") float distanceToOrigin();
+
+        public native static boolean CanNormalize(@Cast("SkScalar") float dx, @Cast("SkScalar") float dy);
+
+        public native boolean canNormalize();
+
+        public native boolean normalize();
+
+        public native boolean setNormalize(@Cast("SkScalar") float x, @Cast("SkScalar") float y);
+
+        public native boolean setLength(@Cast("SkScalar") float length);
+
+        public native boolean setLength(@Cast("SkScalar") float x, @Cast("SkScalar") float y, @Cast("SkScalar") float length);
+
+        public native void scale(@Cast("SkScalar") float scale, SkPoint dst);
+
+        public native void scale(@Cast("SkScalar") float value);
+
+        public native void rotateCW(SkPoint dst);
+
+        public native void rotateCW();
+
+        public native void rotateCCW(SkPoint dst);
+
+        public native void rotateCCW();
+
+        public native void negate();
+
+        @Name("operator-")
+        public native @ByVal SkPoint minus();
+
+        @Name("operator+=")
+        public native void plusAssign(@Const @ByRef SkPoint v);
+
+        @Name("operator-=")
+        public native void minusAssign(@Const @ByRef SkPoint v);
+
+        public native boolean equals(@Cast("SkScalar") float x, @Cast("SkScalar") float y);
+
+        public native boolean equalsWithinTolerance(@Const @ByRef SkPoint v, @Cast("SkScalar") float tol);
+
+        public native static @Cast("SkScalar") float Length(@Cast("SkScalar") float x, @Cast("SkScalar") float y);
+
+        public native static @Cast("SkScalar") float Normalize(SkPoint pt);
+
+        public native static @Cast("SkScalar") float Distance(@Const @ByRef SkPoint a, @Const @ByRef SkPoint b);
+
+        public native static @Cast("SkScalar") float DotProduct(@Const @ByRef SkPoint a, @Const @ByRef SkPoint b);
+
+        public native static @Cast("SkScalar") float CrossProduct(@Const @ByRef SkPoint a, @Const @ByRef SkPoint b);
+
+        public native @Cast("SkScalar") float cross(@Const @ByRef SkPoint vec);
+
+        public native @Cast("SkScalar") float dot(@Const @ByRef SkPoint vec);
+
+        public native @Cast("SkScalar") float lengthSqd();
+
+        public native @Cast("SkScalar") float distanceToSqd(@Const @ByRef SkPoint pt);
+
+        //enum Side
+        public static final int kLeft_Side = -1,
+            kOn_Side = 0,
+            kRight_Side = 1;
+
+        public native @Cast("SkScalar") float distanceToLineBetweenSqd(@Const @ByRef SkPoint a,
+                                          @Const @ByRef SkPoint b,
+                                          @Cast("SkPoint::Side*") IntPointer side/* = NULL*/);
+
+        public native @Cast("SkScalar") float distanceToLineBetween(@Const @ByRef SkPoint a,
+                                       @Const @ByRef SkPoint b,
+                                       @Cast("SkPoint::Side*") IntPointer side/* = NULL*/);
+
+        public native @Cast("SkScalar") float distanceToLineSegmentBetweenSqd(@Const @ByRef SkPoint a,
+                                                 @Const @ByRef SkPoint b);
+
+        public native @Cast("SkScalar") float distanceToLineSegmentBetween(@Const @ByRef SkPoint a,
+                                              @Const @ByRef SkPoint b);
+
+        public native void setOrthog(@Const @ByRef SkPoint vec, @Cast("SkPoint::Side") int side/* = kLeft_Side*/);
+    }
+
+    @Name("operator==")
+    public native static boolean equal(@Const @ByRef SkPoint a, @Const @ByRef SkPoint b);
+
+    @Name("operator!=")
+    public native static boolean notEqual(@Const @ByRef SkPoint a, @Const @ByRef SkPoint b);
+
+    @Name("operator-")
+    public native static @ByVal SkPoint minus(@Const @ByRef SkPoint a, @Const @ByRef SkPoint b);
+
+    @Name("operator+")
+    public native static @ByVal SkPoint plus(@Const @ByRef SkPoint a, @Const @ByRef SkPoint b);
+
+    /*
+      * SkPostConfig.h
+      */
 	
     public static final int SK_A32_SHIFT = 24,
     		SK_R32_SHIFT = 16,
@@ -1269,10 +1469,16 @@ public class core {
     public native static @Cast("SkScalar") float SkScalarSin(@Cast("SkScalar") float radians);
     public native static @Cast("SkScalar") float SkScalarCos(@Cast("SkScalar") float radians);
 
+    public static float SkMaxScalar(float a, float b) { return a > b ? a : b; }
+    public static float SkMinScalar(float a, float b) { return a < b ? a : b; }
 
-	/*
-	 * SkShader.h
-	 */
+    public static boolean SkScalarIsInt(float x) {
+        return x == (float)(int)x;
+    }
+
+    /*
+      * SkShader.h
+      */
 	
 	public static class SkShader extends SkFlattenable {
 		static { Loader.load(Skia.class); }

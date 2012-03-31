@@ -13,8 +13,8 @@ public class StrokesGM extends GM {
     static void rnd_rect(SkRect r, SkPaint paint, SkRandom rand) {
         float x = rand.nextUScalar1() * W;
         float y = rand.nextUScalar1() * H;
-        float w = rand.nextUScalar1() * (W >> 2);
-        float h = rand.nextUScalar1() * (H >> 2);
+        float w = rand.nextUScalar1() * (W >>> 2);
+        float h = rand.nextUScalar1() * (H >>> 2);
         float hoffset = rand.nextSScalar1();
         float woffset = rand.nextSScalar1();
 
