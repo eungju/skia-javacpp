@@ -122,4 +122,10 @@ public class TableColorFilterGM extends GM {
             y += bm.height() * 9 / 8;
         }
     }
+
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new TableColorFilterGM();
+        }
+    };
 }

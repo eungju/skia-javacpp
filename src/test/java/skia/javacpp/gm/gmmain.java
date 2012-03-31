@@ -21,50 +21,50 @@ public class gmmain {
     static final int ERROR_WRITING_REFERENCE_IMAGE = 0x10;
 
     static class Iter {
-        public static final List<Class> gms = Arrays.<Class>asList(
-                ComplexClip2GM.class,
-                ConvexPathsGM.class,
-                CubicPathGM.class,
-                CubicClosePathGM.class,
-                DegenerateSegmentsGM.class,
-                DrawBitmapRectGM.class,
-                EmptyPathGM.class,
-                FillTypeGM.class,
-                FillTypePerspGM.class,
-                FontScalerGM.class,
-                GradientsGM.class,
-                GradTextGM.class,
-                HairModesGM.class,
-                ImageBlurGM.class,
-                LcdTextGM.class,
-                LinePathGM.class,
-                LineClosePathGM.class,
-                MorphologyGM.class,
-                NoColorBleedGM.class,
-                PathEffectGM.class,
-                PathFillGM.class,
-                PathReverseGM.class,
-                PointsGM.class,
-                Poly2PolyGM.class,
-                QuadPathGM.class,
-                QuadClosePathGM.class,
-                ShaderBoundsGM.class,
-                ShaderTextGM.class,
-                ShadowsGM.class,
-                ShapesGM.class,
-                StrokeFillGM.class,
-                StrokeRectGM.class,
-                StrokesGM.class,
-                Strokes2GM.class,
-                TableColorFilterGM.class,
-                TestImageFiltersGM.class,
-                TilingGM.class,
-                TinyBitmapGM.class,
-                VertTextGM.class,
-                VertText2GM.class,
-                XfermodesGM.class);
+        public static final List<GMRegistry.Factory> gms = Arrays.<GMRegistry.Factory>asList(
+                ComplexClip2GM.factory,
+                ConvexPathsGM.factory,
+                CubicPathGM.factory,
+                CubicClosePathGM.factory,
+                DegenerateSegmentsGM.factory,
+                DrawBitmapRectGM.factory,
+                EmptyPathGM.factory,
+                FillTypeGM.factory,
+                FillTypePerspGM.factory,
+                FontScalerGM.factory,
+                GradientsGM.factory,
+                GradTextGM.factory,
+                HairModesGM.factory,
+                ImageBlurGM.factory,
+                LcdTextGM.factory,
+                LinePathGM.factory,
+                LineClosePathGM.factory,
+                MorphologyGM.factory,
+                NoColorBleedGM.factory,
+                PathEffectGM.factory,
+                PathFillGM.factory,
+                PathReverseGM.factory,
+                PointsGM.factory,
+                Poly2PolyGM.factory,
+                QuadPathGM.factory,
+                QuadClosePathGM.factory,
+                ShaderBoundsGM.factory,
+                ShaderTextGM.factory,
+                ShadowsGM.factory,
+                ShapesGM.factory,
+                StrokeFillGM.factory,
+                StrokeRectGM.factory,
+                StrokesGM.factory,
+                Strokes2GM.factory,
+                TableColorFilterGM.factory,
+                TestImageFiltersGM.factory,
+                TilingGM.factory,
+                TinyBitmapGM.factory,
+                VertTextGM.factory,
+                VertText2GM.factory,
+                XfermodesGM.factory);
 
-        private Iterator<Class> i;
+        private Iterator<GMRegistry.Factory> i;
         
         public Iter() {
             reset();
@@ -76,12 +76,8 @@ public class gmmain {
         
         public GM next() {
             if (i.hasNext()) {
-                Class clazz = i.next();
-                try {
-                    return (GM) clazz.newInstance();
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
+                GMRegistry.Factory fact = i.next();
+                return fact.apply();
             }
             return null;
         }

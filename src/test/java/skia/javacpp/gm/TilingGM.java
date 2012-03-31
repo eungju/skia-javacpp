@@ -131,4 +131,10 @@ public class TilingGM extends GM {
             }
         }
     }
+
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new TilingGM();
+        }
+    };
 }

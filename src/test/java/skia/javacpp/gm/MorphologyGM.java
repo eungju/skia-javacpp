@@ -92,4 +92,10 @@ public class MorphologyGM extends GM {
 
     private SkBitmap fBitmap = new SkBitmap();
     private boolean fOnce;
+
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new MorphologyGM();
+        }
+    };
 }

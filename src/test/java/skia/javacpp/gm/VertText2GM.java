@@ -66,4 +66,10 @@ public class VertText2GM extends GM {
     private float y, textHeight;
     private SkTypeface prop;
     private SkTypeface mono;
+
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new VertText2GM();
+        }
+    };
 }

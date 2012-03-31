@@ -66,4 +66,10 @@ public class GradTextGM extends GM {
             canvas.translate(0, paint.getTextSize() * 2);
         }
     }
+
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new GradTextGM();
+        }
+    };
 }

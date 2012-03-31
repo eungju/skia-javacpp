@@ -161,4 +161,10 @@ public class PathEffectGM extends GM {
             canvas.translate(75, 0);
         }
     }
+
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new PathEffectGM();
+        }
+    };
 }

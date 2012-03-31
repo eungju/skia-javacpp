@@ -145,4 +145,10 @@ public class PathFillGM extends GM {
             canvas.translate(SkIntToScalar(0), fDY[i]);
         }
     }
+
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new PathFillGM();
+        }
+    };
 }

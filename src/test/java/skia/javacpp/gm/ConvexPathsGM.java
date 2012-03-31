@@ -126,8 +126,8 @@ public class ConvexPathsGM extends GM {
 
         // cubics
         fPaths.add(new SkPath());
-        fPaths.getLast().cubicTo( 1 * SK_Scalar1,  1 * SK_Scalar1,
-                10 * SK_Scalar1,  90 * SK_Scalar1,
+        fPaths.getLast().cubicTo(1 * SK_Scalar1, 1 * SK_Scalar1,
+                10 * SK_Scalar1, 90 * SK_Scalar1,
                 0 * SK_Scalar1, 100 * SK_Scalar1);
         fPaths.add(new SkPath());
         fPaths.getLast().cubicTo(100 * SK_Scalar1,  50 * SK_Scalar1,
@@ -213,4 +213,10 @@ public class ConvexPathsGM extends GM {
     }
 
     private LinkedList<SkPath> fPaths = new LinkedList<SkPath>();
+
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new ConvexPathsGM();
+        }
+    };
 }

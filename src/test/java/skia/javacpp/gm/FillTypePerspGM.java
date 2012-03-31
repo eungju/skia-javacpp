@@ -107,4 +107,10 @@ public class FillTypePerspGM extends GM {
         canvas.translate(SkIntToScalar(450), 0);
         showFour(canvas, scale, true);
     }
+
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new FillTypePerspGM();
+        }
+    };
 }

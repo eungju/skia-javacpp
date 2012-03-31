@@ -148,4 +148,10 @@ public class QuadPathGM extends GM {
         canvas.restore();
         canvas.restore();
     }
+
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new QuadPathGM();
+        }
+    };
 }

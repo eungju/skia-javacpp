@@ -171,4 +171,10 @@ public class XfermodesGM extends GM {
         }
         s.unref();
     }
+
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new XfermodesGM();
+        }
+    };
 }

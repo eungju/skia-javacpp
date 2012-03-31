@@ -92,4 +92,10 @@ public class PathReverseGM extends GM {
         canvas.translate(0, 100);
         test_rev(canvas, path);
     }
+
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new PathReverseGM();
+        }
+    };
 }

@@ -47,4 +47,10 @@ public class PointsGM extends GM {
         canvas.drawPoints(SkCanvas.kPoints_PointMode, pts, p2);
         canvas.drawPoints(SkCanvas.kPoints_PointMode, pts, p3);
     }
+
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new PointsGM();
+        }
+    };
 }

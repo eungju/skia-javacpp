@@ -123,4 +123,10 @@ public class GradientsGM extends GM {
             canvas.translate(SkIntToScalar(120), 0);
         }
     }
+
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new GradientsGM();
+        }
+    };
 }

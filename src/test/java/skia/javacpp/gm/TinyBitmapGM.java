@@ -47,4 +47,10 @@ public class TinyBitmapGM extends GM {
         paint.setShader(s).unref();
         canvas.drawPaint(paint);
     }
+
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new TinyBitmapGM();
+        }
+    };
 }

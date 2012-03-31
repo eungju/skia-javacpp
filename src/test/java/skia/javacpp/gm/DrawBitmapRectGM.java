@@ -128,4 +128,9 @@ public class DrawBitmapRectGM extends GM {
         }
     }
 
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new DrawBitmapRectGM();
+        }
+    };
 }

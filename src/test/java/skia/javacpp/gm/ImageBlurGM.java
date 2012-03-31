@@ -38,4 +38,10 @@ public class ImageBlurGM extends GM {
         }
         canvas.restore();
     }
+
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new ImageBlurGM();
+        }
+    };
 }

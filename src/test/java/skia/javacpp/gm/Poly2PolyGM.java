@@ -87,4 +87,10 @@ public class Poly2PolyGM extends GM {
         doDraw(canvas, paint, src4, dst4, 4);
         canvas.restore();
     }
+
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new Poly2PolyGM();
+        }
+    };
 }

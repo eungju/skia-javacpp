@@ -91,4 +91,10 @@ public class ShadowsGM extends GM {
             shadowLoopers[i].unref();
         }
     }
+
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new ShadowsGM();
+        }
+    };
 }

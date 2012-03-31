@@ -121,4 +121,10 @@ public class TestImageFiltersGM extends GM {
             }
         }
     }
+
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new TestImageFiltersGM();
+        }
+    };
 }

@@ -137,4 +137,10 @@ public class HairModesGM extends GM {
     // disable pdf for now, since it crashes on mac
     @Override
     protected int onGetFlags() { return kSkipPDF_Flag; }
+
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new HairModesGM();
+        }
+    };
 }

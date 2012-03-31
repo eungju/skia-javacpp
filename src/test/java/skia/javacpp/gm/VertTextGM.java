@@ -65,4 +65,10 @@ public class VertTextGM extends GM {
             canvas.rotate(SkIntToScalar(-15));
         }
     }
+
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new VertTextGM();
+        }
+    };
 }

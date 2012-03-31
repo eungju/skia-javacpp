@@ -91,4 +91,10 @@ public class ShaderBoundsGM extends GM {
     private ShaderGenFunc fShaderMaker;
     private String fName;
     //private SkShader MakeShader(boolean background);
+
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new ShaderBoundsGM();
+        }
+    };
 }

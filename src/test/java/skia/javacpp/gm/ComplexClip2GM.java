@@ -123,4 +123,10 @@ public class ComplexClip2GM extends GM {
     private float fHeight;
     private float fTotalWidth;
     private float fTotalHeight;
+
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new ComplexClip2GM();
+        }
+    };
 }

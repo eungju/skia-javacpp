@@ -67,4 +67,9 @@ public class StrokeFillGM extends GM {
         canvas.drawPath(path2, paint);
     }
 
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new StrokeFillGM();
+        }
+    };
 }

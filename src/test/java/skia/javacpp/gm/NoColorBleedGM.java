@@ -61,4 +61,10 @@ public class NoColorBleedGM extends GM {
                 , SkIntToScalar(50), SkIntToScalar(50));
         canvas.drawBitmapRect(sprite, srcRect, dstRect);
     }
+
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new NoColorBleedGM();
+        }
+    };
 }

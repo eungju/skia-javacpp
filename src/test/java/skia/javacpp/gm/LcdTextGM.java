@@ -45,4 +45,10 @@ public class LcdTextGM extends GM {
     }
 
     private float y, textHeight;
+
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new LcdTextGM();
+        }
+    };
 }

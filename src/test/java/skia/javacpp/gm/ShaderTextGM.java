@@ -195,4 +195,10 @@ public class ShaderTextGM extends GM {
         }
         canvas.restore();
     }
+
+    public static GMRegistry.Factory factory = new GMRegistry.Factory() {
+        public GM apply() {
+            return new ShaderTextGM();
+        }
+    };
 }
