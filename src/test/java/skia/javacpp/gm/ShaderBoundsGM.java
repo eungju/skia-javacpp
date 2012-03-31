@@ -21,10 +21,6 @@ public class ShaderBoundsGM extends GM {
         public SkShader apply(float width, float height, boolean alternate);
     }
 
-    public ShaderBoundsGM() {
-        this(MakeLinear, "shaderbounds_linear");
-    }
-
     public ShaderBoundsGM(ShaderGenFunc maker, String name) {
         fShaderMaker = maker;
         fName = name;
@@ -94,7 +90,7 @@ public class ShaderBoundsGM extends GM {
 
     public static GMRegistry.Factory factory = new GMRegistry.Factory() {
         public GM apply() {
-            return new ShaderBoundsGM();
+            return new ShaderBoundsGM(MakeLinear, "shaderbounds_linear");
         }
     };
 }

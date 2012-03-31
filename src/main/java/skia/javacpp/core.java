@@ -138,10 +138,6 @@ public class core {
         @NoDeallocator
         private native void allocate(int count);
 
-        public SkColorTable(SkFlattenableReadBuffer buffer) { allocate(buffer); }
-        @NoDeallocator
-        private native void allocate(@ByRef SkFlattenableReadBuffer buffer);
-
         public SkColorTable(int[] colors) { allocate(colors, colors.length); }
         @NoDeallocator
         private native void allocate(@Cast("const SkPMColor*") int[] colors, int count);
@@ -427,7 +423,7 @@ public class core {
 
         public SkDevice(int config, int width, int height, boolean isOpaque) { allocate(config, width, height, isOpaque); }
 		@NoDeallocator
-		private native void allocate(@Cast("SkBitmap::Config") int config, int width, int height, boolean isOpaque);
+		private native void allocate(@Cast("SkBitmap::Config") int config, int width, int height, boolean isOpaque/* = false*/);
 
         public native @Const @ByRef SkBitmap accessBitmap(boolean changePixels);
     }
@@ -1402,7 +1398,7 @@ public class core {
 	 * SkRefCnt.h
 	 */
 	
-	public static class SkRefCnt extends Pointer {
+	public static class SkRefCnt extends SkNoncopyable {
 		static { Loader.load(Skia.class); }
 		
 		protected SkRefCnt(Pointer pointer) { super(pointer); }
@@ -1705,6 +1701,9 @@ public class core {
 
     public static class SkNoncopyable extends Pointer {
         static { Loader.load(Skia.class); }
+
+        public SkNoncopyable(Pointer p) { super(p); }
+        protected SkNoncopyable() {}
     };
 
 	/*
