@@ -83,6 +83,7 @@ public class effects {
         public SkBlurDrawLooper(float radius, float dx, float dy, int color) { allocate(radius, dx, dy, color); }
         @NoDeallocator
         public native void allocate(@Cast("SkScalar") float radius, @Cast("SkScalar") float dx, @Cast("SkScalar") float dy, @Cast("SkColor") int color);
+        
 		public SkBlurDrawLooper(float radius, float dx, float dy, int color, int flags) { allocate(radius, dx, dy, color, flags); }
 		@NoDeallocator
 		public native void allocate(@Cast("SkScalar") float radius, @Cast("SkScalar") float dx, @Cast("SkScalar") float dy, @Cast("SkColor") int color, @Cast("uint32_t") int flags/* = kNone_BlurFlag*/);
@@ -254,6 +255,8 @@ public class effects {
 
     public static class SkMorphologyImageFilter extends SkImageFilter {
         static { Loader.load(Skia.class); }
+        
+        protected SkMorphologyImageFilter() {}
     }
 
     public static class SkDilateImageFilter extends SkMorphologyImageFilter {
@@ -287,6 +290,8 @@ public class effects {
     public static class SkPaintShape extends SkShape {
         static { Loader.load(Skia.class); }
 
+        protected SkPaintShape() {}
+        
         public native @ByRef SkPaint paint();
         //public native @Const @ByRef SkPaint paint();
     };

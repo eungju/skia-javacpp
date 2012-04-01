@@ -66,13 +66,20 @@ public class core {
 	        
 		@Name("operator=")
 		public native @ByRef SkBitmap copy(@Const @ByRef SkBitmap src);
+
 	    public native boolean empty();
+
 	    @Name("isNull")
 	    public native boolean isNullPixels();
+
 	    public native @Cast("SkBitmap::Config") int config();
+
 	    public native int width();
+
 	    public native int height();
+
 	    public native int rowBytes();
+
 	    public native int shiftPerPixel();
 	    public native int bytesPerPixel();
 	    public native int rowBytesAsPixels();
@@ -93,35 +100,84 @@ public class core {
 	    public static native int ComputeShiftPerPixel(@Cast("SkBitmap::Config") int c);
 	    public static native @ByVal Sk64 ComputeSize64(@Cast("SkBitmap::Config") int c, int width, int height);
 	    public static native @Cast("size_t") int ComputeSize(@Cast("SkBitmap::Config") int c, int width, int height);
-		public void setConfig(int config, int width, int height) { setConfig(config, width, height, 0); }
-		public native void setConfig(@Cast("SkBitmap::Config")int config, int width, int height, int rowBytes/* = 0*/);
+
+        public native void getBounds(SkRect bounds);
+        public native void getBounds(SkIRect bounds);
+
+        public native void setConfig(@Cast("SkBitmap::Config")int config, int width, int height);
+        public native void setConfig(@Cast("SkBitmap::Config")int config, int width, int height, int rowBytes/* = 0*/);
+
         public native void setPixels(Pointer p);
 	    public native void setPixels(Pointer p, SkColorTable ctable/* = NULL*/);
+
 	    public native boolean copyPixelsTo(Pointer dst, @Cast("size_t") int dstSize, int dstRowBytes/* = -1*/, boolean preserveDstPad/* = false*/);
         public native boolean allocPixels();
 	    public native boolean allocPixels(SkColorTable ctable/* = NULL*/);
-	    
-	    public native void lockPixels();
+        public native boolean allocPixels(Allocator allocator, SkColorTable ctable);
+
+        public native SkPixelRef pixelRef();
+        public native @Cast("size_t") int pixelRefOffset();
+        public native SkPixelRef setPixelRef(SkPixelRef pr, @Cast("size_t") int offset/* = 0*/);
+
+        public native void lockPixels();
 	    public native void unlockPixels();
-	    
-	    public native void eraseARGB(@Cast("U8CPU") int a, @Cast("U8CPU") int r, @Cast("U8CPU") int g, @Cast("U8CPU") int b);
+
+        public native boolean lockPixelsAreWritable();
+
+        public native boolean readyToDraw();
+
+        //TODO: SkGpuTexture* getTexture() const;
+
+        public native SkColorTable getColorTable();
+
+        public native @Cast("uint32_t") int getGenerationID();
+
+        public native void notifyPixelsChanged();
+
+        public native void eraseARGB(@Cast("U8CPU") int a, @Cast("U8CPU") int r, @Cast("U8CPU") int g, @Cast("U8CPU") int b);
 	    public native void eraseRGB(@Cast("U8CPU") int r, @Cast("U8CPU") int g, @Cast("U8CPU") int b);
 	    public native void eraseColor(@Cast("SkColor") int c);
 
-	    	
-	    public native @Cast("SkColor") int getColor(int x, int y);
+        public native boolean scrollRect(@Const SkIRect subset, int dx, int dy,
+                        SkRegion inva/*l = NULL*/);
+
+        public native @Cast("SkColor") int getColor(int x, int y);
 	    public native Pointer getAddr(int x, int y);
 	    public native @Cast("uint32_t*") IntPointer getAddr32(int x, int y);
 	    public native @Cast("uint16_t*") ShortPointer getAddr16(int x, int y);
 	    public native @Cast("uint8_t*") BytePointer getAddr8(int x, int y);
 	    public native @Cast("uint8_t*") BytePointer getAddr1(int x, int y);
 
-        public boolean copyTo(SkBitmap dst, int c) { return copyTo(dst, c, null); }
+        public native @Cast("SkPMColor") int getIndex8Color(int x, int y);
+
+        public native boolean extractSubset(SkBitmap dst, @Const @ByRef SkIRect subset);
+
+        public native boolean copyTo(SkBitmap dst, @Cast("SkBitmap::Config") int c);
         public native boolean copyTo(SkBitmap dst, @Cast("SkBitmap::Config") int c, Allocator allocator/* = NULL*/);
+
+        public native boolean deepCopyTo(SkBitmap dst, @Cast("SkBitmap::Config") int c);
+
+        public native boolean canCopyTo(@Cast("SkBitmap::Config") int newConfig);
+
+        public native boolean hasMipMap();
+        public native void buildMipMap(boolean forceRebuild/* = false*/);
+        public native void freeMipMap();
+
+        //TODO: int extractMipLevel(SkBitmap* dst, SkFixed sx, SkFixed sy);
+
+        public native boolean extractAlpha(SkBitmap dst);
+
+        public native boolean extractAlpha(SkBitmap dst, @Const SkPaint paint,
+                          SkIPoint offset);
+
+        public native boolean extractAlpha(SkBitmap dst, @Const SkPaint paint, Allocator allocator,
+                          SkIPoint offset);
 
         public static class Allocator extends SkRefCnt {
             static { Loader.load(Skia.class); }
 
+            protected Allocator() {}
+            
             public native boolean allocPixelRef(SkBitmap bitmap, SkColorTable table);
         };
 	}
@@ -173,8 +229,11 @@ public class core {
         public native SkDevice getTopDevice();
         public native SkDevice getTopDevice(boolean updateMatrixClip/* = false*/);
         public native SkDevice setBitmapDevice(@Const @ByRef SkBitmap bitmap);
+        public native SkDevice createCompatibleDevice(@Cast("SkBitmap::Config") int config,
+                                         int width, int height,
+                                         boolean isOpaque);
 
-	    //enum Config8888
+        //enum Config8888
 	    public static final int kNative_Premul_Config8888 = 0,
 	    		kNative_Unpremul_Config8888 = 1,
 	    		kBGRA_Premul_Config8888 = 2,
@@ -194,12 +253,15 @@ public class core {
 	    		kARGB_NoClipLayer_SaveFlag = 0x0F,
 	    		kARGB_ClipLayer_SaveFlag = 0x1F;
 
-	    public int save() { return save(kMatrixClip_SaveFlag); }
-	    public native int save(@Cast("SkCanvas::SaveFlags") int flags/* = kMatrixClip_SaveFlag*/);
-	    public int saveLayer(SkRect bounds, SkPaint paint) { return saveLayer(bounds, paint, kARGB_ClipLayer_SaveFlag); }
-	    public native int saveLayer(@Const SkRect bounds, @Const SkPaint paint, @Cast("SkCanvas::SaveFlags") int flags/* = kARGB_ClipLayer_SaveFlag*/);
-	    public int saveLayerAlpha(SkRect bounds, int alpha) { return saveLayerAlpha(bounds, alpha, kARGB_ClipLayer_SaveFlag); }
-	    public native int saveLayerAlpha(@Const SkRect bounds, @Cast("U8CPU") int alpha, @Cast("SkCanvas::SaveFlags") int flags/* = kARGB_ClipLayer_SaveFlag*/);
+        public native int save();
+        public native int save(@Cast("SkCanvas::SaveFlags") int flags/* = kMatrixClip_SaveFlag*/);
+
+        public native int saveLayer(@Const SkRect bounds, @Const SkPaint paint);
+        public native int saveLayer(@Const SkRect bounds, @Const SkPaint paint, @Cast("SkCanvas::SaveFlags") int flags/* = kARGB_ClipLayer_SaveFlag*/);
+
+        public native int saveLayerAlpha(@Const SkRect bounds, @Cast("U8CPU") int alpha);
+        public native int saveLayerAlpha(@Const SkRect bounds, @Cast("U8CPU") int alpha, @Cast("SkCanvas::SaveFlags") int flags/* = kARGB_ClipLayer_SaveFlag*/);
+
 	    public native void restore();
 	    public native int getSaveCount();
 	    public native void restoreToCount(int saveCount);
@@ -224,6 +286,28 @@ public class core {
         public native boolean clipPath(@Const @ByRef SkPath path,
                               @Cast("SkRegion::Op") int op/* = SkRegion::kIntersect_Op*/,
                               boolean doAntiAlias/* = false*/);
+
+        public native boolean clipRegion(@Const @ByRef SkRegion deviceRgn,
+                                @Cast("SkRegion::Op") int op/* = SkRegion::kIntersect_Op*/);
+
+        public native boolean setClipRegion(@Const @ByRef SkRegion deviceRgn);
+
+        //enum EdgeType
+        public static final int kBW_EdgeType = 0,
+            kAA_EdgeType = 1;
+
+        public native boolean quickReject(@Const @ByRef SkRect rect, @Cast("SkCanvas::EdgeType") int et);
+
+        public native boolean quickReject(@Const @ByRef SkPath path, @Cast("SkCanvas::EdgeType") int et);
+
+        public native boolean quickRejectY(@Cast("SkScalar") float top, @Cast("SkScalar") float bottom, @Cast("SkCanvas::EdgeType") int et);
+
+        public native boolean getClipBounds(SkRect bounds, @Cast("SkCanvas::EdgeType") int et/* = kAA_EdgeType*/);
+
+        public native boolean getClipDeviceBounds(SkIRect bounds);
+
+        public native void drawARGB(@Cast("U8CPU") int a, @Cast("U8CPU") int r, @Cast("U8CPU") int g, @Cast("U8CPU") int b,
+                      @Cast("SkXfermode::Mode") int mode/* = SkXfermode::kSrcOver_Mode*/);
 
         public native void drawColor(@Cast("SkColor") int color);
 	    public native void drawColor(@Cast("SkColor") int color, @Cast("SkXfermode::Mode") int mode/* = SkXfermode::kSrcOver_Mode*/);
@@ -368,6 +452,8 @@ public class core {
 	public static class SkColorFilter extends SkFlattenable {
 		static { Loader.load(Skia.class); }
 
+        protected SkColorFilter() {}
+
         public static native SkColorFilter CreateModeFilter(@Cast("SkColor") int c, @Cast("SkXfermode::Mode") int mode);
 	}
 	
@@ -482,6 +568,7 @@ public class core {
 		}
 		
 		protected SkFlattenable() {}
+		
 		public native Factory getFactory();
 	    public static native Factory NameToFactory(String name);
 	    public static native String FactoryToName(Factory factory);
@@ -1061,6 +1148,16 @@ public class core {
         public native void abortPlayback();
     }
 
+    /*
+     * SkPixelRef.h
+     */
+
+    public static class SkPixelRef extends SkFlattenable {
+        static { Loader.load(Skia.class); }
+
+        protected SkPixelRef() {}
+    }
+
 	/*
 	 * SkPoint.h
 	 */
@@ -1406,7 +1503,7 @@ public class core {
 	    public native void validate();
 
         protected static class UnrefDeallocator extends SkRefCnt implements Deallocator {
-            UnrefDeallocator(SkRefCnt p) { super(p); }
+            public UnrefDeallocator(SkRefCnt p) { super(p); }
             @Override public void deallocate() { unref(); }
         }
 
@@ -1529,6 +1626,8 @@ public class core {
     public static class SkShape extends SkFlattenable {
         static { Loader.load(Skia.class); }
 
+        protected SkShape() {}
+        
         public native void draw(SkCanvas canvas);
 
         public native void drawXY(SkCanvas canvas, @Cast("SkScalar") float dx, @Cast("SkScalar") float dy);
@@ -1576,6 +1675,8 @@ public class core {
     public static class SkStream extends SkRefCnt {
         static { Loader.load(Skia.class); }
 
+        protected SkStream() {}
+        
         public native boolean rewind();
         public native String getFileName();
         public native @Cast("size_t") int read(Pointer buffer, @Cast("size_t") int size);
@@ -1660,7 +1761,9 @@ public class core {
 	
 	public static class SkTypeface extends SkRefCnt {
 		static { Loader.load(Skia.class); }
-		
+
+        protected SkTypeface() {}
+
 	    //enum Style
 		public static final int kNormal = 0,
 				kBold = 0x01,
@@ -1709,6 +1812,8 @@ public class core {
 	
 	public static class SkUnitMapper extends SkFlattenable {
 		static { Loader.load(Skia.class); }
+		
+		protected SkUnitMapper() {}
 	}
 	
 	/*
@@ -1731,6 +1836,8 @@ public class core {
 	public static class SkXfermode extends SkFlattenable {
 		static { Loader.load(Skia.class); }
 
+		protected SkXfermode() {}
+		
 	    //enum Mode
 		public static final int kClear_Mode = 0,
 	        kSrc_Mode = 1,
