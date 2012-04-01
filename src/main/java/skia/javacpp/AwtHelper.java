@@ -38,6 +38,9 @@ public class AwtHelper {
 		try {
 			IntPointer pixelPtr = new IntPointer(bitmap.getPixels());
 			int[] samples = image.getRGB(0, 0, w, h, null, 0, w);
+            for (int i = 0; i < samples.length; i++) {
+                samples[i] = SkPreMultiplyColor(samples[i]);
+            }
 			pixelPtr.put(samples);
 		} finally {
 			bitmap.unlockPixels();

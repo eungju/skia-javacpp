@@ -26,7 +26,7 @@ public class AwtHelperTest {
 		BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_4BYTE_ABGR);
 		Graphics2D g2d = image.createGraphics();
 		g2d.setBackground(Color.RED);
-		g2d.clearRect(0, 0, image.getWidth(), image.getHeight());
+		g2d.clearRect(0, 0, image.getWidth() / 2, image.getHeight() / 2);
 		SkBitmap bitmap = AwtHelper.toSkBitmap(image);
 		SkiaTest.saveToFile("to_SkBitmap", bitmap);
 	}
