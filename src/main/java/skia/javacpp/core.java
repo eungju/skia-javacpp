@@ -37,7 +37,6 @@ public class core {
 	public static class Sk64 extends Pointer {
 		static { Loader.load(Skia.class); }
 		
-		public Sk64(Pointer pointer) { super(pointer); }
 		public Sk64() { allocate(); }
 		private native void allocate();
 	}
@@ -59,9 +58,9 @@ public class core {
         		kARGB_8888_Config = 6,
         		kRLE_Index8_Config = 7;
         
-		public SkBitmap(Pointer pointer) { super(pointer); }
 		public SkBitmap() { allocate(); }
 		private native void allocate();
+
 	    public SkBitmap(SkBitmap src) { allocate(src); }
 	    private native void allocate(@Const @ByRef SkBitmap src);
 	        
@@ -346,17 +345,19 @@ public class core {
 
 	public static class SkXfermodeProc extends FunctionPointer {
 		static { Loader.load(Skia.class); }
-		public SkXfermodeProc(Pointer p) { super(p); }
+
 		protected SkXfermodeProc() { allocate(); }
 		protected final native void allocate();
+
 		public native @Cast("SkPMColor") int call(@Cast("SkPMColor") int src, @Cast("SkPMColor") int dst);
 	}
 	
 	public static class SkXfermodeProc16 extends FunctionPointer {
 		static { Loader.load(Skia.class); }
-		public SkXfermodeProc16(Pointer p) { super(p); }
+
 		protected SkXfermodeProc16() { allocate(); }
 		protected final native void allocate();
+
 		public native @Cast("uint16_t") short call(@Cast("SkPMColor") int src, @Cast("uint16_t") short dst);
 	}
 	
@@ -440,7 +441,6 @@ public class core {
     public static class SkDrawFilter extends SkRefCnt {
         static { Loader.load(Skia.class); }
 
-        public SkDrawFilter(Pointer pointer) { super(pointer); }
         protected SkDrawFilter() {}
 
         //enum Type
@@ -462,7 +462,6 @@ public class core {
 	public static class SkDrawLooper extends SkFlattenable {
 		static { Loader.load(Skia.class); }
 
-		public SkDrawLooper(Pointer pointer) { super(pointer); }
 		protected SkDrawLooper() {}
 	}
 	
@@ -475,13 +474,13 @@ public class core {
 		
 		public static class Factory extends FunctionPointer {
 			static { Loader.load(Skia.class); }
-			public Factory(Pointer p) { super(p); }
+
 			protected Factory() { allocate(); }
 			protected final native void allocate();
+
 			public native SkFlattenable call(@ByRef SkFlattenableReadBuffer buffer);
 		}
 		
-		public SkFlattenable(Pointer pointer) { super(pointer); }
 		protected SkFlattenable() {}
 		public native Factory getFactory();
 	    public static native Factory NameToFactory(String name);
@@ -492,7 +491,6 @@ public class core {
 	public static class SkFlattenableReadBuffer extends Pointer {
 		static { Loader.load(Skia.class); }
 		
-		public SkFlattenableReadBuffer(Pointer pointer) { super(pointer); }
 		public SkFlattenableReadBuffer() { allocate(); }
 		private native void allocate();
 	}
@@ -500,7 +498,6 @@ public class core {
 	public static class SkFlattenableWriteBuffer extends Pointer {
 		static { Loader.load(Skia.class); }
 		
-		public SkFlattenableWriteBuffer(Pointer pointer) { super(pointer); }
 		public SkFlattenableWriteBuffer(int minSize) { allocate(minSize); }
 		private native void allocate(@Cast("size_t") int minSize);
 	}
@@ -512,7 +509,6 @@ public class core {
 	public static class SkImageFilter extends SkFlattenable {
 		static { Loader.load(Skia.class); }
 		
-		public SkImageFilter(Pointer pointer) { super(pointer); }
 		protected SkImageFilter() {}
 	}
 
@@ -537,9 +533,9 @@ public class core {
     public static class SkMatrix extends Pointer {
 		static { Loader.load(Skia.class); }
 		
-		public SkMatrix(Pointer pointer) { super(pointer); }
 		public SkMatrix() { allocate(); }
 		private native void allocate();
+
 	    //enum TypeMask
 		public static final int kIdentity_Mask = 0,
 				kTranslate_Mask = 0x01,
@@ -660,11 +656,12 @@ public class core {
 	public static class SkPaint extends Pointer {
 		static { Loader.load(Skia.class); }
 		
-		public SkPaint(Pointer pointer) { super(pointer); }
 		public SkPaint() { allocate(); }
-		public SkPaint(SkPaint paint) { allocate(paint); }
 		private native void allocate();
-		private native void allocate(@Const @ByRef SkPaint paint);
+
+        public SkPaint(SkPaint paint) { allocate(paint); }
+        private native void allocate(@Const @ByRef SkPaint paint);
+
 		@Name("operator=")
         public native @ByRef SkPaint copy(@Const @ByRef SkPaint paint);
 		//TODO: @Name("operator==")
@@ -799,7 +796,6 @@ public class core {
 	    public static class FontMetrics extends Pointer {
 			static { Loader.load(Skia.class); }
 			
-			public FontMetrics(Pointer pointer) { super(pointer); }
 			public FontMetrics() { allocate(); }
 			private native void allocate();
 
@@ -999,14 +995,12 @@ public class core {
 	public static class SkPathEffect extends SkFlattenable {
 		static { Loader.load(Skia.class); }
 		
-		public SkPathEffect(Pointer pointer) { super(pointer); }
 		protected SkPathEffect() {}
 	}
 
 	public static class SkPairPathEffect extends SkPathEffect {
 		static { Loader.load(Skia.class); }
 		
-		public SkPairPathEffect(Pointer pointer) { super(pointer); }
 		protected SkPairPathEffect() {}
 	}
 
@@ -1309,7 +1303,6 @@ public class core {
 	public static class SkIRect extends Pointer {
 		static { Loader.load(Skia.class); }
 		
-		public SkIRect(Pointer pointer) { super(pointer); }
 		public SkIRect() { allocate(); }
 		private native void allocate();
 		
@@ -1325,7 +1318,6 @@ public class core {
 	public static class SkRect extends Pointer {
 		static { Loader.load(Skia.class); }
 		
-		public SkRect(Pointer pointer) { super(pointer); }
 		public SkRect() { allocate(); }
 		private native void allocate();
 
@@ -1515,7 +1507,6 @@ public class core {
 	public static class SkShader extends SkFlattenable {
 		static { Loader.load(Skia.class); }
 		
-		public SkShader(Pointer pointer) { super(pointer); }
 		protected SkShader() { }
 
         public native boolean getLocalMatrix(SkMatrix localM);
@@ -1659,7 +1650,6 @@ public class core {
 	public static class SkString extends Pointer {
 		static { Loader.load(Skia.class); }
 		
-		public SkString(Pointer pointer) { super(pointer); }
 		public SkString() { allocate(); }
 		private native void allocate();
 	}

@@ -27,7 +27,6 @@ public class effects {
 	public static class Sk1DPathEffect extends SkPathEffect {
 		static { Loader.load(Skia.class); }
 		
-		public Sk1DPathEffect(Pointer pointer) { super(pointer); }
 		protected Sk1DPathEffect() {};
 	}
 	
@@ -51,7 +50,6 @@ public class effects {
 	public static class Sk2DPathEffect extends SkPathEffect {
 		static { Loader.load(Skia.class); }
 		
-		public Sk2DPathEffect(Pointer pointer) { super(pointer); }
 		protected Sk2DPathEffect() {};
 	}
 	
