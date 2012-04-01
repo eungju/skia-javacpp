@@ -384,6 +384,11 @@ public class core {
 			SK_G32_MASK = ((1 << SK_G32_BITS) - 1),
 			SK_B32_MASK = ((1 << SK_B32_BITS) - 1);
 
+    public static final int SkGetPackedA32(int packed) { return ((packed) << (24 - SK_A32_SHIFT)) >>> 24;}
+    public static final int SkGetPackedR32(int packed) { return ((packed) << (24 - SK_R32_SHIFT)) >>> 24;}
+    public static final int SkGetPackedG32(int packed) { return ((packed) << (24 - SK_G32_SHIFT)) >>> 24;}
+    public static final int SkGetPackedB32(int packed) { return ((packed) << (24 - SK_B32_SHIFT)) >>> 24;}
+
     public static native @Cast("SkPMColor") int SkPackARGB32(@Cast("U8CPU") int a, @Cast("U8CPU") int r, @Cast("U8CPU") int g, @Cast("U8CPU") int b);
 
 	/*
@@ -1686,6 +1691,8 @@ public class core {
     /*
      * SkTypes.h
      */
+
+    public native static @Cast("int32_t") int SkAbs32(@Cast("int32_t") int value);
 
     public native static @Cast("int32_t") int SkMax32(@Cast("int32_t") int a, @Cast("int32_t") int b);
 

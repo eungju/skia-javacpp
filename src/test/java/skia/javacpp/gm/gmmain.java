@@ -121,6 +121,98 @@ public class gmmain {
         return SkImageEncoder.EncodeFile(path, copy, SkImageEncoder.kPNG_Type, 100);
     }
 
+    static int compute_diff_pmcolor(int c0, int c1) {
+        int dr = SkGetPackedR32(c0) - SkGetPackedR32(c1);
+        int dg = SkGetPackedG32(c0) - SkGetPackedG32(c1);
+        int db = SkGetPackedB32(c0) - SkGetPackedB32(c1);
+        return SkPackARGB32(0xFF, SkAbs32(dr), SkAbs32(dg), SkAbs32(db));
+    }
+
+    static void compute_diff(SkBitmap target, SkBitmap base,
+                             SkBitmap diff) {
+        diff.lockPixels();
+        try {
+            final int w = target.width();
+            final int h = target.height();
+            for (int y = 0; y < h; y++) {
+                for (int x = 0; x < w; x++) {
+                    int c0 = base.getAddr32(x, y).get();
+                    int c1 = target.getAddr32(x, y).get();
+                    int d = 0;
+                    if (c0 != c1) {
+                        d = compute_diff_pmcolor(c0, c1);
+                    }
+                    diff.getAddr32(x, y).put(d);
+                }
+            }
+        } finally {
+            diff.unlockPixels();
+        }
+    }
+
+    static int compare(final SkBitmap target, final SkBitmap base,
+                                 String name,
+                                 String renderModeDescriptor,
+                                 SkBitmap diff) {
+        SkBitmap copy = new SkBitmap();
+        SkBitmap bm = target;
+        if (target.config() != SkBitmap.kARGB_8888_Config) {
+            target.copyTo(copy, SkBitmap.kARGB_8888_Config);
+            bm = copy;
+        }
+        SkBitmap baseCopy = new SkBitmap();
+        SkBitmap bp = base;
+        if (base.config() != SkBitmap.kARGB_8888_Config) {
+            base.copyTo(baseCopy, SkBitmap.kARGB_8888_Config);
+            bp = baseCopy;
+        }
+
+        force_all_opaque(bm);
+        force_all_opaque(bp);
+
+        final int w = bm.width();
+        final int h = bm.height();
+        if (w != bp.width() || h != bp.height()) {
+            SkDebugf(
+                    "---- %s dimensions mismatch for %s base [%d %d] current [%d %d]\n",
+                    renderModeDescriptor, name,
+                    bp.width(), bp.height(), w, h);
+            return ERROR_DIMENSION_MISMATCH;
+        }
+
+        bm.lockPixels();
+        try {
+            bp.lockPixels();
+            try {
+                for (int y = 0; y < h; y++) {
+                    for (int x = 0; x < w; x++) {
+                        int c0 = bp.getAddr32(x, y).get();
+                        int c1 = bm.getAddr32(x, y).get();
+                        if (c0 != c1) {
+                            SkDebugf(
+                                    "----- %s pixel mismatch for %s at [%d %d] base 0x%08X current 0x%08X\n",
+                                    renderModeDescriptor, name, x, y, c0, c1);
+
+                            if (diff != null) {
+                                diff.setConfig(SkBitmap.kARGB_8888_Config, w, h);
+                                diff.allocPixels();
+                                compute_diff(bm, bp, diff);
+                            }
+                            return ERROR_PIXEL_MISMATCH;
+                        }
+                    }
+                }
+
+                // they're equal
+                return ERROR_NONE;
+            } finally {
+                bp.unlockPixels();
+            }
+        } finally {
+            bm.unlockPixels();
+        }
+    }
+
     //enum Backend
     public static final int kRaster_Backend = 0,
         kGPU_Backend = 1,
@@ -223,6 +315,43 @@ public class gmmain {
         }
     }
 
+    static int compare_to_reference_image(final String name,
+                                                    SkBitmap bitmap,
+                                                    final SkBitmap comparisonBitmap,
+                                                    final String diffPath,
+                                                    final String renderModeDescriptor) {
+        int errors;
+        SkBitmap diffBitmap = new SkBitmap();
+        errors = compare(bitmap, comparisonBitmap, name, renderModeDescriptor,
+                diffPath != null ? diffBitmap : null);
+        if ((ERROR_NONE == errors) && diffPath != null) {
+            String diffName = make_filename(diffPath, "", name, ".diff.png");
+            if (!write_bitmap(diffName, diffBitmap)) {
+                errors |= ERROR_WRITING_REFERENCE_IMAGE;
+            }
+        }
+        return errors;
+    }
+
+    static int compare_to_reference_image(final String readPath,
+                                                    final String name,
+                                                    SkBitmap bitmap,
+                                                    final String diffPath,
+                                                    final String renderModeDescriptor) {
+        String path = make_filename(readPath, "", name, "png");
+        SkBitmap orig = new SkBitmap();
+        if (SkImageDecoder.DecodeFile(path, orig,
+                SkBitmap.kARGB_8888_Config,
+                SkImageDecoder.kDecodePixels_Mode, null)) {
+            return compare_to_reference_image(name, bitmap,
+                    orig, diffPath,
+                    renderModeDescriptor);
+        } else {
+            System.err.print(String.format("FAILED to read %s\n", path));
+            return ERROR_READING_REFERENCE_IMAGE;
+        }
+    }
+
     static int handle_test_results(GM gm, ConfigData gRec,
                                              String writePath,
                                              String readPath,
@@ -239,11 +368,9 @@ public class gmmain {
                 gRec.fBackend == kRaster_Backend ||
                         gRec.fBackend == kGPU_Backend ||
                         (gRec.fBackend == kPDF_Backend && CAN_IMAGE_PDF))) {
-            //TODO: return compare_to_reference_image(readPath, name, bitmap, diffPath, renderModeDescriptor);
-            return ERROR_NONE;
+            return compare_to_reference_image(readPath, name, bitmap, diffPath, renderModeDescriptor);
         } else if (comparisonBitmap != null) {
-            //TODO: return compare_to_reference_image(name, bitmap, comparisonBitmap, diffPath, renderModeDescriptor);
-            return ERROR_NONE;
+            return compare_to_reference_image(name, bitmap, comparisonBitmap, diffPath, renderModeDescriptor);
         } else {
             return ERROR_NONE;
         }
@@ -323,6 +450,16 @@ public class gmmain {
             maxH = SkMax32(size.height(), maxH);
         }
 
+        if (readPath != null) {
+            System.err.print(String.format("reading from %s\n", readPath));
+        } else if (writePath != null) {
+            System.err.print(String.format("writing to %s\n", writePath));
+        }
+
+        if (resourcePath != null) {
+            System.err.print(String.format("reading resources from %s\n", resourcePath));
+        }
+
         int testsRun = 0;
         int testsPassed = 0;
         int testsFailed = 0;
@@ -340,6 +477,14 @@ public class gmmain {
             SkBitmap forwardRenderedBitmap = new SkBitmap();
 
             for (int i = 0; i < gRec.length; i++) {
+                // Skip any tests that we don't even need to try.
+                int gmFlags = gm.getFlags();
+                if ((kPDF_Backend == gRec[i].fBackend) &&
+                        (!doPDF || (gmFlags & GM.kSkipPDF_Flag) != 0))
+                {
+                    continue;
+                }
+
                 int testErrors = ERROR_NONE;
 
                 if (ERROR_NONE == testErrors) {
