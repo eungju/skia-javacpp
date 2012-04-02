@@ -29,7 +29,7 @@ public class gmmain {
                 CubicPathGM.factory,
                 CubicClosePathGM.factory,
                 DegenerateSegmentsGM.factory,
-                DrawBitmapRectGM.factory,
+//                DrawBitmapRectGM.factory,
                 EmptyPathGM.factory,
                 FillTypeGM.factory,
                 FillTypePerspGM.factory,
@@ -64,7 +64,8 @@ public class gmmain {
                 TinyBitmapGM.factory,
                 VertTextGM.factory,
                 VertText2GM.factory,
-                XfermodesGM.factory);
+                XfermodesGM.factory
+        );
 
         private Iterator<GMRegistry.Factory> i;
         
