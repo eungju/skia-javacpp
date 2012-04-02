@@ -318,11 +318,7 @@ public class core {
 	    		kLines_PointMode = 1,
 	    		kPolygon_PointMode = 2;
 	    public void drawPoints(int mode, SkPoint[] pts, SkPaint paint) {
-	    	SkPoint ptr = new SkPoint(pts.length);
-	    	for (int i = 0; i < pts.length; i++) {
-	    		ptr.position(i).copy(pts[i]);
-	    	}
-	    	drawPoints(mode, pts.length, ptr, paint);
+	    	drawPoints(mode, pts.length, SkPoint.array(pts), paint);
 	    }
 	    public native void drawPoints(@Cast("SkCanvas::PointMode") int mode, @Cast("size_t") int count, @Const SkPoint pts, @Const @ByRef SkPaint paint);
 	    public native void drawPoint(@Cast("SkScalar") float x, @Cast("SkScalar") float y, @Const @ByRef SkPaint paint);
@@ -716,15 +712,7 @@ public class core {
 
 	    public native boolean setRectToRect(@Const @ByRef SkRect src, @Const @ByRef SkRect dst, @Cast("SkMatrix::ScaleToFit") int stf);
 	    public boolean setPolyToPoly(SkPoint[] src, SkPoint[] dst) {
-			SkPoint srcPtr = new SkPoint(src.length);
-			for (int i = 0; i < src.length; i++) {
-				srcPtr.position(i).copy(src[i]);
-			}
-			SkPoint dstPtr = new SkPoint(dst.length);
-			for (int i = 0; i < dst.length; i++) {
-				dstPtr.position(i).copy(dst[i]);
-			}
-			return setPolyToPoly(srcPtr, dstPtr, src.length);
+			return setPolyToPoly(SkPoint.array(src), SkPoint.array(dst), src.length);
 	    }
 	    private native boolean setPolyToPoly(@Const SkPoint src, @Const SkPoint dst, int count);
 	    public native boolean invert(SkMatrix inverse);
@@ -1225,18 +1213,26 @@ public class core {
     @Name("operator+")
     public native static @ByVal SkIPoint plus(@Const @ByRef SkIPoint a, @Const @ByRef SkIPoint b);
 
-
     public static class SkPoint extends Pointer {
 		static { Loader.load(Skia.class); }
 		
 		public SkPoint() { allocate(); }
         private native void allocate();
 
-		public SkPoint(int size) { allocateArray(size); }
-        private native void allocateArray(int size);
+        @Name("operator=")
+        public native @ByRef SkPoint copy(@Const @ByRef SkPoint src);
 
+        private SkPoint(int size) { allocateArray(size); }
+        private native void allocateArray(int size);
         @Override public SkPoint position(int position) {
             return (SkPoint)super.position(position);
+        }
+        public static SkPoint array(SkPoint[] elements) {
+            SkPoint array = new SkPoint(elements.length);
+            for (int i = 0; i < elements.length; i++) {
+                array.position(i).copy(elements[i]);
+            }
+            return array.position(0);
         }
 
         @MemberGetter
@@ -1247,9 +1243,6 @@ public class core {
         public native @Cast("int32_t") int fY();
         @MemberSetter
         public native void fY(@Cast("int32_t") int y);
-
-		@Name("operator=")
-		public native @ByRef SkPoint copy(@Const @ByRef SkPoint src);
 
 	    public static native @ByVal SkPoint Make(@Cast("SkScalar") float x, @Cast("SkScalar") float y);
 
@@ -1271,20 +1264,12 @@ public class core {
         public native void setRectFan(@Cast("SkScalar") float l, @Cast("SkScalar") float t, @Cast("SkScalar") float r, @Cast("SkScalar") float b, @Cast("size_t") int stride);
 
         public static void Offset(SkPoint[] points, SkPoint offset) {
-            SkPoint ptr = new SkPoint(points.length);
-            for (int i = 0; i < points.length; i++) {
-                ptr.position(i).copy(points[i]);
-            }
-            Offset(ptr, points.length, offset);
+            Offset(SkPoint.array(points), points.length, offset);
         }
         public native static void Offset(SkPoint points, int count, @Const @ByRef SkPoint offset);
 
         public static void Offset(SkPoint[] points, @Cast("SkScalar") float dx, @Cast("SkScalar") float dy) {
-            SkPoint ptr = new SkPoint(points.length);
-            for (int i = 0; i < points.length; i++) {
-                ptr.position(i).copy(points[i]);
-            }
-            Offset(ptr, points.length, dx, dy);
+            Offset(SkPoint.array(points), points.length, dx, dy);
         }
         public native static void Offset(SkPoint points, int count, @Cast("SkScalar") float dx, @Cast("SkScalar") float dy);
 

@@ -4,6 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.awt.*;
+
 import static skia.javacpp.core.*;
 import static skia.javacpp.effects.*;
 import static skia.javacpp.images.*;
@@ -317,4 +319,28 @@ public class SkiaTest {
 		drawWithStroke(paint);
 		saveToFile("blur_draw_looper", bitmap);
 	}
+
+    @Test public void draw_points_as_points() {
+        SkPaint paint = new SkPaint();
+        paint.setStrokeWidth(10);
+        paint.setColor(SK_ColorRED);
+        canvas.drawPoints(SkCanvas.kPoints_PointMode, new SkPoint[] {SkPoint.Make(50, 50), SkPoint.Make(100, 200), SkPoint.Make(200, 50)}, paint);
+        saveToFile("draw_points_as_points", bitmap);
+    }
+
+    @Test public void draw_points_as_lines() {
+        SkPaint paint = new SkPaint();
+        paint.setStrokeWidth(10);
+        paint.setColor(SK_ColorRED);
+        canvas.drawPoints(SkCanvas.kLines_PointMode, new SkPoint[] {SkPoint.Make(50, 50), SkPoint.Make(100, 200), SkPoint.Make(200, 50)}, paint);
+        saveToFile("draw_points_as_lines", bitmap);
+    }
+
+    @Test public void draw_points_as_polygon() {
+        SkPaint paint = new SkPaint();
+        paint.setStrokeWidth(10);
+        paint.setColor(SK_ColorRED);
+        canvas.drawPoints(SkCanvas.kPolygon_PointMode, new SkPoint[] {SkPoint.Make(50, 50), SkPoint.Make(100, 200), SkPoint.Make(200, 50)}, paint);
+        saveToFile("draw_points_as_polygon", bitmap);
+    }
 }

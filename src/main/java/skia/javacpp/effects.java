@@ -151,11 +151,7 @@ public class effects {
             return CreateLinear(pts, colors, pos, mode, null);
         }
 		public static SkShader CreateLinear(SkPoint[] pts, int[] colors, float[] pos, int mode, SkUnitMapper mapper) {
-			SkPoint ptsPtr = new SkPoint(pts.length);
-			for (int i = 0; i < pts.length; i++) {
-				ptsPtr.position(i).copy(pts[i]);
-			}
-			return CreateLinear(ptsPtr, colors, pos, colors.length, mode, mapper);
+			return CreateLinear(SkPoint.array(pts), colors, pos, colors.length, mode, mapper);
 		}
 		public static native SkShader CreateLinear(@Const SkPoint pts, @Cast("const SkColor*") int[] colors, @Cast("const SkScalar*") float[] pos, int count, @Cast("SkShader::TileMode") int mode, SkUnitMapper mapper/* = NULL*/);
 
