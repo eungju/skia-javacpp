@@ -809,6 +809,20 @@ public class core {
 	    private native boolean setPolyToPoly(@Const SkPoint src, @Const SkPoint dst, int count);
 	    public native boolean invert(SkMatrix inverse);
 
+        public native static void SetAffineIdentity(@Cast("SkScalar*") float[] affine);
+
+        public native boolean asAffine(@Cast("SkScalar*") float[] affine);
+
+        public void mapPoints(SkPoint[] dst, SkPoint[] src) {
+            mapPoints(SkPoint.array(dst), SkPoint.array(src), src.length);
+        }
+        public native void mapPoints(SkPoint dst, @Const SkPoint src, int count);
+
+        public void mapPoints(SkPoint[] pts) {
+            mapPoints(SkPoint.array(pts), pts.length);
+        }
+        public native void mapPoints(SkPoint pts, int count);
+
         public static native @Const @ByRef SkMatrix I();
 
         public static native @Const @ByRef SkMatrix InvalidMatrix();
@@ -1527,6 +1541,7 @@ public class core {
         public native @Cast("SkScalar") float centerY();
 
         public native void set(@Cast("SkScalar") float left, @Cast("SkScalar") float top, @Cast("SkScalar") float right, @Cast("SkScalar") float bottom);
+        public native void setLTRB(@Cast("SkScalar") float left, @Cast("SkScalar") float top, @Cast("SkScalar") float right, @Cast("SkScalar") float bottom);
         public native void setXYWH(@Cast("SkScalar") float x, @Cast("SkScalar") float y, @Cast("SkScalar") float width, @Cast("SkScalar") float height);
 
         public native void offset(@Cast("SkScalar") float dx, @Cast("SkScalar") float dy);

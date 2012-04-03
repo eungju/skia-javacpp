@@ -22,6 +22,7 @@ public class gmmain {
 
     static class Iter {
         public static final List<GMRegistry.Factory> gms = Arrays.<GMRegistry.Factory>asList(
+                BigMatrixGM.MyFactory,
                 BitmapCopyGM.MyFactory,
                 FilterGM.MyFactory,
                 BitmapScrollGM.MyFactory,
