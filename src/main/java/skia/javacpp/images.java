@@ -37,7 +37,12 @@ public class images {
 	    public static final int kDecodeBounds_Mode = 0,
 	    		kDecodePixels_Mode = 1;
 
-	    public static native boolean DecodeFile(String file, SkBitmap bitmap, @Cast("SkBitmap::Config") int prefConfig, @Cast("SkImageDecoder::Mode") int mode, @Cast("SkImageDecoder::Format*") IntPointer format/* = NULL*/);
+        public native boolean decode(SkStream stream, SkBitmap bitmap, @Cast("SkBitmap::Config") int pref, @Cast("SkImageDecoder::Mode") int mode);
+        public native boolean decode(SkStream stream, SkBitmap bitmap, @Cast("SkImageDecoder::Mode") int mode);
+
+        public native static SkImageDecoder Factory(SkStream stream);
+
+        public static native boolean DecodeFile(String file, SkBitmap bitmap, @Cast("SkBitmap::Config") int prefConfig, @Cast("SkImageDecoder::Mode") int mode, @Cast("SkImageDecoder::Format*") IntPointer format/* = NULL*/);
 	    public static native boolean DecodeFile(String file, SkBitmap bitmap);
 	}
 	

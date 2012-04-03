@@ -13,9 +13,23 @@ import com.googlecode.javacpp.annotation.Properties;
 import static skia.javacpp.core.*;
 
 @Properties({
-	@Platform(include={"Sk1DPathEffect.h", "Sk2DPathEffect.h", "SkBlurDrawLooper.h", "SkBlurImageFilter.h",
-            "SkCornerPathEffect.h", "SkDashPathEffect.h", "SkDiscretePathEffect.h", "SkGradientShader.h",
-            "SkGroupShape.h", "SkMorphologyImageFilter.h", "SkRectShape.h", "SkTableColorFilter.h", "SkTestImageFilters.h", "SkUnitMapper.h"})
+	@Platform(include={
+            "Sk1DPathEffect.h",
+            "Sk2DPathEffect.h",
+            "SkBlurDrawLooper.h",
+            "SkBlurImageFilter.h",
+            "SkColorMatrix.h",
+            "SkColorMatrixFilter.h",
+            "SkCornerPathEffect.h",
+            "SkDashPathEffect.h",
+            "SkDiscretePathEffect.h",
+            "SkGradientShader.h",
+            "SkGroupShape.h",
+            "SkMorphologyImageFilter.h",
+            "SkRectShape.h",
+            "SkTableColorFilter.h",
+            "SkTestImageFilters.h",
+            "SkUnitMapper.h"})
 })
 public class effects {
 	static { Loader.load(Skia.class); }
@@ -101,9 +115,73 @@ public class effects {
 		public native void allocate(@Cast("SkScalar") float sigmaX, @Cast("SkScalar") float sigmaY);
 	}
 
-	/*
-	 * SkCornerPathEffect.h
-	 */
+    /*
+     * SkColorMatrix.h
+     */
+
+    public static class SkColorMatrix extends Pointer {
+        static { Loader.load(Skia.class); }
+
+        public SkColorMatrix() { allocate(); }
+        private native void allocate();
+
+        public native void setIdentity();
+        public native void setScale(@Cast("SkScalar") float rScale, @Cast("SkScalar") float gScale, @Cast("SkScalar") float bScale,
+                                    @Cast("SkScalar") float aScale/* = SK_Scalar1*/);
+//        public native void preScale(@Cast("SkScalar") float rScale, @Cast("SkScalar") float gScale, @Cast("SkScalar") float bScale,
+//                                    @Cast("SkScalar") float aScale/* = SK_Scalar1*/);
+//        public native void postScale(@Cast("SkScalar") float rScale, @Cast("SkScalar") float gScale, @Cast("SkScalar") float bScale,
+//                                     @Cast("SkScalar") float aScale/* = SK_Scalar1*/);
+
+        //enum Axis
+        public static final int kR_Axis = 0,
+            kG_Axis = 1,
+            kB_Axis = 2;
+        public native void setRotate(@Cast("SkColorMatrix::Axis") int axis, @Cast("SkScalar") float degrees);
+        public native void setSinCos(@Cast("SkColorMatrix::Axis") int axis, @Cast("SkScalar") float sine, @Cast("SkScalar") float cosine);
+        public native void preRotate(@Cast("SkColorMatrix::Axis") int axis, @Cast("SkScalar") float degrees);
+        public native void postRotate(@Cast("SkColorMatrix::Axis") int axis, @Cast("SkScalar") float degrees);
+
+        public native void setConcat(@Const @ByRef SkColorMatrix a, @Const @ByRef SkColorMatrix b);
+        public native void preConcat(@Const @ByRef SkColorMatrix mat);
+        public native void postConcat(@Const @ByRef SkColorMatrix mat);
+
+        public native void setSaturation(@Cast("SkScalar") float sat);
+        public native void setRGB2YUV();
+        public native void setYUV2RGB();
+    };
+
+    /*
+     * SkColorMatrixFilter.h
+     */
+
+    public static class SkColorMatrixFilter extends SkColorFilter {
+        static { Loader.load(Skia.class); }
+
+        public SkColorMatrixFilter() { allocate(); }
+        @NoDeallocator
+        private native void allocate();
+
+        public  SkColorMatrixFilter(SkColorMatrix mat) { allocate(mat); };
+        @NoDeallocator
+        private native void allocate(@Const @ByRef SkColorMatrix mat);
+
+        public SkColorMatrixFilter(float[] array) { allocate(array); };
+        @NoDeallocator
+        private native void allocate(@Cast("const SkScalar*") float[] array20);
+
+        public native void setMatrix(@Const @ByRef SkColorMatrix mat);
+        public native void setArray(@Cast("const SkScalar*") float[] array);
+
+//        virtual void filterSpan(const SkPMColor src[], int count, SkPMColor[]) SK_OVERRIDE;
+//        virtual void filterSpan16(const uint16_t src[], int count, uint16_t[]) SK_OVERRIDE;
+//        virtual uint32_t getFlags() SK_OVERRIDE;
+//        virtual bool asColorMatrix(SkScalar matrix[20]) SK_OVERRIDE;
+    }
+
+    /*
+    * SkCornerPathEffect.h
+    */
 	
 	public static class SkCornerPathEffect extends SkPathEffect {
 		static { Loader.load(Skia.class); }

@@ -22,6 +22,7 @@ public class gmmain {
 
     static class Iter {
         public static final List<GMRegistry.Factory> gms = Arrays.<GMRegistry.Factory>asList(
+                ColorMatrixGM.MyFactory,
                 ComplexClipGM.gFact0,
                 ComplexClipGM.gFact1,
                 ComplexClip2GM.factory,

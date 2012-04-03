@@ -1709,6 +1709,16 @@ public class core {
         public native boolean writeData(@Const SkData data);
     };
 
+    public static class SkFILEStream extends SkStream {
+        static { Loader.load(Skia.class); }
+
+        public SkFILEStream(String path) { allocate(path); }
+        private native void allocate(String path/* = NULL*/);
+
+        public native boolean isValid();
+        public native void setPath(String path);
+    };
+
     public static class SkDynamicMemoryWStream extends SkWStream {
         static { Loader.load(Skia.class); }
 
