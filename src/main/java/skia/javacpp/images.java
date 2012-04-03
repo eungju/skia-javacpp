@@ -42,14 +42,14 @@ public class images {
 
         public native static SkImageDecoder Factory(SkStream stream);
 
-        public static native boolean DecodeFile(String file, SkBitmap bitmap, @Cast("SkBitmap::Config") int prefConfig, @Cast("SkImageDecoder::Mode") int mode, @Cast("SkImageDecoder::Format*") IntPointer format/* = NULL*/);
-	    public static native boolean DecodeFile(String file, SkBitmap bitmap);
+        public native static boolean DecodeFile(String file, SkBitmap bitmap, @Cast("SkBitmap::Config") int prefConfig, @Cast("SkImageDecoder::Mode") int mode, @Cast("SkImageDecoder::Format*") IntPointer format/* = NULL*/);
+	    public native static boolean DecodeFile(String file, SkBitmap bitmap);
 	}
 	
 	public static class SkImageEncoder extends Pointer {
 		static { Loader.load(Skia.class); }
 
-		public static native boolean EncodeFile(String file, @Const @ByRef SkBitmap bitmap, @Cast("SkImageEncoder::Type") int type, int quality);
+		public native static boolean EncodeFile(String file, @Const @ByRef SkBitmap bitmap, @Cast("SkImageEncoder::Type") int type, int quality);
 		
 		//enum Type
 		public static final int kJPEG_Type = 0,

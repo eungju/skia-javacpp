@@ -95,11 +95,11 @@ public class core {
 	    public native boolean isVolatile();
 	    public native void setIsVolatile(boolean isVolatile);
 	    public native void reset();
-	    public static native int ComputeRowBytes(@Cast("SkBitmap::Config") int c, int width);
-	    public static native int ComputeBytesPerPixel(@Cast("SkBitmap::Config") int c);
-	    public static native int ComputeShiftPerPixel(@Cast("SkBitmap::Config") int c);
-	    public static native @ByVal Sk64 ComputeSize64(@Cast("SkBitmap::Config") int c, int width, int height);
-	    public static native @Cast("size_t") int ComputeSize(@Cast("SkBitmap::Config") int c, int width, int height);
+	    public native static int ComputeRowBytes(@Cast("SkBitmap::Config") int c, int width);
+	    public native static int ComputeBytesPerPixel(@Cast("SkBitmap::Config") int c);
+	    public native static int ComputeShiftPerPixel(@Cast("SkBitmap::Config") int c);
+	    public native static @ByVal Sk64 ComputeSize64(@Cast("SkBitmap::Config") int c, int width, int height);
+	    public native static @Cast("size_t") int ComputeSize(@Cast("SkBitmap::Config") int c, int width, int height);
 
         public native void getBounds(SkRect bounds);
         public native void getBounds(SkIRect bounds);
@@ -416,13 +416,13 @@ public class core {
 			SK_ColorCYAN = 0xFF00FFFF,
 			SK_ColorMAGENTA = 0xFFFF00FF;
 
-	public static native void SkRGBToHSV(@Cast("U8CPU") int red, @Cast("U8CPU") int green, @Cast("U8CPU") int blue, @Cast("SkScalar*") float[] hsv);
-	public static native void SkColorToHSV(@Cast("SkColor") int color, @Cast("SkScalar*") float[] hsv);
-	public static native @Cast("SkColor") int SkHSVToColor(@Cast("U8CPU") int alpha, @Cast("SkScalar*") float[] hsv);
-	public static native @Cast("SkColor") int SkHSVToColor(@Cast("SkScalar*") float[] hsv);
+	public native static void SkRGBToHSV(@Cast("U8CPU") int red, @Cast("U8CPU") int green, @Cast("U8CPU") int blue, @Cast("SkScalar*") float[] hsv);
+	public native static void SkColorToHSV(@Cast("SkColor") int color, @Cast("SkScalar*") float[] hsv);
+	public native static @Cast("SkColor") int SkHSVToColor(@Cast("U8CPU") int alpha, @Cast("SkScalar*") float[] hsv);
+	public native static @Cast("SkColor") int SkHSVToColor(@Cast("SkScalar*") float[] hsv);
 	
-	public static native @Cast("SkPMColor") int SkPreMultiplyARGB(@Cast("U8CPU") int  a, @Cast("U8CPU") int r, @Cast("U8CPU") int g, @Cast("U8CPU") int b);
-	public static native @Cast("SkPMColor") int SkPreMultiplyColor(@Cast("SkColor") int c);
+	public native static @Cast("SkPMColor") int SkPreMultiplyARGB(@Cast("U8CPU") int  a, @Cast("U8CPU") int r, @Cast("U8CPU") int g, @Cast("U8CPU") int b);
+	public native static @Cast("SkPMColor") int SkPreMultiplyColor(@Cast("SkColor") int c);
 
 	public static class SkXfermodeProc extends FunctionPointer {
 		static { Loader.load(Skia.class); }
@@ -451,7 +451,7 @@ public class core {
 
         protected SkColorFilter() {}
 
-        public static native SkColorFilter CreateModeFilter(@Cast("SkColor") int c, @Cast("SkXfermode::Mode") int mode);
+        public native static SkColorFilter CreateModeFilter(@Cast("SkColor") int c, @Cast("SkXfermode::Mode") int mode);
 	}
 	
 	/*
@@ -473,7 +473,7 @@ public class core {
     public static final int SkGetPackedG32(int packed) { return ((packed) << (24 - SK_G32_SHIFT)) >>> 24;}
     public static final int SkGetPackedB32(int packed) { return ((packed) << (24 - SK_B32_SHIFT)) >>> 24;}
 
-    public static native @Cast("SkPMColor") int SkPackARGB32(@Cast("U8CPU") int a, @Cast("U8CPU") int r, @Cast("U8CPU") int g, @Cast("U8CPU") int b);
+    public native static @Cast("SkPMColor") int SkPackARGB32(@Cast("U8CPU") int a, @Cast("U8CPU") int r, @Cast("U8CPU") int g, @Cast("U8CPU") int b);
 
 	/*
 	 * SkColorShader.h
@@ -567,9 +567,9 @@ public class core {
 		protected SkFlattenable() {}
 		
 		public native Factory getFactory();
-	    public static native Factory NameToFactory(String name);
-	    public static native String FactoryToName(Factory factory);
-	    public static native void Register(String name, Factory factory);
+	    public native static Factory NameToFactory(String name);
+	    public native static String FactoryToName(Factory factory);
+	    public native static void Register(String name, Factory factory);
 	}
 	
 	public static class SkFlattenableReadBuffer extends Pointer {
@@ -806,7 +806,7 @@ public class core {
 	    public boolean setPolyToPoly(SkPoint[] src, SkPoint[] dst) {
 			return setPolyToPoly(SkPoint.array(src), SkPoint.array(dst), src.length);
 	    }
-	    private native boolean setPolyToPoly(@Const SkPoint src, @Const SkPoint dst, int count);
+	    public native boolean setPolyToPoly(@Const SkPoint src, @Const SkPoint dst, int count);
 	    public native boolean invert(SkMatrix inverse);
 
         public native static void SetAffineIdentity(@Cast("SkScalar*") float[] affine);
@@ -823,9 +823,9 @@ public class core {
         }
         public native void mapPoints(SkPoint pts, int count);
 
-        public static native @Const @ByRef SkMatrix I();
+        public native static @Const @ByRef SkMatrix I();
 
-        public static native @Const @ByRef SkMatrix InvalidMatrix();
+        public native static @Const @ByRef SkMatrix InvalidMatrix();
 
         public native void dirtyMatrixTypeCache();
 	}
@@ -846,9 +846,9 @@ public class core {
 		@Name("operator=")
         public native @ByRef SkPaint copy(@Const @ByRef SkPaint paint);
 		//TODO: @Name("operator==")
-		//TODO: public static native boolean equal(@Const @ByRef SkPaint a, @Const @ByRef SkPaint b);
+		//TODO: public native static boolean equal(@Const @ByRef SkPaint a, @Const @ByRef SkPaint b);
 		//TODO: @Name("operator!=")
-		//TODO: public static native boolean notEqual(@Const @ByRef SkPaint a, @Const @ByRef SkPaint b);
+		//TODO: public native static boolean notEqual(@Const @ByRef SkPaint a, @Const @ByRef SkPaint b);
 	    //TODO: void flatten(SkFlattenableWriteBuffer&) const;
 	    //TODO: void unflatten(SkFlattenableReadBuffer&);
 	    public native void reset();
@@ -998,8 +998,8 @@ public class core {
 	    	@MemberGetter public native @Cast("SkScalar") float fXHeight();
 	    };
 
-        public float getFontMetrics(FontMetrics metrics) { return getFontMetrics(metrics, 0); };
-	    public native @Cast("SkScalar") float getFontMetrics(FontMetrics metrics, @Cast("SkScalar") float scale/* = 0*/);
+        public native @Cast("SkScalar") float getFontMetrics(FontMetrics metrics);
+        public native @Cast("SkScalar") float getFontMetrics(FontMetrics metrics, @Cast("SkScalar") float scale/* = 0*/);
 	    public native @Cast("SkScalar") float getFontSpacing();
 	    static Charset toCharset(int encoding) {
 	    	switch (encoding) {
@@ -1099,7 +1099,7 @@ public class core {
 	    public native @Cast("SkPath::Convexity") int getConvexity();
 	    public native @Cast("SkPath::Convexity") int getConvexityOrUnknown();
 	    public native void setConvexity(@Cast("SkPath::Convexity") int convexity);
-	    public static native @Cast("SkPath::Convexity") int ComputeConvexity(@Const @ByRef SkPath path);
+	    public native static @Cast("SkPath::Convexity") int ComputeConvexity(@Const @ByRef SkPath path);
 
         public native boolean isConvex();
 
@@ -1109,9 +1109,9 @@ public class core {
 	    public native void rewind();
 	    public native boolean isEmpty();
 	    
-	    public static native boolean IsLineDegenerate(@Const @ByRef SkPoint p1, @Const @ByRef SkPoint p2);
-	    public static native boolean IsQuadDegenerate(@Const @ByRef SkPoint p1, @Const @ByRef SkPoint p2, @Const @ByRef SkPoint p3);
-	    public static native boolean IsCubicDegenerate(@Const @ByRef SkPoint p1, @Const @ByRef SkPoint p2, @Const @ByRef SkPoint p3, @Const @ByRef SkPoint p4);
+	    public native static boolean IsLineDegenerate(@Const @ByRef SkPoint p1, @Const @ByRef SkPoint p2);
+	    public native static boolean IsQuadDegenerate(@Const @ByRef SkPoint p1, @Const @ByRef SkPoint p2, @Const @ByRef SkPoint p3);
+	    public native static boolean IsCubicDegenerate(@Const @ByRef SkPoint p1, @Const @ByRef SkPoint p2, @Const @ByRef SkPoint p3, @Const @ByRef SkPoint p4);
 
 	    public native boolean isRect(SkRect rect);
 	    public native int countPoints();
@@ -1372,7 +1372,7 @@ public class core {
         @MemberSetter
         public native void fY(@Cast("int32_t") int y);
 
-	    public static native @ByVal SkPoint Make(@Cast("SkScalar") float x, @Cast("SkScalar") float y);
+	    public native static @ByVal SkPoint Make(@Cast("SkScalar") float x, @Cast("SkScalar") float y);
 
 	    public native @Cast("SkScalar") float x();
 	    public native @Cast("SkScalar") float y();
@@ -1516,11 +1516,11 @@ public class core {
 		public SkIRect() { allocate(); }
 		private native void allocate();
 		
-	    public static native @ByVal SkIRect MakeEmpty();
-	    public static native @ByVal SkIRect MakeWH(@Cast("int32_t") int w, @Cast("int32_t") int h);
-	    public static native @ByVal SkIRect MakeSize(@Const @ByRef SkISize size);
-	    public static native @ByVal SkIRect MakeLTRB(@Cast("int32_t") int l, @Cast("int32_t") int t, @Cast("int32_t") int r, @Cast("int32_t") int b);
-	    public static native @ByVal SkIRect MakeXYWH(@Cast("int32_t") int x, @Cast("int32_t") int y, @Cast("int32_t") int w, @Cast("int32_t") int h);
+	    public native static @ByVal SkIRect MakeEmpty();
+	    public native static @ByVal SkIRect MakeWH(@Cast("int32_t") int w, @Cast("int32_t") int h);
+	    public native static @ByVal SkIRect MakeSize(@Const @ByRef SkISize size);
+	    public native static @ByVal SkIRect MakeLTRB(@Cast("int32_t") int l, @Cast("int32_t") int t, @Cast("int32_t") int r, @Cast("int32_t") int b);
+	    public native static @ByVal SkIRect MakeXYWH(@Cast("int32_t") int x, @Cast("int32_t") int y, @Cast("int32_t") int w, @Cast("int32_t") int h);
 
         public native void setXYWH(@Cast("int32_t") int x, @Cast("int32_t") int y, @Cast("int32_t") int width, @Cast("int32_t") int height);
 	}
@@ -1540,11 +1540,11 @@ public class core {
         @MemberGetter
         public native @Cast("SkScalar") float fBottom();
 
-	    public static native @ByVal SkRect MakeEmpty();
-	    public static native @ByVal SkRect MakeWH(@Cast("SkScalar") float w, @Cast("SkScalar") float h);
-	    public static native @ByVal SkRect MakeSize(@Const @ByRef SkSize size);
-	    public static native @ByVal SkRect MakeLTRB(@Cast("SkScalar") float l, @Cast("SkScalar") float t, @Cast("SkScalar") float r, @Cast("SkScalar") float b);
-	    public static native @ByVal SkRect MakeXYWH(@Cast("SkScalar") float x, @Cast("SkScalar") float y, @Cast("SkScalar") float w, @Cast("SkScalar") float h);
+	    public native static @ByVal SkRect MakeEmpty();
+	    public native static @ByVal SkRect MakeWH(@Cast("SkScalar") float w, @Cast("SkScalar") float h);
+	    public native static @ByVal SkRect MakeSize(@Const @ByRef SkSize size);
+	    public native static @ByVal SkRect MakeLTRB(@Cast("SkScalar") float l, @Cast("SkScalar") float t, @Cast("SkScalar") float r, @Cast("SkScalar") float b);
+	    public native static @ByVal SkRect MakeXYWH(@Cast("SkScalar") float x, @Cast("SkScalar") float y, @Cast("SkScalar") float w, @Cast("SkScalar") float h);
 
         public native @Cast("SkScalar") float left();
         public native @Cast("SkScalar") float top();
@@ -1729,7 +1729,7 @@ public class core {
 	        kRepeat_TileMode = 1,
 	        kMirror_TileMode = 2;
 	    
-	    public static native SkShader CreateBitmapShader(@Const @ByRef SkBitmap src, @Cast("SkShader::TileMode") int tmx, @Cast("SkShader::TileMode") int tmy);
+	    public native static SkShader CreateBitmapShader(@Const @ByRef SkBitmap src, @Cast("SkShader::TileMode") int tmx, @Cast("SkShader::TileMode") int tmy);
 
 	}
 
@@ -1758,7 +1758,7 @@ public class core {
 		
 		public SkISize() { allocate(); }
 		private native void allocate();
-		public static native @ByVal SkISize Make(int w, int h);
+		public native static @ByVal SkISize Make(int w, int h);
 		public native void set(int w, int h);
 		public native boolean isZero();
 		public native boolean isEmpty();
@@ -1774,7 +1774,7 @@ public class core {
 
         public SkSize() { allocate(); }
         private native void allocate();
-		public static native @ByVal SkSize Make(@Cast("SkScalar") float w, @Cast("SkScalar") float h);
+		public native static @ByVal SkSize Make(@Cast("SkScalar") float w, @Cast("SkScalar") float h);
 		@Name("operator=")
 		public native @ByRef SkSize copy(@Const @ByRef SkSize src);
 		public native @ByVal SkISize toRound();
@@ -1898,11 +1898,11 @@ public class core {
 	    public native boolean isItalic();
 	    public native boolean isFixedWidth();
 	    public native @Cast("SkFontID") int uniqueID();
-	    public static native boolean Equal(@Const SkTypeface facea, @Const SkTypeface faceb);
-	    public static native SkTypeface CreateFromName(String familyName, @Cast("SkTypeface::Style") int style);
-	    public static native SkTypeface CreateForChars(@Const Pointer data, @Cast("size_t") int bytelength, @Cast("SkTypeface::Style") int style);
-	    public static native SkTypeface CreateFromTypeface(@Const SkTypeface family, @Cast("SkTypeface::Style") int style);
-	    public static native SkTypeface CreateFromFile(String path);
+	    public native static boolean Equal(@Const SkTypeface facea, @Const SkTypeface faceb);
+	    public native static SkTypeface CreateFromName(String familyName, @Cast("SkTypeface::Style") int style);
+	    public native static SkTypeface CreateForChars(@Const Pointer data, @Cast("size_t") int bytelength, @Cast("SkTypeface::Style") int style);
+	    public native static SkTypeface CreateFromTypeface(@Const SkTypeface family, @Cast("SkTypeface::Style") int style);
+	    public native static SkTypeface CreateFromFile(String path);
 	}
 
     /*
@@ -1947,10 +1947,10 @@ public class core {
 	public static class SkUnPreMultiply extends Pointer {
 		static { Loader.load(Skia.class); }
 		
-		public static native @Cast("const SkUnPreMultiply::Scale*") IntPointer GetScaleTable();
-		public static native @Cast("SkUnPreMultiply::Scale") int GetScale(@Cast("U8CPU") int alpha);
-		public static native @Cast("U8CPU") int ApplyScale(@Cast("SkUnPreMultiply::Scale") int scale, @Cast("U8CPU") int component);
-		public static native @Cast("SkColor") int PMColorToColor(@Cast("SkPMColor") int c);
+		public native static @Cast("const SkUnPreMultiply::Scale*") IntPointer GetScaleTable();
+		public native static @Cast("SkUnPreMultiply::Scale") int GetScale(@Cast("U8CPU") int alpha);
+		public native static @Cast("U8CPU") int ApplyScale(@Cast("SkUnPreMultiply::Scale") int scale, @Cast("U8CPU") int component);
+		public native static @Cast("SkColor") int PMColorToColor(@Cast("SkPMColor") int c);
 	}
 	
 	/*
