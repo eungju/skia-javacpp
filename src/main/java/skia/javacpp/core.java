@@ -1169,7 +1169,22 @@ public class core {
 	    public native boolean getLastPt(SkPoint lastPt);
 	    public native void setLastPt(@Cast("SkScalar") float x, @Cast("SkScalar") float y);
 	    public native void setLastPt(@Const @ByRef SkPoint p);
-	}
+
+        //enum SegmentMask
+        public static final int kLine_SegmentMask = 1 << 0,
+            kQuad_SegmentMask   = 1 << 1,
+            kCubic_SegmentMask  = 1 << 2;
+
+        public native @Cast("uint32_t") int getSegmentMasks();
+
+        //enum Verb
+        public static final int kMove_Verb = 0,
+            kLine_Verb = 1,
+            kQuad_Verb = 2,
+            kCubic_Verb = 3,
+            kClose_Verb = 4,
+            kDone_Verb = 5;
+    }
 
     @Name("operator==")
     public native static boolean equal(@Const @ByRef SkPath a, @Const @ByRef SkPath b);

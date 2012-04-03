@@ -16,6 +16,7 @@ import static skia.javacpp.core.*;
 	@Platform(include={
             "Sk1DPathEffect.h",
             "Sk2DPathEffect.h",
+            "SkArithmeticMode.h",
             "SkBlurDrawLooper.h",
             "SkBlurImageFilter.h",
             "SkBlurMaskFilter.h",
@@ -80,10 +81,20 @@ public class effects {
 		@NoDeallocator
 		public native void allocate(@Const @ByRef SkMatrix matrix, @Const @ByRef SkPath path);
 	}
-	
-	/*
-	 * SkBlurDrawLooper.h
-	 */
+
+    /*
+     * SkArithmeticMode.h
+     */
+
+    public static class SkArithmeticMode extends SkXfermode {
+        static { Loader.load(Skia.class); }
+
+        public native static SkXfermode Create(@Cast("SkScalar") float k1, @Cast("SkScalar") float k2, @Cast("SkScalar") float k3, @Cast("SkScalar") float k4);
+    };
+
+    /*
+      * SkBlurDrawLooper.h
+      */
 	
 	public static class SkBlurDrawLooper extends SkDrawLooper {
 		static { Loader.load(Skia.class); }
