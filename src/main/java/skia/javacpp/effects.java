@@ -18,6 +18,7 @@ import static skia.javacpp.core.*;
             "Sk2DPathEffect.h",
             "SkBlurDrawLooper.h",
             "SkBlurImageFilter.h",
+            "SkBlurMaskFilter.h",
             "SkColorMatrix.h",
             "SkColorMatrixFilter.h",
             "SkCornerPathEffect.h",
@@ -114,6 +115,35 @@ public class effects {
 		@NoDeallocator
 		public native void allocate(@Cast("SkScalar") float sigmaX, @Cast("SkScalar") float sigmaY);
 	}
+
+    /*
+     * SkBlurMaskFilter.h
+     */
+
+    public static class SkBlurMaskFilter extends Pointer {
+        static { Loader.load(Skia.class); }
+
+        //enum BlurStyle
+        public static final int kNormal_BlurStyle = 0,
+            kSolid_BlurStyle = 1,
+            kOuter_BlurStyle = 2,
+            kInner_BlurStyle = 3;
+
+        //enum BlurFlags
+        public static final int kNone_BlurFlag = 0x00,
+            kIgnoreTransform_BlurFlag   = 0x01,
+            kHighQuality_BlurFlag       = 0x02,
+            kAll_BlurFlag = 0x03;
+
+        public native static SkMaskFilter Create(@Cast("SkScalar") float radius, @Cast("SkBlurMaskFilter::BlurStyle") int style,
+                                    @Cast("uint32_t") int flags/* = kNone_BlurFlag*/);
+
+        public native static SkMaskFilter CreateEmboss(@Cast("const SkScalar*") float[] direction,
+                                                       @Cast("SkScalar") float ambient, @Cast("SkScalar") float specular,
+                                                       @Cast("SkScalar") float blurRadius);
+
+        private SkBlurMaskFilter() {}
+    };
 
     /*
      * SkColorMatrix.h

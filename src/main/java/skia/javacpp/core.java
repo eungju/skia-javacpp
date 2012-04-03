@@ -22,7 +22,7 @@ import java.nio.charset.Charset;
 @Properties({
 	@Platform(include={"SkBitmap.h", "SkCanvas.h", "SkColor.h", "SkColorFilter.h", "SkColorPriv.h", "SkColorShader.h",
             "SkData.h", "SkDevice.h", "SkDrawFilter.h", "SkDrawLooper.h",
-            "SkImageFilter.h", "SkMath.h", "SkMatrix.h",
+            "SkImageFilter.h", "SkMaskFilter.h", "SkMath.h", "SkMatrix.h",
 			"SkPaint.h", "SkPath.h", "SkPathEffect.h", "SkPicture.h", "SkPoint.h", "SkRandom.h", "SkRegion.h",
 			"SkShader.h", "SkShape.h", "SkSize.h", "SkStream.h", "SkString.h", "SkTypeface.h",
 			"SkUnPreMultiply.h"})
@@ -138,6 +138,7 @@ public class core {
 	    public native void eraseRGB(@Cast("U8CPU") int r, @Cast("U8CPU") int g, @Cast("U8CPU") int b);
 	    public native void eraseColor(@Cast("SkColor") int c);
 
+        public native boolean scrollRect(@Const SkIRect subset, int dx, int dy);
         public native boolean scrollRect(@Const SkIRect subset, int dx, int dy,
                         SkRegion inva/*l = NULL*/);
 
@@ -596,8 +597,99 @@ public class core {
 	}
 
     /*
-     * SkMath.h
+     * SkMask.h
      */
+
+    public static class SkMask extends Pointer {
+        static { Loader.load(Skia.class); }
+
+        public SkMask() { allocate(); }
+        private native void allocate();
+
+        //enum Format
+        public static final int kBW_Format = 0,
+            kA8_Format = 1,
+            k3D_Format = 2,
+            kARGB32_Format = 3,
+            kLCD16_Format = 4,
+            kLCD32_Format = 5;
+
+        public static final int kCountMaskFormats = kLCD32_Format + 1;
+
+        //TODO:
+//        uint8_t*    fImage;
+//        SkIRect     fBounds;
+//        uint32_t    fRowBytes;
+//        Format      fFormat;
+
+        public native boolean isEmpty();
+
+        public native @Cast("size_t") int computeImageSize();
+
+        public native @Cast("size_t") int computeTotalImageSize();
+
+        public native @Cast("uint8_t*") BytePointer getAddr1(int x, int y);
+
+        public native @Cast("uint8_t*") BytePointer getAddr8(int x, int y);
+
+        public native @Cast("uint16_t*") ShortPointer getAddrLCD16(int x, int y);
+
+        public native @Cast("uint32_t*") IntPointer getAddrLCD32(int x, int y);
+
+        public native Pointer getAddr(int x, int y);
+
+        public native static @Cast("uint8_t*") BytePointer AllocImage(@Cast("size_t") int bytes);
+        public native static void FreeImage(Pointer image);
+
+        //enum CreateMode
+        public static final int kJustComputeBounds_CreateMode = 0,
+            kJustRenderImage_CreateMode = 1,
+            kComputeBoundsAndRenderImage_CreateMode = 2;
+    };
+
+    /*
+    * SkMaskFilter.h
+    */
+
+    public static class SkMaskFilter extends SkFlattenable {
+        static { Loader.load(Skia.class); }
+
+        protected SkMaskFilter() {}
+
+        public native @Cast("SkMask::Format") int getFormat();
+
+        public native boolean filterMask(SkMask dst, @Const @ByRef SkMask src, @Const @ByRef SkMatrix mat,
+                                SkIPoint margin);
+
+        //enum BlurType
+        public static final int kNone_BlurType = 0,
+            kNormal_BlurType = 1,
+            kSolid_BlurType = 2,
+            kOuter_BlurType = 3,
+            kInner_BlurType = 4;
+
+        public static class BlurInfo extends Pointer {
+            static { Loader.load(Skia.class); }
+
+            public BlurInfo() { allocate(); }
+            private native void allocate();
+
+            @MemberSetter
+            public native void fRadius(@Cast("SkScalar") float radius);
+            @MemberSetter
+            public native void fIgnoreTransform(boolean ignoreTransform);
+            @MemberSetter
+            public native void fHighQuality(boolean quality);
+        };
+
+        public native @Cast("SkMaskFilter::BlurType") int asABlur(BlurInfo blurInfo);
+
+        public native void computeFastBounds(@Const @ByRef SkRect src, SkRect dest);
+    };
+
+/*
+* SkMath.h
+*/
 
     public native static int SkNextPow2(int value);
 
@@ -829,17 +921,24 @@ public class core {
 	    public native boolean getFillPath(@Const @ByRef SkPath src, SkPath dst);
 	    public native boolean canComputeFastBounds();
 	    public native @Const @ByRef SkRect computeFastBounds(@Const @ByRef SkRect orig, SkRect storage);
+
 	    public native SkShader getShader();
 	    public native SkShader setShader(SkShader shader);
+
 	    public native SkColorFilter getColorFilter();
 	    public native SkColorFilter setColorFilter(SkColorFilter filter);
+
 	    public native SkXfermode getXfermode();
 	    public native SkXfermode setXfermode(SkXfermode xfermode);
 	    public native SkXfermode setXfermodeMode(@Cast("SkXfermode::Mode") int mode);
+
 	    public native SkPathEffect getPathEffect();
 	    public native SkPathEffect setPathEffect(SkPathEffect effect);
-	    
-	    public native SkTypeface getTypeface();
+
+        public native SkMaskFilter getMaskFilter();
+        public native SkMaskFilter setMaskFilter(SkMaskFilter maskfilter);
+
+        public native SkTypeface getTypeface();
 	    public native SkTypeface setTypeface(SkTypeface typeface);
 
 	    public native SkImageFilter getImageFilter();
