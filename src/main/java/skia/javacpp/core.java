@@ -1343,7 +1343,9 @@ public class core {
 
     public static class SkPoint extends Pointer {
 		static { Loader.load(Skia.class); }
-		
+
+        public SkPoint(Pointer pointer) { super(pointer); }
+
 		public SkPoint() { allocate(); }
         private native void allocate();
 
@@ -1356,11 +1358,12 @@ public class core {
             return (SkPoint)super.position(position);
         }
         public static SkPoint array(SkPoint[] elements) {
-            SkPoint array = new SkPoint(elements.length);
+            SkPoint ptr = new SkPoint(elements.length);
             for (int i = 0; i < elements.length; i++) {
-                array.position(i).copy(elements[i]);
+                ptr.position(i).copy(elements[i]);
+                elements[i] = new SkPoint(ptr);
             }
-            return array.position(0);
+            return ptr.position(0);
         }
 
         @MemberGetter

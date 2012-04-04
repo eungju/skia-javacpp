@@ -12,7 +12,7 @@ import com.googlecode.javacpp.annotation.Properties;
 import static skia.javacpp.core.*;
 
 @Properties({
-	@Platform(include={"SkImageDecoder.h", "SkImageEncoder.h", "SkBitmap.h"})
+	@Platform(include={"SkImageDecoder.h", "SkImageEncoder.h"})
 })
 public class images {
 	static { Loader.load(Skia.class); }
@@ -30,10 +30,44 @@ public class images {
 				kWBMP_Format = 6;
 		
 	    public native @Cast("SkImageDecoder::Format") int getFormat();
+
 	    public native boolean getDitherImage();
+
 	    public native void setDitherImage(boolean dither);
-	    
-	    //enum Mode 
+
+        public static class Peeker extends SkRefCnt {
+            static { Loader.load(Skia.class); }
+
+            protected Peeker() {}
+
+            public native boolean peek(String tag, @Const Pointer data, @Cast("size_t") int length);
+        };
+
+        public native Peeker getPeeker();
+        public native Peeker setPeeker(Peeker peeker);
+
+        public static class Chooser extends SkRefCnt {
+            public native void begin(int count);
+            public native void inspect(int index, @Cast("SkBitmap::Config") int config, int width, int height);
+            public native int choose();
+        };
+
+        public native Chooser getChooser();
+        public native Chooser setChooser(Chooser chooser);
+
+        public native void setPrefConfigTable(@Cast("const SkBitmap::Config*") int[] pref);
+
+        public native SkBitmap.Allocator getAllocator();
+        public native SkBitmap.Allocator setAllocator(SkBitmap.Allocator allocator);
+
+        public native int getSampleSize();
+        public native void setSampleSize(int size);
+
+        public native void resetSampleSize();
+
+        public native void cancelDecode();
+
+        //enum Mode
 	    public static final int kDecodeBounds_Mode = 0,
 	    		kDecodePixels_Mode = 1;
 
@@ -44,17 +78,34 @@ public class images {
 
         public native static boolean DecodeFile(String file, SkBitmap bitmap, @Cast("SkBitmap::Config") int prefConfig, @Cast("SkImageDecoder::Mode") int mode, @Cast("SkImageDecoder::Format*") IntPointer format/* = NULL*/);
 	    public native static boolean DecodeFile(String file, SkBitmap bitmap);
-	}
+        public native static boolean DecodeMemory(@Const Pointer buffer, @Cast("size_t") int size, SkBitmap bitmap,
+                                 @Cast("SkBitmap::Config") int prefConfig, @Cast("SkImageDecoder::Mode") int mode,
+                                 @Cast("SkImageDecoder::Format*") IntPointer format/* = NULL*/);
+        public native static boolean DecodeMemory(@Const Pointer buffer, @Cast("size_t") int size, SkBitmap bitmap);
+        public native static boolean DecodeStream(SkStream stream, SkBitmap bitmap,
+                                 @Cast("SkBitmap::Config") int prefConfig, @Cast("SkImageDecoder::Mode") int mode,
+                                 @Cast("SkImageDecoder::Format*") IntPointer format/* = NULL*/);
+        public native static boolean DecodeStream(SkStream stream, SkBitmap bitmap);
+
+        public native static @Cast("SkBitmap::Config") int GetDeviceConfig();
+        public native static void SetDeviceConfig(@Cast("SkBitmap::Config") int config);
+    }
 	
 	public static class SkImageEncoder extends Pointer {
 		static { Loader.load(Skia.class); }
 
-		public native static boolean EncodeFile(String file, @Const @ByRef SkBitmap bitmap, @Cast("SkImageEncoder::Type") int type, int quality);
-		
-		//enum Type
-		public static final int kJPEG_Type = 0,
-				kPNG_Type = 1;
-		
-	    public static final int kDefaultQuality = 80;
-	}
+        //enum Type
+        public static final int kJPEG_Type = 0,
+                kPNG_Type = 1;
+
+        public native static SkImageEncoder Create(@Cast("SkImageEncoder::Type") int type);
+
+        public static final int kDefaultQuality = 80;
+
+        public native boolean encodeFile(String file, @Const @ByRef SkBitmap bitmap, int quality);
+        public native boolean encodeStream(SkWStream stream, @Const @ByRef SkBitmap bitmap, int quality);
+
+        public native static boolean EncodeFile(String file, @Const @ByRef SkBitmap bitmap, @Cast("SkImageEncoder::Type") int type, int quality);
+        public native static boolean EncodeStream(SkWStream stream, @Const @ByRef SkBitmap bitmap, @Cast("SkImageEncoder::Type") int type, int quality);
+    }
 }

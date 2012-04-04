@@ -461,6 +461,8 @@ public class gmmain {
                 diffPath = args[++i];
             } else if (arg.equals("-i")) {
                 resourcePath = args[++i];
+            } else if (arg.equals("--match")) {
+                fMatches.add(args[++i]);
             }
         }
         

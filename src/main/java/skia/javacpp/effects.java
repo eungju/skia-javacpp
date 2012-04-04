@@ -267,9 +267,10 @@ public class effects {
 		static { Loader.load(Skia.class); }
 
         public static SkShader CreateLinear(SkPoint[] pts, int[] colors, float[] pos, int mode) {
-            return CreateLinear(pts, colors, pos, mode, null);
+            return CreateLinear(SkPoint.array(pts), colors, pos, colors.length, mode);
         }
-		public static SkShader CreateLinear(SkPoint[] pts, int[] colors, float[] pos, int mode, SkUnitMapper mapper) {
+        public native static SkShader CreateLinear(@Const SkPoint pts, @Cast("const SkColor*") int[] colors, @Cast("const SkScalar*") float[] pos, int count, @Cast("SkShader::TileMode") int mode);
+        public static SkShader CreateLinear(SkPoint[] pts, int[] colors, float[] pos, int mode, SkUnitMapper mapper) {
 			return CreateLinear(SkPoint.array(pts), colors, pos, colors.length, mode, mapper);
 		}
 		public native static SkShader CreateLinear(@Const SkPoint pts, @Cast("const SkColor*") int[] colors, @Cast("const SkScalar*") float[] pos, int count, @Cast("SkShader::TileMode") int mode, SkUnitMapper mapper/* = NULL*/);
