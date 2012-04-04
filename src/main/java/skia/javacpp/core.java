@@ -319,7 +319,7 @@ public class core {
 	    		kLines_PointMode = 1,
 	    		kPolygon_PointMode = 2;
 	    public void drawPoints(int mode, SkPoint[] pts, SkPaint paint) {
-	    	drawPoints(mode, pts.length, SkPoint.array(pts), paint);
+	    	drawPoints(mode, pts.length, SkPoint.constArray(pts), paint);
 	    }
 	    public native void drawPoints(@Cast("SkCanvas::PointMode") int mode, @Cast("size_t") int count, @Const SkPoint pts, @Const @ByRef SkPaint paint);
 	    public native void drawPoint(@Cast("SkScalar") float x, @Cast("SkScalar") float y, @Const @ByRef SkPaint paint);
@@ -804,7 +804,7 @@ public class core {
 
 	    public native boolean setRectToRect(@Const @ByRef SkRect src, @Const @ByRef SkRect dst, @Cast("SkMatrix::ScaleToFit") int stf);
 	    public boolean setPolyToPoly(SkPoint[] src, SkPoint[] dst) {
-			return setPolyToPoly(SkPoint.array(src), SkPoint.array(dst), src.length);
+			return setPolyToPoly(SkPoint.constArray(src), SkPoint.constArray(dst), src.length);
 	    }
 	    public native boolean setPolyToPoly(@Const SkPoint src, @Const SkPoint dst, int count);
 	    public native boolean invert(SkMatrix inverse);
@@ -814,7 +814,7 @@ public class core {
         public native boolean asAffine(@Cast("SkScalar*") float[] affine);
 
         public void mapPoints(SkPoint[] dst, SkPoint[] src) {
-            mapPoints(SkPoint.array(dst), SkPoint.array(src), src.length);
+            mapPoints(SkPoint.array(dst), SkPoint.constArray(src), src.length);
         }
         public native void mapPoints(SkPoint dst, @Const SkPoint src, int count);
 
@@ -1356,6 +1356,13 @@ public class core {
         private native void allocateArray(int size);
         @Override public SkPoint position(int position) {
             return (SkPoint)super.position(position);
+        }
+        public static SkPoint constArray(SkPoint[] elements) {
+            SkPoint ptr = new SkPoint(elements.length);
+            for (int i = 0; i < elements.length; i++) {
+                ptr.position(i).copy(elements[i]);
+            }
+            return ptr.position(0);
         }
         public static SkPoint array(SkPoint[] elements) {
             SkPoint ptr = new SkPoint(elements.length);
