@@ -307,38 +307,31 @@ public class effects {
     public static class SkMatrixRef extends SkMatrix {
         static { Loader.load(Skia.class); }
 
-        public SkMatrixRef() { allocate(); }
+        public SkMatrixRef() {
+            allocate();
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
         private native void allocate();
         
-        public SkMatrixRef(SkMatrix matrix) { allocate(matrix); }
+        public SkMatrixRef(SkMatrix matrix) {
+            allocate(matrix);
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
         private native void allocate(@Const @ByRef SkMatrix matrix);
 
         @Name("operator=")
         public native @ByRef SkMatrix copy(@Const @ByRef SkMatrix matrix);
 
-        public native @Cast("int32_t") int getRefCnt();
-        public native void ref();
-        public native void unref();
+        protected native @Cast("int32_t") int getRefCnt();
+        protected native void ref();
+        protected native void unref();
         protected static class UnrefDeallocator extends SkMatrixRef implements Deallocator {
             UnrefDeallocator(SkMatrixRef p) { super(p); }
             @Override public void deallocate() { unref(); }
         }
-        public void autoUnref() {
-            deallocator(new UnrefDeallocator(this));
-        }
     };
-
-    public static void SkSafeUnrefAuto(SkMatrixRef obj) {
-        if (obj != null) {
-            obj.autoUnref();
-        }
-    }
-
-    public native static void SkSafeRef(SkMatrixRef obj);
-
-    public native static void SkSafeUnref(SkMatrixRef obj);
 
     public static class SkGroupShape extends SkShape {
         static { Loader.load(Skia.class); }
