@@ -1933,7 +1933,94 @@ public class core {
 		
 		public SkString() { allocate(); }
 		private native void allocate();
-	}
+
+        public SkString(int len) { allocate(len); }
+        private native void allocate(@Cast("size_t") int len);
+
+        public SkString(String text) { allocate(text); }
+        private native void allocate(String text);
+
+        public SkString(String text, int len) { allocate(text, len); };
+        private native void allocate(String text, @Cast("size_t") int len);
+
+        public SkString(SkString src) { allocate(src); };
+        private native void allocate(@Const @ByRef SkString src);
+
+        public native boolean isEmpty();
+        public native @Cast("size_t") int size();
+        public native String c_str();
+        @Name("operator[]")
+        public native byte get(@Cast("size_t") int n);
+
+        public native boolean equals(@Const @ByRef SkString other);
+        public native boolean equals(String text);
+        public native boolean equals(String text, @Cast("size_t") int len);
+
+        public native boolean startsWith(String prefix);
+        public native boolean endsWith(String suffix);
+
+//        friend bool operator==(const SkString& a, const SkString& b) {
+//            return a.equals(b);
+//        }
+//        friend bool operator!=(const SkString& a, const SkString& b) {
+//            return !a.equals(b);
+//        }
+
+        @Name("operator=")
+        public native @ByRef SkString assign(@Const @ByRef SkString src);
+        @Name("operator=")
+        public native @ByRef SkString assign(String text);
+
+//        char* writable_str();
+//        char& operator[](size_t n) { return this->writable_str()[n]; }
+
+        public native void reset();
+        public native void resize(@Cast("size_t") int len);
+        public native void set(@Const @ByRef SkString src);
+        public native void set(String text);
+        public native void set(String text, @Cast("size_t") int len);
+        public native void setUTF16(@Cast("const uint16_t*") short[] text);
+        public native void setUTF16(@Cast("const uint16_t*") short[] text, @Cast("size_t") int len);
+
+        public native void insert(@Cast("size_t") int offset, @Const @ByRef SkString src);
+        public native void insert(@Cast("size_t") int offset, String text);
+        public native void insert(@Cast("size_t") int offset, String text, @Cast("size_t") int len);
+        public native void insertUnichar(@Cast("size_t") int offset, @Cast("SkUnichar") int uni);
+        public native void insertS32(@Cast("size_t") int offset, @Cast("int32_t") int value);
+        public native void insertS64(@Cast("size_t") int offset, @Cast("int64_t") long value, int minDigits/* = 0*/);
+        public native void insertHex(@Cast("size_t") int offset, @Cast("int32_t") int value, int minDigits/* = 0*/);
+        public native void insertScalar(@Cast("size_t") int offset, @Cast("SkScalar") float vakye);
+
+        public native void append(@Const @ByRef SkString str);
+        public native void append(String text);
+        public native void append(String text, @Cast("size_t") int len);
+        public native void appendUnichar(@Cast("SkUnichar") int uni);
+        public native void appendS32(@Cast("int32_t") int value);
+        public native void appendS64(@Cast("int64_t") long value, int minDigits/* = 0*/);
+        public native void appendHex(@Cast("int32_t") int value, int minDigits/* = 0*/);
+        public native void appendScalar(@Cast("SkScalar") float value);
+
+        public native void prepend(@Const @ByRef SkString str);
+        public native void prepend(String text);
+        public native void prepend(String text, @Cast("size_t") int len);
+        public native void prependUnichar(@Cast("SkUnichar") int uni);
+        public native void prependS32(@Cast("int32_t") int value);
+        public native void prependS64(@Cast("int32_t") int value, int minDigits/* = 0*/);
+        public native void prependHex(@Cast("int32_t") int value, int minDigits/* = 0*/);
+        public native void prependScalar(@Cast("SkScalar") float value);
+
+//        void printf(const char format[], ...);
+//        void appendf(const char format[], ...);
+//        void prependf(const char format[], ...);
+
+        public native void remove(@Cast("size_t") int offset, @Cast("size_t") int length);
+
+//        SkString& operator+=(const SkString& s) { this->append(s); return *this; }
+//        SkString& operator+=(const char text[]) { this->append(text); return *this; }
+//        SkString& operator+=(const char c) { this->append(&c, 1); return *this; }
+//
+        public native void swap(@ByRef SkString other);
+    }
 
 	/*
 	 * SkTypeface.h
@@ -1964,6 +2051,8 @@ public class core {
     /*
      * SkTypes.h
      */
+
+    //typedef int32_t SkUnichar;
 
     public native static @Cast("int32_t") int SkAbs32(@Cast("int32_t") int value);
 
