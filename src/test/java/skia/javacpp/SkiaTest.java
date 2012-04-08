@@ -22,13 +22,8 @@ public class SkiaTest {
 		bitmap.eraseColor(SK_ColorBLUE);
 		device = new SkDevice(bitmap);
 		canvas = new SkCanvas(device);
-		device.unref();
 	}
-	
-	@After public void afterEach() {
-		canvas.unref();
-	}
-	
+
 	static void force_all_opaque(SkBitmap bitmap) {
 		bitmap.lockPixels();
 		try {
@@ -159,7 +154,7 @@ public class SkiaTest {
 		paint.setARGB(255, 255, 0, 0);
 		paint.setStrokeWidth(1);
 		paint.setStyle(SkPaint.kStroke_Style);
-		paint.setPathEffect(pathEffect).unref();
+		paint.setPathEffect(pathEffect);
 		SkPath path = new SkPath();
 		path.moveTo(50, 50);
 		path.lineTo(100, 200);
@@ -191,8 +186,6 @@ public class SkiaTest {
 		SkPathEffect outer = new SkDashPathEffect(new float[] {4, 4}, 2, false);
 		SkPathEffect inner = new SkCornerPathEffect(32);
 		drawWithPathEffect(new SkComposePathEffect(outer, inner));
-		outer.unref();
-		inner.unref();
 		saveToFile("compose_path_effect", bitmap);
 	}
 
@@ -200,8 +193,6 @@ public class SkiaTest {
 		SkPathEffect first = new SkDashPathEffect(new float[] {4, 4}, 2, false);
 		SkPathEffect second = new SkCornerPathEffect(32);
 		drawWithPathEffect(new SkSumPathEffect(first, second));
-		first.unref();
-		second.unref();
 		saveToFile("sum_path_effect", bitmap);
 	}
 
@@ -212,13 +203,11 @@ public class SkiaTest {
 		pattern.eraseColor(0);
 		SkDevice device = new SkDevice(pattern);
 		SkCanvas canvas = new SkCanvas(device);
-		device.unref();
 		SkPath path = createPatternPath();
 		SkPaint paint = new SkPaint();
 		paint.setColor(SK_ColorGREEN);
 		paint.setStyle(SkPaint.kStroke_Style);
 		canvas.drawPath(path, paint);
-		canvas.unref();
 		return pattern;
 	}
 
@@ -235,7 +224,7 @@ public class SkiaTest {
 		paint.setStyle(SkPaint.kFill_Style);
 		SkBitmap pattern = createPattern();
 		SkShader shader = SkShader.CreateBitmapShader(pattern, SkShader.kRepeat_TileMode, SkShader.kRepeat_TileMode);
-		paint.setShader(shader).unref();
+		paint.setShader(shader);
 		canvas.drawRect(SkRect.MakeXYWH(100, 100, 100, 100), paint);
 		saveToFile("bitmap_shader", bitmap);
 	}
@@ -244,7 +233,7 @@ public class SkiaTest {
 		SkPaint paint = new SkPaint();
 		paint.setStyle(SkPaint.kFill_Style);
 		SkShader shader = new SkColorShader(core.SK_ColorRED);
-		paint.setShader(shader).unref();
+		paint.setShader(shader);
 		canvas.drawRect(SkRect.MakeXYWH(100, 100, 100, 100), paint);
 		saveToFile("color_shader", bitmap);
 	}
@@ -253,7 +242,7 @@ public class SkiaTest {
 		SkPaint paint = new SkPaint();
 		paint.setStyle(SkPaint.kFill_Style);
 		SkShader shader = SkGradientShader.CreateLinear(new SkPoint[] { SkPoint.Make(100, 100), SkPoint.Make(199, 199)}, new int[] { SK_ColorGREEN, SK_ColorRED }, null, SkShader.kClamp_TileMode, null);
-		paint.setShader(shader).unref();
+		paint.setShader(shader);
 		canvas.drawRect(SkRect.MakeXYWH(0, 0, 256, 256), paint);
 		saveToFile("linear_gradient_shader", bitmap);
 	}
@@ -262,7 +251,7 @@ public class SkiaTest {
 		SkPaint paint = new SkPaint();
 		paint.setStyle(SkPaint.kFill_Style);
 		SkShader shader = SkGradientShader.CreateRadial(SkPoint.Make(150, 150), 50, new int[] { SK_ColorGREEN, SK_ColorRED }, null, SkShader.kClamp_TileMode, null);
-		paint.setShader(shader).unref();
+		paint.setShader(shader);
 		canvas.drawRect(SkRect.MakeXYWH(100, 100, 100, 100), paint);
 		saveToFile("radial_gradient_shader", bitmap);
 	}
@@ -271,7 +260,7 @@ public class SkiaTest {
 		SkPaint paint = new SkPaint();
 		paint.setStyle(SkPaint.kFill_Style);
 		SkShader shader = SkGradientShader.CreateTwoPointRadial(SkPoint.Make(120, 120), 50, SkPoint.Make(120, 180), 50, new int[] { SK_ColorBLUE, SK_ColorRED }, null, SkShader.kRepeat_TileMode, null);
-		paint.setShader(shader).unref();
+		paint.setShader(shader);
 		canvas.drawRect(SkRect.MakeXYWH(0, 0, 256, 256), paint);
 		saveToFile("two_point_radial_gradient_shader", bitmap);
 	}
@@ -280,7 +269,7 @@ public class SkiaTest {
 		SkPaint paint = new SkPaint();
 		paint.setStyle(SkPaint.kFill_Style);
 		SkShader shader = SkGradientShader.CreateSweep(150, 150, new int[] { SK_ColorBLUE, SK_ColorRED }, null, null);
-		paint.setShader(shader).unref();
+		paint.setShader(shader);
 		canvas.drawRect(SkRect.MakeXYWH(0, 0, 256, 256), paint);
 		saveToFile("sweep_gradient_shader", bitmap);
 	}
@@ -288,7 +277,7 @@ public class SkiaTest {
 	public void drawText(SkPaint paint) {
 		paint.setColor(SK_ColorBLACK);
 		paint.setTextEncoding(SkPaint.kUTF8_TextEncoding);
-		paint.setTypeface(SkTypeface.CreateFromName("NanumGothic", SkTypeface.kBold)).unref();
+		paint.setTypeface(SkTypeface.CreateFromName("NanumGothic", SkTypeface.kBold));
 		paint.setTextSize(12);
 		canvas.clear(SK_ColorWHITE);
 		canvas.translate(128, 128);
@@ -315,7 +304,7 @@ public class SkiaTest {
 
 	@Test public void blur_draw_looper() {
 		SkPaint paint = new SkPaint();
-		paint.setLooper(new SkBlurDrawLooper(10, 0, 0, SK_ColorGREEN, SkBlurDrawLooper.kNone_BlurFlag)).unref();
+		paint.setLooper(new SkBlurDrawLooper(10, 0, 0, SK_ColorGREEN, SkBlurDrawLooper.kNone_BlurFlag));
 		drawWithStroke(paint);
 		saveToFile("blur_draw_looper", bitmap);
 	}
