@@ -69,7 +69,7 @@ public abstract class GM {
     }
 
     public static void SetResourcePath(String resourcePath) {
-        gResourcePath = resourcePath;
+        gResourcePath = resourcePath == null ? "" : resourcePath;
     }
     
     protected static String gResourcePath;

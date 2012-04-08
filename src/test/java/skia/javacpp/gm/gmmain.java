@@ -37,6 +37,7 @@ public class gmmain {
                 convexpaths.MyFactory,
                 cubicpaths.CubicPathFactory,
                 cubicpaths.CubicClosePathFactory,
+                cmykjpeg.MyFactory,
                 degeneratesegments.MyFactory,
                 //FIXME: drawbitmaprect.MyFactory. Causes a problem
                 emptypath.MyFactory,
