@@ -1645,9 +1645,9 @@ public class core {
 
         public native @Cast("int32_t") int nextS();
 
-        public native @Cast("U16CPU") short nextU16();
+        public native @Cast("U16CPU") int nextU16();
 
-        public native @Cast("S16CPU") short nextS16();
+        public native @Cast("S16CPU") int nextS16();
 
         public native @Cast("uint32_t") int nextBits(@Cast("unsigned") int bitCount);
 
@@ -1716,6 +1716,10 @@ public class core {
      * SkScalar.h
      */
 
+//    typedef float   SkScalar;
+//    extern const uint32_t gIEEENotANumber;
+//    extern const uint32_t gIEEEInfinity;
+
     public static final float SK_Scalar1 = 1.0f;
 
     public static final float SK_ScalarHalf = 0.5f;
@@ -1728,40 +1732,72 @@ public class core {
 
     public static final float SK_ScalarNaN = Float.NaN;
 
-    public static float SkIntToScalar(int n) {
-        return (float) n;
-    }
+    public native static boolean SkScalarIsNaN(float x);
+    public native static boolean SkScalarIsFinite(float x);
 
-    public native static float SkScalarToFloat(@Cast("SkScalar") float n);
-    public native static @Cast("SkScalar") float SkFloatToScalar(float n);
+    public static float SkIntToScalar(int n) { return (float) n; }
 
-    @Name("sk_float_floor2int")
+//    #define SkFixedToScalar(x)      SkFixedToFloat(x)
+//    #define SkScalarToFixed(x)      SkFloatToFixed(x)
+
+    public static float SkScalarToFloat( float n) { return n; };
+    public static float SkFloatToScalar(float n) { return n; };
+
+    public static double SkScalarToDouble(float n) { return (double)(n); }
+    public static double SkDoubleToScalar(double n) { return (float)(n); }
+
+    public native static float SkScalarFraction(float x);
+
+    public native static float SkScalarFloorToScalar(float x);
+    public native static float SkScalarCeilToScalar(float x);
+    public native static float SkScalarRoundToScalar(float x);
+
     public native static int SkScalarFloorToInt(float x);
-    @Name("sk_float_ceil2int")
     public native static int SkScalarCeilToInt(float x);
-    @Name("sk_float_round2int")
     public native static int SkScalarRoundToInt(float x);
 
+    public native static float SkScalarAbs(float x);
+    public native static float SkScalarCopySign(float x, float y);
+    public native static @Cast("SkScalar") float SkScalarClampMax(@Cast("SkScalar") float x, @Cast("SkScalar") float max);
+    public native static @Cast("SkScalar") float SkScalarPin(@Cast("SkScalar") float x, @Cast("SkScalar") float min, @Cast("SkScalar") float max);
+    public native static @Cast("SkScalar") float SkScalarSquare(@Cast("SkScalar") float x);
     public native static @Cast("SkScalar") float SkScalarMul(@Cast("SkScalar") float a, @Cast("SkScalar") float b);
-
+    public native static @Cast("SkScalar") float SkScalarMulAdd(@Cast("SkScalar") float a, @Cast("SkScalar") float b, @Cast("SkScalar") float c);
+    public native static @Cast("SkScalar") float SkScalarMulRound(@Cast("SkScalar") float a, @Cast("SkScalar") float b);
+    public native static @Cast("SkScalar") float SkScalarMulCeil(@Cast("SkScalar") float a, @Cast("SkScalar") float b);
+    public native static @Cast("SkScalar") float SkScalarMulFloor(@Cast("SkScalar") float a, @Cast("SkScalar") float b);
+    public native static @Cast("SkScalar") float SkScalarDiv(@Cast("SkScalar") float a, @Cast("SkScalar") float b);
+    public native static @Cast("SkScalar") float SkScalarMod(@Cast("SkScalar") float x,@Cast("SkScalar") float y);
+    public native static @Cast("SkScalar") float SkScalarMulDiv(@Cast("SkScalar") float a, @Cast("SkScalar") float b, @Cast("SkScalar") float c);
+    public native static @Cast("SkScalar") float SkScalarInvert(@Cast("SkScalar") float x);
+    public native static @Cast("SkScalar") float SkScalarFastInvert(@Cast("SkScalar") float x);
+    public native static @Cast("SkScalar") float SkScalarSqrt(@Cast("SkScalar") float x);
     public native static @Cast("SkScalar") float SkScalarAve(@Cast("SkScalar") float a, @Cast("SkScalar") float b);
-
-    public native static @Cast("SkScalar") float SkScalarInterp(@Cast("SkScalar") float A, @Cast("SkScalar") float B, @Cast("SkScalar") float t);
+    public native static @Cast("SkScalar") float SkScalarMean(@Cast("SkScalar") float a, @Cast("SkScalar") float b);
+    public native static @Cast("SkScalar") float SkScalarHalf(@Cast("SkScalar") float a);
 
     public static final float SK_ScalarSqrt2 = 1.41421356f;
     public static final float SK_ScalarPI = 3.14159265f;
     public static final float SK_ScalarTanPIOver8 = 0.414213562f;
     public static final float SK_ScalarRoot2Over2 = 0.707106781f;
 
+    public native static @Cast("SkScalar") float SkDegreesToRadians(@Cast("SkScalar") float degrees);
+//    float SkScalarSinCos(SkScalar radians, SkScalar* cosValue);
     public native static @Cast("SkScalar") float SkScalarSin(@Cast("SkScalar") float radians);
     public native static @Cast("SkScalar") float SkScalarCos(@Cast("SkScalar") float radians);
+    public native static @Cast("SkScalar") float SkScalarTan(@Cast("SkScalar") float radians);
+    public native static @Cast("SkScalar") float SkScalarASin(@Cast("SkScalar") float val);
+    public native static @Cast("SkScalar") float SkScalarACos(@Cast("SkScalar") float val);
+    public native static @Cast("SkScalar") float SkScalarATan2(@Cast("SkScalar") float y, @Cast("SkScalar") float x);
+    public native static @Cast("SkScalar") float SkScalarExp(@Cast("SkScalar") float x);
+    public native static @Cast("SkScalar") float SkScalarLog(@Cast("SkScalar") float x);
 
-    public static float SkMaxScalar(float a, float b) { return a > b ? a : b; }
-    public static float SkMinScalar(float a, float b) { return a < b ? a : b; }
+    public native static @Cast("SkScalar") float SkMaxScalar(@Cast("SkScalar") float a, @Cast("SkScalar") float b);
+    public native static @Cast("SkScalar") float SkMinScalar(@Cast("SkScalar") float a, @Cast("SkScalar") float b);
 
-    public static boolean SkScalarIsInt(float x) {
-        return x == (float)(int)x;
-    }
+    public native static boolean SkScalarIsInt(@Cast("SkScalar") float x);
+
+    public native static @Cast("SkScalar") float SkScalarInterp(@Cast("SkScalar") float A, @Cast("SkScalar") float B, @Cast("SkScalar") float t);
 
     /*
       * SkShader.h
@@ -1871,8 +1907,8 @@ public class core {
 
         // helpers
 
-        public native boolean write8(@Cast("U8CPU") byte b);
-        public native boolean write16(@Cast("U16CPU") short s);
+        public native boolean write8(@Cast("U8CPU") int b);
+        public native boolean write16(@Cast("U16CPU") int s);
         public native boolean write32(@Cast("uint32_t") int i);
 
         public native boolean writeText(String text);
@@ -2052,6 +2088,21 @@ public class core {
      * SkTypes.h
      */
 
+    public static void SkDebugf(String format, Object... args) {
+        System.out.print(String.format(format, args));
+    }
+
+    public static void SkASSERT(boolean cond) { assert cond; }
+
+//    typedef int S8CPU;
+//    typedef unsigned U8CPU;
+//    typedef int S16CPU;
+//    typedef unsigned U16CPU;
+//    typedef int SkBool;
+//    typedef uint8_t SkBool8;
+
+    public static boolean SkToBool(int cond) {  return (cond) != 0; }
+
     //typedef int32_t SkUnichar;
 
     public native static @Cast("int32_t") int SkAbs32(@Cast("int32_t") int value);
@@ -2059,14 +2110,6 @@ public class core {
     public native static @Cast("int32_t") int SkMax32(@Cast("int32_t") int a, @Cast("int32_t") int b);
 
     public native static @Cast("int32_t") int SkMin32(@Cast("int32_t") int a, @Cast("int32_t") int b);
-    
-    public static void SkDebugf(String format, Object... args) {
-        System.out.print(String.format(format, args));
-    }
-
-    public static void SkASSERT(boolean cond) { assert cond; }
-
-    public static boolean SkToBool(int cond) {  return (cond) != 0; }
 
     public static class SkNoncopyable extends Pointer {
         static { Loader.load(Skia.class); }
