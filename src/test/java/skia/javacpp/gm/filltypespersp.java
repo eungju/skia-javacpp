@@ -51,7 +51,7 @@ public class filltypespersp {
                     colors,
                     pos,
                     SkShader.kClamp_TileMode);
-            paint.setShader(s).unref();
+            paint.setShader(s);
             paint.setAntiAlias(aa);
 
             showPath(canvas,   0,   0, SkPath.kWinding_FillType,
@@ -79,7 +79,7 @@ public class filltypespersp {
                     colors,
                     pos,
                     SkShader.kClamp_TileMode);
-            bkgnrd.setShader(s).unref();
+            bkgnrd.setShader(s);
             canvas.save();
             canvas.translate(SkIntToScalar(100), SkIntToScalar(100));
             SkMatrix mat = new SkMatrix();

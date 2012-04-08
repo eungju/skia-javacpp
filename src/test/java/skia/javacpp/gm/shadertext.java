@@ -11,7 +11,6 @@ public class shadertext {
         bm.eraseColor(0);
 
         SkCanvas canvas = new SkCanvas(bm);
-        canvas.autoUnref();
         float    s = SkIntToScalar(SkMin32(w, h));
         SkPoint[]     pts = { SkPoint.Make(0, 0), SkPoint.Make(s, s) };
         int[]     colors = { SK_ColorRED, SK_ColorGREEN, SK_ColorBLUE };
@@ -22,10 +21,8 @@ public class shadertext {
 
         um = new SkCosineMapper();
 
-        new SkAutoUnref(um);
-
         paint.setDither(true);
-        paint.setShader(SkGradientShader.CreateLinear(pts, colors, pos, SkShader.kClamp_TileMode, um)).unref();
+        paint.setShader(SkGradientShader.CreateLinear(pts, colors, pos, SkShader.kClamp_TileMode, um));
         canvas.drawPaint(paint);
     }
 
@@ -184,7 +181,7 @@ public class shadertext {
                 int i = 2*s;
                 canvas.translate(SkIntToScalar((i / testsPerCol) * colWidth),
                         SkIntToScalar((i % testsPerCol) * rowHeight));
-                paint.setShader(shaders[s]).unref();
+                paint.setShader(shaders[s]);
                 canvas.drawText(text, 0, textBase, paint);
                 canvas.restore();
                 canvas.save();

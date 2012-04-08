@@ -34,11 +34,11 @@ public class strokefill {
             paint.setStrokeWidth(SkIntToScalar(5));
 
             SkTypeface face = SkTypeface.CreateFromName("Papyrus", SkTypeface.kNormal);
-            SkSafeUnref(paint.setTypeface(face));
+            paint.setTypeface(face);
             show_bold(canvas, "Hello", x, y, paint);
 
             face = SkTypeface.CreateFromName("Hiragino Maru Gothic Pro", SkTypeface.kNormal);
-            SkSafeUnref(paint.setTypeface(face));
+            paint.setTypeface(face);
             String hyphen = new String(new byte[] { (byte) 0xE3, (byte) 0x83, (byte) 0xBC }, Skia.UTF_8);
             show_bold(canvas, hyphen, x + SkIntToScalar(300), y, paint);
 

@@ -35,7 +35,7 @@ public class fontscaler {
             //With freetype the default (normal hinting) can be really ugly.
             //Most distros now set slight (vertical hinting only) in any event.
             paint.setHinting(SkPaint.kSlight_Hinting);
-            SkSafeUnref(paint.setTypeface(SkTypeface.CreateFromName("Times Roman", SkTypeface.kNormal)));
+            paint.setTypeface(SkTypeface.CreateFromName("Times Roman", SkTypeface.kNormal));
 
             String text = "Hamburgefons ooo mmm";
             final int textLen = text.length();

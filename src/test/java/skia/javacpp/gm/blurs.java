@@ -53,7 +53,7 @@ public class blurs {
                         SkMaskFilter mf = SkBlurMaskFilter.Create(
                                 SkIntToScalar(20), gRecs[i].fStyle, flags
                         );
-                        paint.setMaskFilter(mf).unref();
+                        paint.setMaskFilter(mf);
                     } else {
                         paint.setMaskFilter(null);
                     }
@@ -69,7 +69,7 @@ public class blurs {
                             , SkBlurMaskFilter.kNormal_BlurStyle
                             , flags
                     );
-                    paint.setMaskFilter(mf).unref();
+                    paint.setMaskFilter(mf);
                     float x = SkIntToScalar(70);
                     float y = SkIntToScalar(400);
                     paint.setColor(SK_ColorBLACK);

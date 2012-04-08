@@ -16,7 +16,6 @@ public class bitmapfilters {
 
         bm.setConfig(SkBitmap.kIndex8_Config, 2, 2);
         bm.allocPixels(ctable);
-        ctable.unref();
 
         bm.getAddr8(0, 0).put((byte) 0);
         bm.getAddr8(1, 0).put((byte) 1);

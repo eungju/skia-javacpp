@@ -15,7 +15,6 @@ public class tinybitmap {
 
         bm.setConfig(SkBitmap.kIndex8_Config, 1, 1);
         bm.allocPixels(ctable);
-        ctable.unref();
 
         bm.lockPixels();
         bm.getAddr8(0, 0).put((byte) 0);
@@ -45,7 +44,7 @@ public class tinybitmap {
                             SkShader.kMirror_TileMode);
             SkPaint paint = new SkPaint();
             paint.setAlpha(0x80);
-            paint.setShader(s).unref();
+            paint.setShader(s);
             canvas.drawPaint(paint);
         }
     }

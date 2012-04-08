@@ -90,7 +90,7 @@ public class hairmodes {
     public static class HairModesGM extends GM {
         private SkPaint fBGPaint = new SkPaint();
         public HairModesGM() {
-            fBGPaint.setShader(make_bg_shader()).unref();
+            fBGPaint.setShader(make_bg_shader());
         }
 
         @Override
@@ -127,7 +127,6 @@ public class hairmodes {
                     canvas.restore();
 
                     canvas.translate(0, dy * 5 / 4);
-                    SkSafeUnref(mode);
                 }
                 canvas.restore();
                 canvas.restore();

@@ -186,15 +186,24 @@ public class core {
     public static class SkColorTable extends SkRefCnt {
         static { Loader.load(Skia.class); }
 
-        public SkColorTable(SkColorTable src) { allocate(src); }
+        public SkColorTable(SkColorTable src) {
+            allocate(src);
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
         private native void allocate(@Const @ByRef SkColorTable src);
 
-        public SkColorTable(int count) { allocate(count); }
+        public SkColorTable(int count) {
+            allocate(count);
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
         private native void allocate(int count);
 
-        public SkColorTable(int[] colors) { allocate(colors, colors.length); }
+        public SkColorTable(int[] colors) {
+            allocate(colors, colors.length);
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
         private native void allocate(@Cast("const SkPMColor*") int[] colors, int count);
 
@@ -210,15 +219,24 @@ public class core {
 	public static class SkCanvas extends SkRefCnt {
 		static { Loader.load(Skia.class); }
 		
-		public SkCanvas() { allocate(); }
+		public SkCanvas() {
+            allocate();
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
         private native void allocate();
 
-		public SkCanvas(SkDevice device) { allocate(device); }
+		public SkCanvas(SkDevice device) {
+            allocate(device);
+            deallocator(new UnrefDeallocator(this));
+        }
 		@NoDeallocator
 		private native void allocate(SkDevice device);
 
-        public SkCanvas(SkBitmap bitmap) { allocate(bitmap); }
+        public SkCanvas(SkBitmap bitmap) {
+            allocate(bitmap);
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
         private native void allocate(@Const @ByRef SkBitmap bitmap);
 
@@ -482,11 +500,17 @@ public class core {
 	public static class SkColorShader extends SkShader {
 		static { Loader.load(Skia.class); }
 		
-		public SkColorShader() { allocate(); }
+		public SkColorShader() {
+            allocate();
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
         private native void allocate();
 
-		public SkColorShader(int c) { allocate(c); }
+		public SkColorShader(int c) {
+            allocate(c);
+            deallocator(new UnrefDeallocator(this));
+        }
 		@NoDeallocator
 		private native void allocate(@Cast("SkColor") int c);
 	}
@@ -506,11 +530,17 @@ public class core {
 	public static class SkDevice extends SkRefCnt {
 		static { Loader.load(Skia.class); }
 		
-		public SkDevice(SkBitmap bitmap) { allocate(bitmap); }
+		public SkDevice(SkBitmap bitmap) {
+            allocate(bitmap);
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
         private native void allocate(@Const @ByRef SkBitmap bitmap);
 
-        public SkDevice(int config, int width, int height, boolean isOpaque) { allocate(config, width, height, isOpaque); }
+        public SkDevice(int config, int width, int height, boolean isOpaque) {
+            allocate(config, width, height, isOpaque);
+            deallocator(new UnrefDeallocator(this));
+        }
 		@NoDeallocator
 		private native void allocate(@Cast("SkBitmap::Config") int config, int width, int height, boolean isOpaque/* = false*/);
 
@@ -1053,14 +1083,23 @@ public class core {
 	public static class SkStrokePathEffect extends SkPathEffect {
 		static { Loader.load(Skia.class); }
 
-		public SkStrokePathEffect(SkPaint paint) { allocate(paint); }
+		public SkStrokePathEffect(SkPaint paint) {
+            allocate(paint);
+            deallocator(new UnrefDeallocator(this));
+        }
 		@NoDeallocator
 	    private native void allocate(@Const @ByRef SkPaint paint);
 
-        public SkStrokePathEffect(float width, int style, int join, int cap) { allocate(width, style, join, cap); }
+        public SkStrokePathEffect(float width, int style, int join, int cap) {
+            allocate(width, style, join, cap);
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
         private native void allocate(@Cast("SkScalar") float width, @Cast("SkPaint::Style") int style, @Cast("SkPaint::Join") int join, @Cast("SkPaint::Cap") int cap);
-        public SkStrokePathEffect(float width, int style, int join, int cap, float miterLimit) { allocate(width, style, join, cap, miterLimit); }
+        public SkStrokePathEffect(float width, int style, int join, int cap, float miterLimit) {
+            allocate(width, style, join, cap, miterLimit);
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
 		private native void allocate(@Cast("SkScalar") float width, @Cast("SkPaint::Style") int style, @Cast("SkPaint::Join") int join, @Cast("SkPaint::Cap") int cap, @Cast("SkScalar") float miterLimit/* = -1*/);
 	}
@@ -1210,7 +1249,10 @@ public class core {
 	public static class SkComposePathEffect extends SkPairPathEffect {
 		static { Loader.load(Skia.class); }
 		
-		public SkComposePathEffect(SkPathEffect outer, SkPathEffect inner) { allocate(outer, inner); }
+		public SkComposePathEffect(SkPathEffect outer, SkPathEffect inner) {
+            allocate(outer, inner);
+            deallocator(new UnrefDeallocator(this));
+        }
 		@NoDeallocator
 		private native void allocate(SkPathEffect outer, SkPathEffect inner);
 	}
@@ -1218,7 +1260,10 @@ public class core {
 	public static class SkSumPathEffect extends SkPairPathEffect {
 		static { Loader.load(Skia.class); }
 		
-		public SkSumPathEffect(SkPathEffect first, SkPathEffect second) { allocate(first, second); }
+		public SkSumPathEffect(SkPathEffect first, SkPathEffect second) {
+            allocate(first, second);
+            deallocator(new UnrefDeallocator(this));
+        }
 		@NoDeallocator
 		private native void allocate(SkPathEffect first, SkPathEffect second);
 	}
@@ -1230,15 +1275,24 @@ public class core {
     public static class SkPicture extends SkRefCnt {
         static { Loader.load(Skia.class); }
 
-        public SkPicture() { allocate(); }
+        public SkPicture() {
+            allocate();
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
         private native void allocate();
 
-        public SkPicture(SkPicture src) { allocate(src); }
+        public SkPicture(SkPicture src) {
+            allocate(src);
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
         private native void allocate(@Const @ByRef SkPicture src);
 
-        public SkPicture(SkStream stream) { allocate(stream); }
+        public SkPicture(SkStream stream) {
+            allocate(stream);
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
         private native void allocate(SkStream stream);
 
@@ -1620,39 +1674,27 @@ public class core {
 		static { Loader.load(Skia.class); }
 		
 		protected SkRefCnt(Pointer pointer) { super(pointer); }
+
 		protected SkRefCnt() { }
-	    public native @Cast("int32_t") int getRefCnt();
-	    public native void ref();
-	    public native void unref();
-	    public native void validate();
+
+	    protected native @Cast("int32_t") int getRefCnt();
+
+        protected native void ref();
+
+        protected native void unref();
+
+        protected native void validate();
 
         protected static class UnrefDeallocator extends SkRefCnt implements Deallocator {
-            public UnrefDeallocator(SkRefCnt p) { super(p); }
-            @Override public void deallocate() { unref(); }
-        }
+            public UnrefDeallocator(SkRefCnt p) {
+                super(p);
+            }
 
-        public void autoUnref() {
-            deallocator(new UnrefDeallocator(this));
+            @Override public void deallocate() {
+                unref();
+            }
         }
 	}
-
-    public native static void SkSafeRef(SkRefCnt obj);
-
-    public native static void SkSafeUnref(SkRefCnt obj);
-
-    public static class SkAutoUnref extends SkNoncopyable {
-        static { Loader.load(Skia.class); }
-
-        public SkAutoUnref(SkRefCnt obj) { allocate(obj); }
-        private native void allocate(SkRefCnt obj);
-    };
-
-    public static class SkAutoRef extends SkNoncopyable {
-        static { Loader.load(Skia.class); }
-
-        public SkAutoRef(SkRefCnt obj) { allocate(obj); }
-        private native void allocate(SkRefCnt obj);
-    };
 
     /*
      * SkRegion.h
@@ -1851,7 +1893,11 @@ public class core {
     public static class SkFILEStream extends SkStream {
         static { Loader.load(Skia.class); }
 
-        public SkFILEStream(String path) { allocate(path); }
+        public SkFILEStream(String path) {
+            allocate(path);
+            deallocator(new UnrefDeallocator(this));
+        }
+        @NoDeallocator
         private native void allocate(String path/* = NULL*/);
 
         public native boolean isValid();

@@ -117,7 +117,6 @@ public class gradients {
                     SkShader shader = gGradMakers[j].apply(pts, gGradData[i], tm, null);
                     paint.setShader(shader);
                     canvas.drawRect(r, paint);
-                    shader.unref();
                     canvas.translate(0, SkIntToScalar(120));
                 }
                 canvas.restore();
@@ -173,7 +172,7 @@ public class gradients {
                     pos,
                     SkShader.kClamp_TileMode);
             SkPaint paint = new SkPaint();
-            paint.setShader(s).unref();
+            paint.setShader(s);
             canvas.drawPaint(paint);
         }
     }
@@ -210,7 +209,6 @@ public class gradients {
                     SkShader.kClamp_TileMode, null);
             paint.setShader(shader);
             canvas.drawRect(r, paint);
-            shader.unref();
         }
     }
 
@@ -246,7 +244,7 @@ public class gradients {
                     SkGradientShader.CreateRadial(center, radius, colors,
                             pos,
                             SkShader.kClamp_TileMode);
-            paint.setShader(shader).unref();
+            paint.setShader(shader);
             SkRect r = SkRect.MakeLTRB(
                     0, 0, SkIntToScalar(dim.width()), SkIntToScalar(dim.height())
                     );

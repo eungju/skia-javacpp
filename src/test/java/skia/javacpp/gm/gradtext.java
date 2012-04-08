@@ -56,12 +56,12 @@ public class gradtext {
             canvas.translate(SkIntToScalar(20), paint.getTextSize());
 
             for (int i = 0; i < 2; ++i) {
-                paint.setShader(make_grad(SkIntToScalar(80))).unref();
+                paint.setShader(make_grad(SkIntToScalar(80)));
                 draw_text3(canvas, paint);
 
                 canvas.translate(0, paint.getTextSize() * 2);
 
-                paint.setShader(make_grad2(SkIntToScalar(80))).unref();
+                paint.setShader(make_grad2(SkIntToScalar(80)));
                 draw_text3(canvas, paint);
 
                 canvas.translate(0, paint.getTextSize() * 2);

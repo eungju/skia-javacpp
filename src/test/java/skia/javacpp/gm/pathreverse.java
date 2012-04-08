@@ -46,7 +46,7 @@ public class pathreverse {
         SkPaint paint = new SkPaint();
         paint.setTextSize(SkIntToScalar(100));
         SkTypeface hira = SkTypeface.CreateFromName("Hiragino Maru Gothic Pro", SkTypeface.kNormal);
-        SkSafeUnref(paint.setTypeface(hira));
+        paint.setTypeface(hira);
         path.reset();
         paint.getTextPath("e", 50, 50, path);
         canvas.translate(0, 100);
@@ -87,7 +87,7 @@ public class pathreverse {
             SkPaint paint = new SkPaint();
             paint.setTextSize(SkIntToScalar(100));
             SkTypeface hira = SkTypeface.CreateFromName("Hiragino Maru Gothic Pro", SkTypeface.kNormal);
-            SkSafeUnref(paint.setTypeface(hira));
+            paint.setTypeface(hira);
             path.reset();
             paint.getTextPath("e", 50, 50, path);
             canvas.translate(0, 100);

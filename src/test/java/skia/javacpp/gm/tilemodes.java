@@ -21,20 +21,15 @@ public class tilemodes {
         um = new SkCosineMapper();
         //    um = new SkDiscreteMapper(12);
 
-        try {
-            paint.setDither(true);
-            paint.setShader(SkGradientShader.CreateLinear(pts, colors, pos, SkShader.kClamp_TileMode, um)).unref();
-            canvas.drawPaint(paint);
-        } finally {
-            SkSafeUnref(um);
-        }
-        canvas.unref();
+        paint.setDither(true);
+        paint.setShader(SkGradientShader.CreateLinear(pts, colors, pos, SkShader.kClamp_TileMode, um));
+        canvas.drawPaint(paint);
     }
 
     static void setup(SkPaint paint, SkBitmap bm, boolean filter,
                       int tmx, int tmy) {
         SkShader shader = SkShader.CreateBitmapShader(bm, tmx, tmy);
-        paint.setShader(shader).unref();
+        paint.setShader(shader);
         paint.setFilterBitmap(filter);
     }
 

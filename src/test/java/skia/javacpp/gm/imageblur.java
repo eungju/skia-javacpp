@@ -25,7 +25,7 @@ public class imageblur {
         @Override
         protected void onDraw(SkCanvas canvas) {
             SkPaint paint = new SkPaint();
-            paint.setImageFilter(new SkBlurImageFilter(24.0f, 0.0f)).unref();
+            paint.setImageFilter(new SkBlurImageFilter(24.0f, 0.0f));
             canvas.saveLayer(null, paint);
             paint.setAntiAlias(true);
             String str = "The quick brown fox jumped over the lazy dog.";

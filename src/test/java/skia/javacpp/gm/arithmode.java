@@ -18,7 +18,6 @@ public class arithmode {
     static SkBitmap make_src() {
         SkBitmap bm = make_bm();
         SkCanvas canvas = new SkCanvas(bm);
-        canvas.autoUnref();
         SkPaint paint = new SkPaint();
         SkPoint pts[] = { SkPoint.Make(0, 0), SkPoint.Make(SkIntToScalar(WW), SkIntToScalar(HH)) };
         int[] colors = {
@@ -26,7 +25,7 @@ public class arithmode {
                 SK_ColorRED, SK_ColorMAGENTA, SK_ColorWHITE
         };
         SkShader s = SkGradientShader.CreateLinear(pts, colors, null, SkShader.kClamp_TileMode);
-        paint.setShader(s).unref();
+        paint.setShader(s);
         canvas.drawPaint(paint);
         return bm;
     }
@@ -34,14 +33,13 @@ public class arithmode {
     static SkBitmap make_dst() {
         SkBitmap bm = make_bm();
         SkCanvas canvas = new SkCanvas(bm);
-        canvas.autoUnref();
         SkPaint paint = new SkPaint();
         SkPoint pts[] = { SkPoint.Make(0, SkIntToScalar(HH)), SkPoint.Make(SkIntToScalar(WW), 0) };
         int[] colors = {
                 SK_ColorBLUE, SK_ColorYELLOW, SK_ColorBLACK, SK_ColorGREEN, SK_ColorGRAY
         };
         SkShader s = SkGradientShader.CreateLinear(pts, colors, null, SkShader.kClamp_TileMode);
-        paint.setShader(s).unref();
+        paint.setShader(s);
         canvas.drawPaint(paint);
         return bm;
     }
@@ -50,11 +48,10 @@ public class arithmode {
                                float[] k) {
         SkBitmap bm = make_bm();
         SkCanvas canvas = new SkCanvas(bm);
-        canvas.autoUnref();
         SkPaint paint = new SkPaint();
         canvas.drawBitmap(dst, 0, 0, null);
         SkXfermode xfer = SkArithmeticMode.Create(k[0], k[1], k[2], k[3]);
-        paint.setXfermode(xfer).unref();
+        paint.setXfermode(xfer);
         canvas.drawBitmap(src, 0, 0, paint);
         return bm;
     }

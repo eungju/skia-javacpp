@@ -20,11 +20,17 @@ public class utils {
 	public static class SkDeferredCanvas extends SkCanvas {
 		static { Loader.load(Skia.class); }
 
-        public SkDeferredCanvas() { allocate(); }
+        public SkDeferredCanvas() {
+            allocate();
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
         private native void allocate();
 
-        public SkDeferredCanvas(SkDevice device) { allocate(device); };
+        public SkDeferredCanvas(SkDevice device) {
+            allocate(device);
+            deallocator(new UnrefDeallocator(this));
+        };
         @NoDeallocator
         private native void allocate(SkDevice device);
 
@@ -38,7 +44,10 @@ public class utils {
     public static class SkDiscreteMapper extends SkUnitMapper {
         static { Loader.load(Skia.class); }
 
-        public SkDiscreteMapper(int segments) { allocate(segments); }
+        public SkDiscreteMapper(int segments) {
+            allocate(segments);
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
         private native void allocate(int segments);
     };
@@ -46,7 +55,10 @@ public class utils {
     public static class SkCosineMapper extends SkUnitMapper {
         static { Loader.load(Skia.class); }
 
-        public SkCosineMapper() { allocate(); }
+        public SkCosineMapper() {
+            allocate();
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
         private native void allocate();
     };

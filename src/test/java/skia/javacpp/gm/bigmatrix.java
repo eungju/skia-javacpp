@@ -70,7 +70,7 @@ public class bigmatrix {
             s.reset();
             s.setScale(SK_Scalar1 / 1000, SK_Scalar1 / 1000);
             shader.setLocalMatrix(s);
-            paint.setShader(shader).unref();
+            paint.setShader(shader);
             paint.setAntiAlias(false);
             paint.setFilterBitmap(true);
             rect.setLTRB(pt.fX() - small, pt.fY() - small,

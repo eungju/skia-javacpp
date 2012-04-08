@@ -54,7 +54,10 @@ public class effects {
 	        kRotate_Style = 1,
 	        kMorph_Style = 2;
 
-		public SkPath1DPathEffect(SkPath path, float advance, float phase, int style) { allocate(path, advance, phase, style); }
+		public SkPath1DPathEffect(SkPath path, float advance, float phase, int style) {
+            allocate(path, advance, phase, style);
+            deallocator(new UnrefDeallocator(this));
+        }
 		@NoDeallocator
 		public native void allocate(@Const @ByRef SkPath path, @Cast("SkScalar") float advance, @Cast("SkScalar") float phase, @Cast("SkPath1DPathEffect::Style") int style);
 	}
@@ -77,7 +80,10 @@ public class effects {
 	        kRotate_Style = 1,
 	        kMorph_Style = 2;
 
-		public SkPath2DPathEffect(SkMatrix matrix, SkPath path) { allocate(matrix, path); }
+		public SkPath2DPathEffect(SkMatrix matrix, SkPath path) {
+            allocate(matrix, path);
+            deallocator(new UnrefDeallocator(this));
+        }
 		@NoDeallocator
 		public native void allocate(@Const @ByRef SkMatrix matrix, @Const @ByRef SkPath path);
 	}
@@ -106,11 +112,17 @@ public class effects {
 	    		kHighQuality_BlurFlag = 0x04,
 	    		kAll_BlurFlag = 0x07;
 
-        public SkBlurDrawLooper(float radius, float dx, float dy, int color) { allocate(radius, dx, dy, color); }
+        public SkBlurDrawLooper(float radius, float dx, float dy, int color) {
+            allocate(radius, dx, dy, color);
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
         public native void allocate(@Cast("SkScalar") float radius, @Cast("SkScalar") float dx, @Cast("SkScalar") float dy, @Cast("SkColor") int color);
         
-		public SkBlurDrawLooper(float radius, float dx, float dy, int color, int flags) { allocate(radius, dx, dy, color, flags); }
+		public SkBlurDrawLooper(float radius, float dx, float dy, int color, int flags) {
+            allocate(radius, dx, dy, color, flags);
+            deallocator(new UnrefDeallocator(this));
+        }
 		@NoDeallocator
 		public native void allocate(@Cast("SkScalar") float radius, @Cast("SkScalar") float dx, @Cast("SkScalar") float dy, @Cast("SkColor") int color, @Cast("uint32_t") int flags/* = kNone_BlurFlag*/);
 	}
@@ -122,7 +134,10 @@ public class effects {
 	public static class SkBlurImageFilter extends SkImageFilter {
 		static { Loader.load(Skia.class); }
 
-		public SkBlurImageFilter(float sigmaX, float sigmaY) { allocate(sigmaX, sigmaY); }
+		public SkBlurImageFilter(float sigmaX, float sigmaY) {
+            allocate(sigmaX, sigmaY);
+            deallocator(new UnrefDeallocator(this));
+        }
 		@NoDeallocator
 		public native void allocate(@Cast("SkScalar") float sigmaX, @Cast("SkScalar") float sigmaY);
 	}
@@ -199,15 +214,24 @@ public class effects {
     public static class SkColorMatrixFilter extends SkColorFilter {
         static { Loader.load(Skia.class); }
 
-        public SkColorMatrixFilter() { allocate(); }
+        public SkColorMatrixFilter() {
+            allocate();
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
         private native void allocate();
 
-        public  SkColorMatrixFilter(SkColorMatrix mat) { allocate(mat); };
+        public  SkColorMatrixFilter(SkColorMatrix mat) {
+            allocate(mat);
+            deallocator(new UnrefDeallocator(this));
+        };
         @NoDeallocator
         private native void allocate(@Const @ByRef SkColorMatrix mat);
 
-        public SkColorMatrixFilter(float[] array) { allocate(array); };
+        public SkColorMatrixFilter(float[] array) {
+            allocate(array);
+            deallocator(new UnrefDeallocator(this));
+        };
         @NoDeallocator
         private native void allocate(@Cast("const SkScalar*") float[] array20);
 
@@ -227,7 +251,10 @@ public class effects {
 	public static class SkCornerPathEffect extends SkPathEffect {
 		static { Loader.load(Skia.class); }
 
-		public SkCornerPathEffect(float radius) { allocate(radius); }
+		public SkCornerPathEffect(float radius) {
+            allocate(radius);
+            deallocator(new UnrefDeallocator(this));
+        }
 		@NoDeallocator
 		public native void allocate(@Cast("SkScalar") float radius);
 	}
@@ -239,10 +266,16 @@ public class effects {
 	public static class SkDashPathEffect extends SkPathEffect {
 		static { Loader.load(Skia.class); }
 
-        public SkDashPathEffect(float[] intervals, float phase) { allocate(intervals, intervals.length, phase); }
+        public SkDashPathEffect(float[] intervals, float phase) {
+            allocate(intervals, intervals.length, phase);
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
         public native void allocate(@Cast("const SkScalar*") float[] intervals, int count, @Cast("SkScalar") float phase);
-        public SkDashPathEffect(float[] intervals, float phase, boolean scaleToFit) { allocate(intervals, intervals.length, phase, scaleToFit); }
+        public SkDashPathEffect(float[] intervals, float phase, boolean scaleToFit) {
+            allocate(intervals, intervals.length, phase, scaleToFit);
+            deallocator(new UnrefDeallocator(this));
+        }
 		@NoDeallocator
 		public native void allocate(@Cast("const SkScalar*") float[] intervals, int count, @Cast("SkScalar") float phase, boolean scaleToFit/* = false*/);
 	}
@@ -254,7 +287,10 @@ public class effects {
 	public static class SkDiscretePathEffect extends SkPathEffect {
 		static { Loader.load(Skia.class); }
 
-		public SkDiscretePathEffect(@Cast("SkScalar") float segLength, @Cast("SkScalar") float deviation) { allocate(segLength, deviation); }
+		public SkDiscretePathEffect(@Cast("SkScalar") float segLength, @Cast("SkScalar") float deviation) {
+            allocate(segLength, deviation);
+            deallocator(new UnrefDeallocator(this));
+        }
 		@NoDeallocator
 		public native void allocate(@Cast("SkScalar") float segLength, @Cast("SkScalar") float deviation);
 	}
@@ -336,7 +372,10 @@ public class effects {
     public static class SkGroupShape extends SkShape {
         static { Loader.load(Skia.class); }
 
-        public SkGroupShape() { allocate(); }
+        public SkGroupShape() {
+            allocate();
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
         private native void allocate();
 
@@ -375,7 +414,10 @@ public class effects {
     public static class SkDilateImageFilter extends SkMorphologyImageFilter {
         static { Loader.load(Skia.class); }
 
-        public SkDilateImageFilter(int radiusX, int radiusY) { allocate(radiusX, radiusY); };
+        public SkDilateImageFilter(int radiusX, int radiusY) {
+            allocate(radiusX, radiusY);
+            deallocator(new UnrefDeallocator(this));
+        };
         @NoDeallocator
         private native void allocate(int radiusX, int radiusY);
 
@@ -387,7 +429,10 @@ public class effects {
     public static class SkErodeImageFilter extends SkMorphologyImageFilter {
         static { Loader.load(Skia.class); }
 
-        public SkErodeImageFilter(int radiusX, int radiusY) { allocate(radiusX, radiusY); };
+        public SkErodeImageFilter(int radiusX, int radiusY) {
+            allocate(radiusX, radiusY);
+            deallocator(new UnrefDeallocator(this));
+        };
         @NoDeallocator
         private native void allocate(int radiusX, int radiusY);
 
@@ -412,7 +457,10 @@ public class effects {
     public static class SkRectShape extends SkPaintShape {
         static { Loader.load(Skia.class); }
 
-        public SkRectShape() { allocate(); }
+        public SkRectShape() {
+            allocate();
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
         private native void allocate();
 
@@ -443,7 +491,10 @@ public class effects {
     public static class SkComposeImageFilter extends SkImageFilter {
         static { Loader.load(Skia.class); }
 
-        public SkComposeImageFilter(SkImageFilter outer, SkImageFilter inner) { allocate(outer, inner); }
+        public SkComposeImageFilter(SkImageFilter outer, SkImageFilter inner) {
+            allocate(outer, inner);
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
         private native void allocate(SkImageFilter outer, SkImageFilter inner);
     };
@@ -451,7 +502,10 @@ public class effects {
     public static class SkOffsetImageFilter extends SkImageFilter {
         static { Loader.load(Skia.class); }
 
-        public SkOffsetImageFilter(float dx, float dy) { allocate(dx, dy); }
+        public SkOffsetImageFilter(float dx, float dy) {
+            allocate(dx, dy);
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
         private native void allocate(@Cast("SkScalar") float dx, @Cast("SkScalar") float dy);
     };
@@ -459,10 +513,16 @@ public class effects {
     public static class SkMergeImageFilter extends SkImageFilter {
         static { Loader.load(Skia.class); }
 
-        public SkMergeImageFilter(SkImageFilter first, SkImageFilter second) { allocate(first, second); }
+        public SkMergeImageFilter(SkImageFilter first, SkImageFilter second) {
+            allocate(first, second);
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
         private native void allocate(SkImageFilter first, SkImageFilter second);
-        public SkMergeImageFilter(SkImageFilter first, SkImageFilter second, int mode) { allocate(first, second, mode); }
+        public SkMergeImageFilter(SkImageFilter first, SkImageFilter second, int mode) {
+            allocate(first, second, mode);
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
         private native void allocate(SkImageFilter first, SkImageFilter second, @Cast("SkXfermode::Mode") int mode/* = SkXfermode::kSrcOver_Mode*/);
 
@@ -474,7 +534,10 @@ public class effects {
     public static class SkColorFilterImageFilter extends SkImageFilter {
         static { Loader.load(Skia.class); }
 
-        public SkColorFilterImageFilter(SkColorFilter cf) { allocate(cf); }
+        public SkColorFilterImageFilter(SkColorFilter cf) {
+            allocate(cf);
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
         private native void allocate(SkColorFilter cf);
     };
@@ -482,7 +545,10 @@ public class effects {
     public static class SkDownSampleImageFilter extends SkImageFilter {
         static { Loader.load(Skia.class); }
 
-        public SkDownSampleImageFilter(float scale) { allocate(scale); }
+        public SkDownSampleImageFilter(float scale) {
+            allocate(scale);
+            deallocator(new UnrefDeallocator(this));
+        }
         @NoDeallocator
         private native void allocate(@Cast("SkScalar") float scale);
     };

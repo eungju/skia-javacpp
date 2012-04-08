@@ -10,11 +10,10 @@ public class patheffects {
         SkPathEffect compose;
         if (pe != null) {
             compose = new SkComposePathEffect(pe, corner);
-            corner.unref();
         } else {
             compose = corner;
         }
-        paint.setPathEffect(compose).unref();
+        paint.setPathEffect(compose);
     }
 
     static PE_Proc hair_pe = new PE_Proc() {
@@ -41,7 +40,7 @@ public class patheffects {
         public void apply(SkPaint paint) {
             float[] inter = { 20, 10, 10, 10 };
             paint.setStrokeWidth(12);
-            paint.setPathEffect(new SkDashPathEffect(inter, 0)).unref();
+            paint.setPathEffect(new SkDashPathEffect(inter, 0));
             compose_pe(paint);
         }
     };
@@ -67,7 +66,7 @@ public class patheffects {
             scale(path, 1.5f);
 
             paint.setPathEffect(new SkPath1DPathEffect(path, SkIntToScalar(21), 0,
-                    SkPath1DPathEffect.kRotate_Style)).unref();
+                    SkPath1DPathEffect.kRotate_Style));
             compose_pe(paint);
         }
     };
@@ -86,7 +85,7 @@ public class patheffects {
 
     static PE_Proc discrete_pe = new PE_Proc() {
         public void apply(SkPaint paint) {
-            paint.setPathEffect(new SkDiscretePathEffect(10, 4)).unref();
+            paint.setPathEffect(new SkDiscretePathEffect(10, 4));
         }
     };
 
@@ -102,7 +101,7 @@ public class patheffects {
 
     static PE_Proc tile_pe = new PE_Proc() {
         public void apply(SkPaint paint) {
-            paint.setPathEffect(MakeTileEffect()).unref();
+            paint.setPathEffect(MakeTileEffect());
         }
     };
 

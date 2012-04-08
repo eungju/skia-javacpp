@@ -39,20 +39,18 @@ public class shapes {
         private SkMatrixRef[] fMatrixRefs = new SkMatrixRef[4];
 
         public ShapesGM() {
-            fGroup.autoUnref();
-
             this.setBGColor(0xFFDDDDDD);
 
             SkMatrix m = new SkMatrix();
-            fGroup.appendShape(make_shape0(false)).unref();
+            fGroup.appendShape(make_shape0(false));
             m.setRotate(SkIntToScalar(30), SkIntToScalar(50), SkIntToScalar(50));
             m.postTranslate(0, SkIntToScalar(120));
-            fGroup.appendShape(make_shape0(true), m).unref();
+            fGroup.appendShape(make_shape0(true), m);
 
             m.setTranslate(SkIntToScalar(120), 0);
-            fGroup.appendShape(make_shape1(), m).unref();
+            fGroup.appendShape(make_shape1(), m);
             m.postTranslate(0, SkIntToScalar(120));
-            fGroup.appendShape(make_shape2(), m).unref();
+            fGroup.appendShape(make_shape2(), m);
 
             for (int i = 0; i < fMatrixRefs.length; i++) {
                 fMatrixRefs[i] = fGroup.getShapeMatrixRef(i);
@@ -76,7 +74,6 @@ public class shapes {
             SkMatrix matrix = new SkMatrix();
 
             SkGroupShape gs = new SkGroupShape();
-            new SkAutoUnref(gs);
             gs.appendShape(fGroup);
             matrix.setScale(-SK_Scalar1, SK_Scalar1);
             matrix.postTranslate(SkIntToScalar(220), SkIntToScalar(240));
@@ -95,7 +92,6 @@ public class shapes {
                 gs.draw(cv);
                 pict.endRecording();
                 canvas.drawPicture(pict);
-                pict.unref();
             }
         }
     }

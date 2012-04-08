@@ -22,9 +22,7 @@ public class morphology {
             fBitmap.setConfig(SkBitmap.kARGB_8888_Config, 135, 135);
             fBitmap.allocPixels();
             SkDevice device = new SkDevice(fBitmap);
-            device.autoUnref();
             SkCanvas canvas = new SkCanvas(device);
-            canvas.autoUnref();
             canvas.clear(0x0);
             SkPaint paint = new SkPaint();
             paint.setAntiAlias(true);
@@ -76,11 +74,11 @@ public class morphology {
                 if (samples[i].fErode) {
                     paint.setImageFilter(new SkErodeImageFilter(
                     samples[i].fRadiusX,
-                    samples[i].fRadiusY)).unref();
+                    samples[i].fRadiusY));
                 } else {
                     paint.setImageFilter(new SkDilateImageFilter(
                     samples[i].fRadiusX,
-                    samples[i].fRadiusY)).unref();
+                    samples[i].fRadiusY));
                 }
                 SkRect bounds = SkRect.MakeXYWH(samples[i].fX,
                         samples[i].fY,

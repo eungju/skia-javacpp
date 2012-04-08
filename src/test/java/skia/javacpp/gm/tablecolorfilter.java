@@ -19,9 +19,8 @@ public class tablecolorfilter {
                 SK_ColorRED, 0, SK_ColorBLUE, SK_ColorWHITE
         };
         SkShader s = SkGradientShader.CreateLinear(pts, colors, null, SkShader.kClamp_TileMode);
-        paint.setShader(s).unref();
+        paint.setShader(s);
         canvas.drawPaint(paint);
-        canvas.unref();
     }
 
     static void make_bm1(SkBitmap bm) {
@@ -42,10 +41,9 @@ public class tablecolorfilter {
                 SkIntToScalar(H) / 2),
                 SkIntToScalar(W) / 2, colors, null,
                 SkShader.kClamp_TileMode);
-        paint.setShader(s).unref();
+        paint.setShader(s);
         paint.setAntiAlias(true);
         canvas.drawCircle(cx, cy, cx, paint);
-        canvas.unref();
     }
 
     static void make_table0(byte[] table) {
@@ -111,13 +109,13 @@ public class tablecolorfilter {
                 SkPaint paint = new SkPaint();
                 x = 0;
                 canvas.drawBitmap(bm, x, y, paint);
-                paint.setColorFilter(make_cf0()).unref();  x += bm.width() * 9 / 8;
+                paint.setColorFilter(make_cf0());  x += bm.width() * 9 / 8;
                 canvas.drawBitmap(bm, x, y, paint);
-                paint.setColorFilter(make_cf1()).unref();  x += bm.width() * 9 / 8;
+                paint.setColorFilter(make_cf1());  x += bm.width() * 9 / 8;
                 canvas.drawBitmap(bm, x, y, paint);
-                paint.setColorFilter(make_cf2()).unref();  x += bm.width() * 9 / 8;
+                paint.setColorFilter(make_cf2());  x += bm.width() * 9 / 8;
                 canvas.drawBitmap(bm, x, y, paint);
-                paint.setColorFilter(make_cf3()).unref();  x += bm.width() * 9 / 8;
+                paint.setColorFilter(make_cf3());  x += bm.width() * 9 / 8;
                 canvas.drawBitmap(bm, x, y, paint);
 
                 y += bm.height() * 9 / 8;

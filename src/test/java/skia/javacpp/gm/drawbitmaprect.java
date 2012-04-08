@@ -10,7 +10,6 @@ public class drawbitmaprect {
         bm.eraseColor(0);
 
         SkCanvas canvas = new SkCanvas(bm);
-        canvas.autoUnref();
 
         float wScalar = SkIntToScalar(w);
         float hScalar = SkIntToScalar(h);
@@ -36,7 +35,7 @@ public class drawbitmaprect {
         paint.setShader(SkGradientShader.CreateRadial(
                 pt, radius,
                 colors, pos,
-                SkShader.kRepeat_TileMode)).unref();
+                SkShader.kRepeat_TileMode));
         SkRect rect = SkRect.MakeWH(wScalar, hScalar);
         SkMatrix mat = SkMatrix.I();
         for (int i = 0; i < 4; ++i) {

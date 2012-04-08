@@ -25,7 +25,6 @@ public class bitmapscroll {
                 quarterWidth*4, quarterHeight*4);
         bitmap.allocPixels();
         SkCanvas canvas = new SkCanvas(bitmap);
-        canvas.autoUnref();
 
         float w = SkIntToScalar(quarterWidth);
         float h = SkIntToScalar(quarterHeight);

@@ -47,6 +47,10 @@ public class images {
         public native Peeker setPeeker(Peeker peeker);
 
         public static class Chooser extends SkRefCnt {
+            static { Loader.load(Skia.class); }
+
+            protected Chooser() {}
+
             public native void begin(int count);
             public native void inspect(int index, @Cast("SkBitmap::Config") int config, int width, int height);
             public native int choose();

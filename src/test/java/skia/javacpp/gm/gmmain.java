@@ -287,11 +287,10 @@ public class gmmain {
             SkCanvas canvas;
             if (deferred) {
                 canvas = new SkDeferredCanvas();
-                canvas.setDevice(new SkDevice(bitmap)).unref();
+                canvas.setDevice(new SkDevice(bitmap));
             } else {
                 canvas = new SkCanvas(bitmap);
             }
-            new SkAutoUnref(canvas);
             invokeGM(gm, canvas);
             canvas.flush();
         } else {  // GPU

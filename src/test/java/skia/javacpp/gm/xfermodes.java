@@ -137,40 +137,35 @@ public class xfermodes {
                 float x = x0, y = 0;
                 for (int i = 0; i < gModes.length; i++) {
                     SkXfermode mode = SkXfermode.Create(gModes[i].fMode);
-                    try {
-                        SkRect r = new SkRect();
-                        r.set(x, y, x+w, y+h);
+                    SkRect r = new SkRect();
+                    r.set(x, y, x+w, y+h);
 
-                        SkPaint p = new SkPaint();
-                        p.setStyle(SkPaint.kFill_Style);
-                        p.setShader(s);
-                        canvas.drawRect(r, p);
+                    SkPaint p = new SkPaint();
+                    p.setStyle(SkPaint.kFill_Style);
+                    p.setShader(s);
+                    canvas.drawRect(r, p);
 
-                        canvas.saveLayer(r, null, SkCanvas.kARGB_ClipLayer_SaveFlag);
-                        draw_mode(canvas, mode, twice != 0 ? 0x88 : 0xFF, r.fLeft(), r.fTop());
-                        canvas.restore();
+                    canvas.saveLayer(r, null, SkCanvas.kARGB_ClipLayer_SaveFlag);
+                    draw_mode(canvas, mode, twice != 0 ? 0x88 : 0xFF, r.fLeft(), r.fTop());
+                    canvas.restore();
 
-                        r.inset(-SK_ScalarHalf, -SK_ScalarHalf);
-                        p.setStyle(SkPaint.kStroke_Style);
-                        p.setShader(null);
-                        canvas.drawRect(r, p);
+                    r.inset(-SK_ScalarHalf, -SK_ScalarHalf);
+                    p.setStyle(SkPaint.kStroke_Style);
+                    p.setShader(null);
+                    canvas.drawRect(r, p);
 
-            //            #if 1
-                        canvas.drawText(gModes[i].fLabel,
-                                x + w/2, y - labelP.getTextSize()/2, labelP);
-            //            #endif
-                        x += w + SkIntToScalar(10);
-                        if ((i % W) == W - 1) {
-                            x = x0;
-                            y += h + SkIntToScalar(30);
-                        }
-                    } finally {
-                        SkSafeUnref(mode);
+        //            #if 1
+                    canvas.drawText(gModes[i].fLabel,
+                            x + w/2, y - labelP.getTextSize()/2, labelP);
+        //            #endif
+                    x += w + SkIntToScalar(10);
+                    if ((i % W) == W - 1) {
+                        x = x0;
+                        y += h + SkIntToScalar(30);
                     }
                 }
                 x0 += SkIntToScalar(400);
             }
-            s.unref();
         }
     }
 

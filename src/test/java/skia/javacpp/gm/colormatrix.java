@@ -48,7 +48,6 @@ public class colormatrix {
             bm.setConfig(SkBitmap.kARGB_8888_Config, width, height);
             bm.allocPixels();
             SkCanvas canvas = new SkCanvas(bm);
-            canvas.autoUnref();
             canvas.clear(0x0);
             for (int y = 0; y < height; ++y) {
                 for (int x = 0; x < width; ++x) {
@@ -67,7 +66,7 @@ public class colormatrix {
             SkPaint paint = new SkPaint();
             SkColorMatrix matrix = new SkColorMatrix();
             SkColorMatrixFilter filter = new SkColorMatrixFilter();
-            paint.setColorFilter(filter).unref();
+            paint.setColorFilter(filter);
 
             matrix.setIdentity();
             filter.setMatrix(matrix);

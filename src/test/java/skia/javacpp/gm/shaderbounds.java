@@ -58,13 +58,13 @@ public class shaderbounds {
 
             // Background shader.
             SkPaint paint = new SkPaint();
-            paint.setShader(MakeShader(559, 387, false)).unref();
+            paint.setShader(MakeShader(559, 387, false));
             SkRect r = SkRect.MakeXYWH(SkIntToScalar(-12), SkIntToScalar(-41),
                     SkIntToScalar(571), SkIntToScalar(428));
             canvas.drawRect(r, paint);
 
             // Constrained shader.
-            paint.setShader(MakeShader(101, 151, true)).unref();
+            paint.setShader(MakeShader(101, 151, true));
             r = SkRect.MakeXYWH(SkIntToScalar(43), SkIntToScalar(71),
                     SkIntToScalar(101), SkIntToScalar(151));
             canvas.clipRect(r);

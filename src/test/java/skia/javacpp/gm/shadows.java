@@ -89,7 +89,6 @@ public class shadows {
                 } finally {
                     canvas.restoreToCount(saveCount);
                 }
-                shadowLoopers[i].unref();
             }
         }
     }

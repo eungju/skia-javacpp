@@ -24,7 +24,6 @@ public class giantbitmap {
                 };
 
                 SkCanvas canvas = new SkCanvas(fBM);
-                canvas.autoUnref();
                 SkPaint paint = new SkPaint();
                 paint.setAntiAlias(true);
                 paint.setStrokeWidth(SkIntToScalar(20));
@@ -96,7 +95,7 @@ public class giantbitmap {
             }
             s.setLocalMatrix(m);
 
-            paint.setShader(s).unref();
+            paint.setShader(s);
             paint.setFilterBitmap(fDoFilter);
 
             canvas.translate(SkIntToScalar(50), SkIntToScalar(50));
