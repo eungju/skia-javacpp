@@ -20,11 +20,39 @@ import com.googlecode.javacpp.annotation.Properties;
 import java.nio.charset.Charset;
 
 @Properties({
-	@Platform(include={"SkBitmap.h", "SkCanvas.h", "SkColor.h", "SkColorFilter.h", "SkColorPriv.h", "SkColorShader.h",
-            "SkData.h", "SkDevice.h", "SkDrawFilter.h", "SkDrawLooper.h",
-            "SkImageFilter.h", "SkMaskFilter.h", "SkMath.h", "SkMatrix.h",
-			"SkPaint.h", "SkPath.h", "SkPathEffect.h", "SkPicture.h", "SkPoint.h", "SkRandom.h", "SkRegion.h",
-			"SkShader.h", "SkShape.h", "SkSize.h", "SkStream.h", "SkString.h", "SkTypeface.h",
+	@Platform(include={
+            "Sk64.h",
+            "SkBitmap.h",
+            "SkBounder.h",
+            "SkCanvas.h",
+            "SkClipStack.h",
+            "SkColor.h",
+            "SkColorFilter.h",
+            "SkColorPriv.h",
+            "SkColorShader.h",
+            "SkData.h",
+            "SkDevice.h",
+            "SkDrawFilter.h",
+            "SkDrawLooper.h",
+            "SkImageFilter.h",
+            "SkMaskFilter.h",
+            "SkMath.h",
+            "SkMatrix.h",
+			"SkPaint.h",
+            "SkPath.h",
+            "SkPathEffect.h",
+            "SkPicture.h",
+            "SkPoint.h",
+            "SkRandom.h",
+            "SkRegion.h",
+            "SkScalar.h",
+            "SkScalerContext.h",
+			"SkShader.h",
+            "SkShape.h",
+            "SkSize.h",
+            "SkStream.h",
+            "SkString.h",
+            "SkTypeface.h",
 			"SkUnPreMultiply.h"})
 })
 public class core {
@@ -211,10 +239,27 @@ public class core {
         public native void unlockColors(boolean changed);
     }
 
+    /*
+     * SkBounder.h
+     */
+
+    public static class SkBounder extends SkRefCnt {
+        static { Loader.load(Skia.class); }
+
+        public SkBounder() {
+            allocate();
+            deallocator(new UnrefDeallocator(this));
+        }
+        @NoDeallocator
+        private native void allocate();
+
+        public native boolean doIRect(@Const @ByRef SkIRect rect);
+        public native boolean doIRectGlyph(@Const @ByRef SkIRect rect, int x, int y, @Const @ByRef SkGlyph glyph);
+    }
 
     /*
-      * SkCanvas.h
-      */
+     * SkCanvas.h
+     */
 	
 	public static class SkCanvas extends SkRefCnt {
 		static { Loader.load(Skia.class); }
@@ -384,17 +429,67 @@ public class core {
 
         public native void drawPicture(@ByRef SkPicture picture);
 
+        //enum VertexMode
+        public static final int kTriangles_VertexMode = 0,
+            kTriangleStrip_VertexMode = 1,
+            kTriangleFan_VertexMode = 2;
+
+        public native void drawVertices(@Cast("SkCanvas::VertexMode") int vmode, int vertexCount,
+                                  @Const SkPoint vertices, @Const SkPoint texs,
+                                  @Cast("const SkColor*") int[] colors, SkXfermode xmode,
+                                  @Cast("const uint16_t*") short[] indices, int indexCount,
+                                  @Const @ByRef SkPaint paint);
+
+        public native void drawData(@Const Pointer data, @Cast("size_t") int length);
+
+        public native SkBounder  getBounder();
+
+        public native SkBounder setBounder(SkBounder bounder);
+
         public native SkDrawFilter getDrawFilter();
+
         public native SkDrawFilter setDrawFilter(SkDrawFilter filter);
 
 	    public native @Const @ByRef SkMatrix getTotalMatrix();
-	}
 
-	/*
-	 * SkColor.h
-	 */
-	
-	public static int SkColorSetARGB(int a, int r, int g, int b) {
+        //enum ClipType
+        public static final int kEmpty_ClipType = 0,
+            kRect_ClipType = 1,
+            kComplex_ClipType = 2;
+
+        public native @Cast("SkCanvas::ClipType") int getClipType();
+
+        public native @Const @ByRef SkRegion getTotalClip();
+
+//        public native boolean getTotalClipBounds(SkIRect bounds);
+
+        public native @Const @ByRef SkClipStack getTotalClipStack();
+
+        public native void setExternalMatrix(@Const SkMatrix mat/* = NULL*/);
+    }
+
+    /*
+     * SkClipStack.h
+     */
+
+    public static class SkClipStack extends Pointer {
+        static { Loader.load(Skia.class); }
+
+        public SkClipStack() { allocate(); };
+        private native void allocate();
+
+        public SkClipStack(SkClipStack b) { allocate(b); };
+        private native void allocate(@Const @ByRef SkClipStack b);
+    }
+
+    /*
+     * SkColor.h
+     */
+
+//    typedef uint8_t SkAlpha;
+//    typedef uint32_t SkColor;
+
+    public static int SkColorSetARGB(int a, int r, int g, int b) {
 		return (0xFF & a) << 24 | (0xFF & r) << 16 | (0xFF  & g) << 8 | (0xFF & b);
 	}
 	
@@ -438,8 +533,10 @@ public class core {
 	public native static void SkColorToHSV(@Cast("SkColor") int color, @Cast("SkScalar*") float[] hsv);
 	public native static @Cast("SkColor") int SkHSVToColor(@Cast("U8CPU") int alpha, @Cast("SkScalar*") float[] hsv);
 	public native static @Cast("SkColor") int SkHSVToColor(@Cast("SkScalar*") float[] hsv);
-	
-	public native static @Cast("SkPMColor") int SkPreMultiplyARGB(@Cast("U8CPU") int  a, @Cast("U8CPU") int r, @Cast("U8CPU") int g, @Cast("U8CPU") int b);
+
+//    typedef uint32_t SkPMColor;
+
+    public native static @Cast("SkPMColor") int SkPreMultiplyARGB(@Cast("U8CPU") int  a, @Cast("U8CPU") int r, @Cast("U8CPU") int g, @Cast("U8CPU") int b);
 	public native static @Cast("SkPMColor") int SkPreMultiplyColor(@Cast("SkColor") int c);
 
 	public static class SkXfermodeProc extends FunctionPointer {
@@ -1800,8 +1897,19 @@ public class core {
     public native static @Cast("SkScalar") float SkScalarInterp(@Cast("SkScalar") float A, @Cast("SkScalar") float B, @Cast("SkScalar") float t);
 
     /*
-      * SkShader.h
-      */
+     * SkScalerContext.h
+     */
+
+    public static class SkGlyph extends Pointer {
+        static { Loader.load(Skia.class); }
+
+        public SkGlyph() { allocate(); }
+        private native void allocate();
+    }
+
+    /*
+    * SkShader.h
+    */
 	
 	public static class SkShader extends SkFlattenable {
 		static { Loader.load(Skia.class); }
