@@ -459,9 +459,8 @@ public class core {
 
         public native @Cast("SkCanvas::ClipType") int getClipType();
 
+        @Deprecated
         public native @Const @ByRef SkRegion getTotalClip();
-
-//        public native boolean getTotalClipBounds(SkIRect bounds);
 
         public native @Const @ByRef SkClipStack getTotalClipStack();
 
@@ -694,6 +693,7 @@ public class core {
 		protected SkFlattenable() {}
 		
 		public native Factory getFactory();
+
 	    public native static Factory NameToFactory(String name);
 	    public native static String FactoryToName(Factory factory);
 	    public native static void Register(String name, Factory factory);
@@ -702,15 +702,13 @@ public class core {
 	public static class SkFlattenableReadBuffer extends Pointer {
 		static { Loader.load(Skia.class); }
 		
-		public SkFlattenableReadBuffer() { allocate(); }
-		private native void allocate();
+		protected SkFlattenableReadBuffer() {}
 	}
 	
 	public static class SkFlattenableWriteBuffer extends Pointer {
 		static { Loader.load(Skia.class); }
 		
-		public SkFlattenableWriteBuffer(int minSize) { allocate(minSize); }
-		private native void allocate(@Cast("size_t") int minSize);
+		protected SkFlattenableWriteBuffer() {}
 	}
 	
 	/*
