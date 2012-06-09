@@ -21,6 +21,14 @@ public class colormatrix {
         private boolean fOnce;
     };
 
+    static void setColorMatrix(SkPaint paint, SkColorMatrix matrix) {
+        paint.setColorFilter(new SkColorMatrixFilter(matrix));
+    }
+
+    static void setArray(SkPaint paint, float[] array) {
+        paint.setColorFilter(new SkColorMatrixFilter(array));
+    }
+
     public static class ColorMatrixGM extends GM {
         private SkOnce fOnce = new SkOnce();
         private void init() {
@@ -65,47 +73,45 @@ public class colormatrix {
 
             SkPaint paint = new SkPaint();
             SkColorMatrix matrix = new SkColorMatrix();
-            SkColorMatrixFilter filter = new SkColorMatrixFilter();
-            paint.setColorFilter(filter);
 
             matrix.setIdentity();
-            filter.setMatrix(matrix);
+            setColorMatrix(paint, matrix);
             canvas.drawBitmap(fBitmap, 0, 0, paint);
 
             matrix.setRotate(SkColorMatrix.kR_Axis, 90);
-            filter.setMatrix(matrix);
+            setColorMatrix(paint, matrix);
             canvas.drawBitmap(fBitmap, 80, 0, paint);
 
             matrix.setRotate(SkColorMatrix.kG_Axis, 90);
-            filter.setMatrix(matrix);
+            setColorMatrix(paint, matrix);
             canvas.drawBitmap(fBitmap, 160, 0, paint);
 
             matrix.setRotate(SkColorMatrix.kB_Axis, 90);
-            filter.setMatrix(matrix);
+            setColorMatrix(paint, matrix);
             canvas.drawBitmap(fBitmap, 240, 0, paint);
 
             matrix.setSaturation(SkFloatToScalar(0.0f));
-            filter.setMatrix(matrix);
+            setColorMatrix(paint, matrix);
             canvas.drawBitmap(fBitmap, 0, 80, paint);
 
             matrix.setSaturation(SkFloatToScalar(0.5f));
-            filter.setMatrix(matrix);
+            setColorMatrix(paint, matrix);
             canvas.drawBitmap(fBitmap, 80, 80, paint);
 
             matrix.setSaturation(SkFloatToScalar(1.0f));
-            filter.setMatrix(matrix);
+            setColorMatrix(paint, matrix);
             canvas.drawBitmap(fBitmap, 160, 80, paint);
 
             matrix.setSaturation(SkFloatToScalar(2.0f));
-            filter.setMatrix(matrix);
+            setColorMatrix(paint, matrix);
             canvas.drawBitmap(fBitmap, 240, 80, paint);
 
             matrix.setRGB2YUV();
-            filter.setMatrix(matrix);
+            setColorMatrix(paint, matrix);
             canvas.drawBitmap(fBitmap, 0, 160, paint);
 
             matrix.setYUV2RGB();
-            filter.setMatrix(matrix);
+            setColorMatrix(paint, matrix);
             canvas.drawBitmap(fBitmap, 80, 160, paint);
 
             float s1 = SK_Scalar1;
@@ -118,7 +124,7 @@ public class colormatrix {
                     s1, 0, 0, 0, 0,
                     };
 
-            filter.setArray(data);
+            setArray(paint, data);
             canvas.drawBitmap(fBitmap, 160, 160, paint);
         }
 

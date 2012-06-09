@@ -214,13 +214,6 @@ public class effects {
     public static class SkColorMatrixFilter extends SkColorFilter {
         static { Loader.load(Skia.class); }
 
-        public SkColorMatrixFilter() {
-            allocate();
-            deallocator(new UnrefDeallocator(this));
-        }
-        @NoDeallocator
-        private native void allocate();
-
         public  SkColorMatrixFilter(SkColorMatrix mat) {
             allocate(mat);
             deallocator(new UnrefDeallocator(this));
@@ -234,9 +227,6 @@ public class effects {
         };
         @NoDeallocator
         private native void allocate(@Cast("const SkScalar*") float[] array20);
-
-        public native void setMatrix(@Const @ByRef SkColorMatrix mat);
-        public native void setArray(@Cast("const SkScalar*") float[] array);
 
 //        virtual void filterSpan(const SkPMColor src[], int count, SkPMColor[]) SK_OVERRIDE;
 //        virtual void filterSpan16(const uint16_t src[], int count, uint16_t[]) SK_OVERRIDE;

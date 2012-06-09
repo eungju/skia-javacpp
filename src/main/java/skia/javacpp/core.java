@@ -462,7 +462,7 @@ public class core {
         @Deprecated
         public native @Const @ByRef SkRegion getTotalClip();
 
-        public native @Const @ByRef SkClipStack getTotalClipStack();
+        //TODO: public native @Const @ByRef SkClipStack getTotalClipStack();
 
         public native void setExternalMatrix(@Const SkMatrix mat/* = NULL*/);
     }
@@ -1175,30 +1175,6 @@ public class core {
 	    public native boolean nothingToDraw();
 	}
 
-	public static class SkStrokePathEffect extends SkPathEffect {
-		static { Loader.load(Skia.class); }
-
-		public SkStrokePathEffect(SkPaint paint) {
-            allocate(paint);
-            deallocator(new UnrefDeallocator(this));
-        }
-		@NoDeallocator
-	    private native void allocate(@Const @ByRef SkPaint paint);
-
-        public SkStrokePathEffect(float width, int style, int join, int cap) {
-            allocate(width, style, join, cap);
-            deallocator(new UnrefDeallocator(this));
-        }
-        @NoDeallocator
-        private native void allocate(@Cast("SkScalar") float width, @Cast("SkPaint::Style") int style, @Cast("SkPaint::Join") int join, @Cast("SkPaint::Cap") int cap);
-        public SkStrokePathEffect(float width, int style, int join, int cap, float miterLimit) {
-            allocate(width, style, join, cap, miterLimit);
-            deallocator(new UnrefDeallocator(this));
-        }
-        @NoDeallocator
-		private native void allocate(@Cast("SkScalar") float width, @Cast("SkPaint::Style") int style, @Cast("SkPaint::Join") int join, @Cast("SkPaint::Cap") int cap, @Cast("SkScalar") float miterLimit/* = -1*/);
-	}
-	
 	/*
 	 * SkPath.h
 	 */
@@ -2185,10 +2161,10 @@ public class core {
 	    public native @Cast("SkFontID") int uniqueID();
 	    public native static boolean Equal(@Const SkTypeface facea, @Const SkTypeface faceb);
 	    public native static SkTypeface CreateFromName(String familyName, @Cast("SkTypeface::Style") int style);
-	    public native static SkTypeface CreateForChars(@Const Pointer data, @Cast("size_t") int bytelength, @Cast("SkTypeface::Style") int style);
 	    public native static SkTypeface CreateFromTypeface(@Const SkTypeface family, @Cast("SkTypeface::Style") int style);
 	    public native static SkTypeface CreateFromFile(String path);
-	}
+        public native static SkTypeface CreateFromStream(SkStream stream);
+    }
 
     /*
      * SkTypes.h

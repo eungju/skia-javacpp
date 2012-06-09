@@ -24,9 +24,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.googlecode</groupId>
+			<groupId>com.googlecode.javacpp</groupId>
 			<artifactId>javacpp</artifactId>
-			<version>20120303.1</version>
+			<version>0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -133,7 +133,7 @@
                         <configuration>
                             <executable>java</executable>
                             <arguments>
-                                <argument>-jar</argument> <argument>${com.googlecode:javacpp:jar}</argument>
+                                <argument>-jar</argument> <argument>${com.googlecode.javacpp:javacpp:jar}</argument>
                                 <argument>-classpath</argument> <argument>${project.build.outputDirectory}</argument>
                                 <argument>-d</argument> <argument>${project.build.outputDirectory}/skia/javacpp/macosx-x86_64</argument>
                                 <argument>-o</argument> <argument>jniSkia</argument>
@@ -150,7 +150,7 @@
                         <configuration>
                             <executable>java</executable>
                             <arguments>
-                                <argument>-jar</argument> <argument>${com.googlecode:javacpp:jar}</argument>
+                                <argument>-jar</argument> <argument>${com.googlecode.javacpp:javacpp:jar}</argument>
                                 <argument>-classpath</argument> <argument>${project.build.testOutputDirectory}</argument>
                                 <argument>-d</argument> <argument>${project.build.testOutputDirectory}/skia/javacpp/gm/macosx-x86_64</argument>
                                 <argument>-o</argument> <argument>jniGlitch</argument>
@@ -211,9 +211,8 @@
 
 	<repositories>
 		<repository>
-			<id>ejwa-public</id>
-			<url>http://maven.ejwa.se</url>
-			<name>Public Ejwa Software Maven Repository</name>
+			<id>javacpp</id>
+      <url>http://maven2.javacpp.googlecode.com/git</url>
 		</repository>
         <repository>
             <id>zact</id>
