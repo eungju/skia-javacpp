@@ -411,7 +411,6 @@ public class effects {
         @NoDeallocator
         private native void allocate(int radiusX, int radiusY);
 
-        public native boolean asADilate(SkISize radius);
 //        public native boolean onFilterImage(Proxy proxy, @Const @ByRef SkBitmap src, @Const @ByRef SkMatrix matrix,
 //                                   SkBitmap result, SkIPoint offset);
     }
@@ -426,7 +425,6 @@ public class effects {
         @NoDeallocator
         private native void allocate(int radiusX, int radiusY);
 
-        public native boolean asAnErode(SkISize radius);
 //        public native boolean onFilterImage(Proxy proxy, @Const @ByRef SkBitmap src, @Const @ByRef SkMatrix,
 //                SkBitmap result, SkIPoint offset);
     }

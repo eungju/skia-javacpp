@@ -34,6 +34,7 @@ import java.nio.charset.Charset;
             "SkDevice.h",
             "SkDrawFilter.h",
             "SkDrawLooper.h",
+            "SkGlyph.h",
             "SkImageFilter.h",
             "SkMaskFilter.h",
             "SkMath.h",
@@ -46,7 +47,6 @@ import java.nio.charset.Charset;
             "SkRandom.h",
             "SkRegion.h",
             "SkScalar.h",
-            "SkScalerContext.h",
 			"SkShader.h",
             "SkShape.h",
             "SkSize.h",
@@ -720,6 +720,17 @@ public class core {
 		
 		protected SkImageFilter() {}
 	}
+
+    /*
+     * SkGlyph.h
+     */
+
+    public static class SkGlyph extends Pointer {
+        static { Loader.load(Skia.class); }
+
+        public SkGlyph() { allocate(); }
+        private native void allocate();
+    }
 
     /*
      * SkMask.h
@@ -1869,17 +1880,6 @@ public class core {
     public native static boolean SkScalarIsInt(@Cast("SkScalar") float x);
 
     public native static @Cast("SkScalar") float SkScalarInterp(@Cast("SkScalar") float A, @Cast("SkScalar") float B, @Cast("SkScalar") float t);
-
-    /*
-     * SkScalerContext.h
-     */
-
-    public static class SkGlyph extends Pointer {
-        static { Loader.load(Skia.class); }
-
-        public SkGlyph() { allocate(); }
-        private native void allocate();
-    }
 
     /*
     * SkShader.h
