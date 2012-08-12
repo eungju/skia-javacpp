@@ -81,7 +81,6 @@ public class gmmain {
                 shaderbounds.MyFactory,
                 shadertext.MyFactory,
                 shadows.MyFactory,
-                shapes.MyFactory,
                 strokefill.MyFactory,
                 strokerects.MyFactory,
                 strokes.MyFactory,

@@ -34,6 +34,8 @@ import java.nio.charset.Charset;
             "SkDevice.h",
             "SkDrawFilter.h",
             "SkDrawLooper.h",
+            "SkFlattenable.h",
+            "SkFlattenableBuffers.h",
             "SkGlyph.h",
             "SkImageFilter.h",
             "SkMaskFilter.h",
@@ -48,7 +50,6 @@ import java.nio.charset.Charset;
             "SkRegion.h",
             "SkScalar.h",
 			"SkShader.h",
-            "SkShape.h",
             "SkSize.h",
             "SkStream.h",
             "SkString.h",
@@ -698,7 +699,11 @@ public class core {
 	    public native static String FactoryToName(Factory factory);
 	    public native static void Register(String name, Factory factory);
 	}
-	
+
+    /*
+     * SkFlattenableBuffers.h
+     */
+
 	public static class SkFlattenableReadBuffer extends Pointer {
 		static { Loader.load(Skia.class); }
 		
@@ -1902,22 +1907,6 @@ public class core {
 	    public native static SkShader CreateBitmapShader(@Const @ByRef SkBitmap src, @Cast("SkShader::TileMode") int tmx, @Cast("SkShader::TileMode") int tmy);
 
 	}
-
-    /*
-     * SkShape.h
-     */
-
-    public static class SkShape extends SkFlattenable {
-        static { Loader.load(Skia.class); }
-
-        protected SkShape() {}
-        
-        public native void draw(SkCanvas canvas);
-
-        public native void drawXY(SkCanvas canvas, @Cast("SkScalar") float dx, @Cast("SkScalar") float dy);
-
-        public native void drawMatrix(SkCanvas canvas, @Const @ByRef SkMatrix matrix);
-    }
 
 	/*
 	* SkSize.h

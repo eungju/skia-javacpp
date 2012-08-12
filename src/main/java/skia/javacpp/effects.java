@@ -26,9 +26,7 @@ import static skia.javacpp.core.*;
             "SkDashPathEffect.h",
             "SkDiscretePathEffect.h",
             "SkGradientShader.h",
-            "SkGroupShape.h",
             "SkMorphologyImageFilter.h",
-            "SkRectShape.h",
             "SkTableColorFilter.h",
             "SkTestImageFilters.h",
             "SkUnitMapper.h"})
@@ -327,71 +325,6 @@ public class effects {
 	}
 
     /*
-     * SkGroupShape.h
-     */
-
-    public static class SkMatrixRef extends SkMatrix {
-        static { Loader.load(Skia.class); }
-
-        public SkMatrixRef() {
-            allocate();
-            deallocator(new UnrefDeallocator(this));
-        }
-        @NoDeallocator
-        private native void allocate();
-        
-        public SkMatrixRef(SkMatrix matrix) {
-            allocate(matrix);
-            deallocator(new UnrefDeallocator(this));
-        }
-        @NoDeallocator
-        private native void allocate(@Const @ByRef SkMatrix matrix);
-
-        @Name("operator=")
-        public native @ByRef SkMatrix copy(@Const @ByRef SkMatrix matrix);
-
-        protected native @Cast("int32_t") int getRefCnt();
-        protected native void ref();
-        protected native void unref();
-        protected static class UnrefDeallocator extends SkMatrixRef implements Deallocator {
-            UnrefDeallocator(SkMatrixRef p) { super(p); }
-            @Override public void deallocate() { unref(); }
-        }
-    };
-
-    public static class SkGroupShape extends SkShape {
-        static { Loader.load(Skia.class); }
-
-        public SkGroupShape() {
-            allocate();
-            deallocator(new UnrefDeallocator(this));
-        }
-        @NoDeallocator
-        private native void allocate();
-
-        public native int countShapes();
-
-        public native SkShape getShape(int index);
-        public native SkShape getShape(int index, @Cast("SkMatrixRef**") Pointer matrixRef/* = NULL*/);
-
-        public native SkMatrixRef getShapeMatrixRef(int index);
-
-        public native void addShape(int index, SkShape shape);
-        public native void addShape(int index, SkShape shape, SkMatrixRef matrixRef/* = NULL*/);
-
-        public native void addShape(int index, SkShape shape, @Const @ByRef SkMatrix matrix);
-
-        public native SkShape appendShape(SkShape shape);
-        public native SkShape appendShape(SkShape shape, SkMatrixRef mr/* = NULL*/);
-
-        public native SkShape appendShape(SkShape shape, @Const @ByRef SkMatrix matrix);
-
-        public native void removeShape(int index);
-
-        public native void removeAllShapes();
-    }
-
-    /*
      * SkMorphologyImageFilter.h
      */
 
@@ -427,35 +360,6 @@ public class effects {
 
 //        public native boolean onFilterImage(Proxy proxy, @Const @ByRef SkBitmap src, @Const @ByRef SkMatrix,
 //                SkBitmap result, SkIPoint offset);
-    }
-
-    /*
-    * SkRectShape.h
-    */
-
-    public static class SkPaintShape extends SkShape {
-        static { Loader.load(Skia.class); }
-
-        protected SkPaintShape() {}
-        
-        public native @ByRef SkPaint paint();
-        //public native @Const @ByRef SkPaint paint();
-    };
-
-    public static class SkRectShape extends SkPaintShape {
-        static { Loader.load(Skia.class); }
-
-        public SkRectShape() {
-            allocate();
-            deallocator(new UnrefDeallocator(this));
-        }
-        @NoDeallocator
-        private native void allocate();
-
-        public native void setRect(@Const @ByRef SkRect rect);
-        public native void setOval(@Const @ByRef SkRect rect);
-        public native void setCircle(@Cast("SkScalar") float x, @Cast("SkScalar") float y, @Cast("SkScalar") float radius);
-        public native void setRRect(@Const @ByRef SkRect rect, @Cast("SkScalar") float rx, @Cast("SkScalar") float ry);
     }
 
     /*
